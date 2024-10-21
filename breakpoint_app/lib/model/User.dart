@@ -1,7 +1,8 @@
 class User{
 
-  User({required this.nickname, required this.senha});
+  User({required this.username, required this.password, required this.birth});
 
-  String nickname;
-  String senha;
+  String username;
+  String password;
+  DateTime birth;
 }

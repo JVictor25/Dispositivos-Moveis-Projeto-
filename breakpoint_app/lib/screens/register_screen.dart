@@ -10,9 +10,9 @@ class Registerscreen extends StatefulWidget {
 class _RegisterscreenState extends State<Registerscreen> {
   @override
   Widget build(BuildContext context) {
-    DateTime _birth = DateTime.now();
+    //DateTime _birth = DateTime.now();
 
-    void _showDatePicker() {
+    /*void _showDatePicker() {
       showDatePicker(
               context: context,
               initialDate: DateTime.now(),
@@ -27,7 +27,7 @@ class _RegisterscreenState extends State<Registerscreen> {
         });
       });
     }
-
+  */
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -106,7 +106,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                     children: [
                       TextButton(
                           onPressed: (){
-                            _showDatePicker();
+                            //_showDatePicker();
                           },
                           child: Text(
                             "Data de nascimento",

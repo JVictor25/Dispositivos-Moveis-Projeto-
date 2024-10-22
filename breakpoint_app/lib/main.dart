@@ -8,17 +8,17 @@ void main() {
         bodyLarge: TextStyle(
           fontFamily: 'Garamond',
           fontSize: 30,
-          color: Color(0xFF37474F),
+          color: Colors.white,
         ),
         bodyMedium: TextStyle(
           fontFamily: 'Garamond',
           fontSize: 18,
-          color: Color(0xFF37474F)
+          color: Colors.white
         ),
         bodySmall: TextStyle(
           fontFamily: 'Garamond',
           fontSize: 14,
-          color:  Color(0xFF37474F),
+          color:  Colors.white,
         )
       ),
     ),

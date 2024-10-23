@@ -5,6 +5,6 @@ class Diary extends StatelessWidget{
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Text('Diary', style: TextStyle(color: Colors.black));
   }
 }

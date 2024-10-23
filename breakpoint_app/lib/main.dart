@@ -5,21 +5,31 @@ void main() {
   runApp(MaterialApp(
     theme: ThemeData(
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(
+        titleLarge: TextStyle(
           fontFamily: 'Garamond',
           fontSize: 30,
           color: Colors.white,
         ),
-        bodyMedium: TextStyle(
+        labelLarge: TextStyle(
+          fontFamily: 'sans-serif',
+          fontSize: 18,
+          color: Colors.black
+        ),
+        labelMedium: TextStyle(
+          fontFamily: 'sans-serif',
+          fontSize: 14,
+          color: Colors.white,
+        ),
+        labelSmall: TextStyle(
+          fontFamily: 'sans-serif',
+          fontSize: 10,
+          color: Colors.grey
+        ),
+        displayMedium: TextStyle(
           fontFamily: 'Garamond',
           fontSize: 18,
-          color: Colors.white
-        ),
-        bodySmall: TextStyle(
-          fontFamily: 'Garamond',
-          fontSize: 14,
-          color:  Colors.white,
-        )
+          color: Colors.white,
+        ) 
       ),
     ),
     initialRoute: AppRoutes.WELLCOME,

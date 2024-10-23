@@ -18,10 +18,11 @@ class myDrawer extends StatelessWidget {
               size: 40,
             ),
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Color(0xFF3A1078), Color(0xFF836FFF)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter)),
+                gradient: LinearGradient(colors: [
+              Color(0xFF3A1078),
+              Color(0xFF6A5ACD),
+              Color(0xFF836FFF)
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           ),
           ListTile(
             leading: Icon(
@@ -31,8 +32,7 @@ class myDrawer extends StatelessWidget {
             title: Text('Perfil',
                 style: TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'serif')),
+                    fontFamily: 'sans-serif')),
             //onTap: ,
           ),
           ListTile(
@@ -43,8 +43,7 @@ class myDrawer extends StatelessWidget {
             title: Text('Amigos',
                 style: TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'serif')),
+                    fontFamily: 'sans-serif')),
             //onTap: ,
           ),
           ListTile(
@@ -55,8 +54,7 @@ class myDrawer extends StatelessWidget {
             title: Text('Missões',
                 style: TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'serif')),
+                    fontFamily: 'sans-serif')),
             //onTap: ,
           ),
           ListTile(
@@ -67,8 +65,7 @@ class myDrawer extends StatelessWidget {
             title: Text('Configurações',
                 style: TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'serif')),
+                    fontFamily: 'sans-serif')),
             //onTap: ,
           ),
         ],

@@ -1,7 +1,32 @@
+import 'package:breakpoint_app/widgets/register_user.dart';
 import 'package:flutter/material.dart';
+import 'package:breakpoint_app/model/User.dart';
 
-class Loginscreen extends StatelessWidget {
+class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
+
+  @override
+  State<Loginscreen> createState() => _LoginscreenState();
+}
+
+class _LoginscreenState extends State<Loginscreen> {
+  bool _isChecked = false;
+  final List<User> _userList = [
+    User(username: "Admin", password: "teste123", birth: DateTime(23, 12, 2001))
+  ];
+
+  void _addUser(String username, String password, DateTime nascimento) {
+    User _newUser = User(
+      username: username,
+      password: password,
+      birth: nascimento,
+    );
+    _userList.add(_newUser);
+  }
+
+  void _removeUser(User user) {
+    _userList.remove(user);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +42,11 @@ class Loginscreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFFADD8E6), Color(0xFFB39DDB)],
+                colors: [
+                  Color(0xFF3A1078),
+                  Color(0xFF6A5ACD),
+                  Color(0xFF836FFF)
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -28,20 +57,18 @@ class Loginscreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20),
-                  Text("Entrar", style: Theme.of(context).textTheme.bodyLarge),
+                  Text("Entrar", style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 20),
                   SizedBox(
                     child: TextField(
                       decoration: InputDecoration(
-                        label: Text(
-                          "Usuário",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        hintText: 'Usuário',
-                        prefixIcon: Icon(Icons.person),
-                        hintStyle: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                          fillColor: Colors.white,
+                          filled: true,
+                          label: Text(
+                            "Usuário",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          prefixIcon: Icon(Icons.person)),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -49,14 +76,14 @@ class Loginscreen extends StatelessWidget {
                     child: TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                          label: Text(
-                            "Senha",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          hintText: 'Senha',
-                          prefixIcon: Icon(Icons.lock),
-                          hintStyle: Theme.of(context).textTheme.bodySmall),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                        fillColor: Colors.white,
+                        filled: true,
+                        label: Text(
+                          "Senha",
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -67,14 +94,23 @@ class Loginscreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Checkbox(
-                              value: false,
-                              onChanged: (bool) {
-                                //Ainda não foi implementado
+                              fillColor: MaterialStateProperty.resolveWith(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.selected)) {
+                                  return Color(0xFF3A1078);
+                                }
+                                return Colors.white;
+                              }),
+                              value: _isChecked,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _isChecked = value!;
+                                });
                               },
                             ),
                             Text(
                               "Lembre-me",
-                              style: Theme.of(context).textTheme.bodyMedium,
+                              style: Theme.of(context).textTheme.labelMedium,
                             ),
                           ],
                         ),
@@ -90,10 +126,11 @@ class Loginscreen extends StatelessWidget {
                                 child: Text("Esqueceu a senha?",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyMedium!
+                                        .labelMedium!
                                         .copyWith(
-                                          decoration: TextDecoration.underline,
-                                        ))),
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: Colors.white))),
                           ],
                         ),
                       )
@@ -104,18 +141,14 @@ class Loginscreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      //Ainda não foi implementado
+                      Navigator.pushNamed(context, 'home');
                     },
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 40),
-                        backgroundColor: const Color(0xFF37474F)),
-                    child: const Text(
+                        backgroundColor: Color(0xFF3A1078)),
+                    child: Text(
                       "Acessar",
-                      style: TextStyle(
-                        fontFamily: 'Garamond',
-                        fontSize: 16,
-                        color: Color(0xFFADD8E6),
-                      ),
+                      style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),
                   Row(
@@ -123,24 +156,29 @@ class Loginscreen extends StatelessWidget {
                     children: [
                       Text(
                         "Não tem uma conta?",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, 'register');
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Registeruser(onSubmit: _addUser)),
+                            );
                           },
                           child: Text(
                             "Increver-se",
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyMedium!
+                                .labelMedium!
                                 .copyWith(
                                   decoration: TextDecoration.underline,
+                                  decorationColor: Colors.white
                                 ),
                           )),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   FloatingActionButton(

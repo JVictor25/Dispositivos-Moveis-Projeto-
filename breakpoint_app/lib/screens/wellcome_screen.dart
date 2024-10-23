@@ -11,21 +11,21 @@ class Wellcome extends StatelessWidget {
         height: double.infinity,
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Color(0xFF3A1078), Color(0xFF836FFF)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight)),
+            gradient: LinearGradient(colors: [
+          Color(0xFF3A1078),
+          Color(0xFF6A5ACD),
+          Color(0xFF836FFF)
+        ], 
+        begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
               height: 20,
             ),
-            Text(
-              "BreakPoint",
-              textDirection: TextDirection.ltr,
-              style: Theme.of(context).textTheme.bodyLarge
-            ),
+            Text("BreakPoint",
+                textDirection: TextDirection.ltr,
+                style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(
               height: 40,
             ),
@@ -37,30 +37,29 @@ class Wellcome extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            Text("Bem-Vindo(a)!",
+                textDirection: TextDirection.ltr,
+                style: Theme.of(context).textTheme.titleLarge),
             Text(
-              "Bem-Vindo(a)!",
+              "Estamos aqui para ajudar você a ter mais controle e equilíbrio em sua jornada.\n \nVamos começar?",
               textDirection: TextDirection.ltr,
-              style: Theme.of(context).textTheme.bodyLarge
-            ),
-            Text(
-              "Estamos aqui para ajudar você a ter mais controle e equilíbrio em sua jornada.\n Vamos começar?",
-              textDirection: TextDirection.ltr,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style:
+                  Theme.of(context).textTheme.displayMedium,
               softWrap: true,
               textAlign: TextAlign.center,
             ),
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
-            FloatingActionButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'home');
-                },
-                backgroundColor: const Color(0xFF3A1078),
-                child: const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                ))
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'login');
+              },
+              child: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+            )
           ],
         ),
       ),

@@ -11,7 +11,6 @@ class Homescreen extends StatefulWidget {
   State<Homescreen> createState() => _HomescreenState();
 }
 
-
 class _HomescreenState extends State<Homescreen>{
   int _currentPageIndex = 0;
 
@@ -101,7 +100,7 @@ class _HomescreenState extends State<Homescreen>{
         Achievements(),
         Diary(),
       ][_currentPageIndex],
-    )
+      )
     );
   }
 }

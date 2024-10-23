@@ -11,21 +11,13 @@ class Homescreen extends StatefulWidget {
   State<Homescreen> createState() => _HomescreenState();
 }
 
-class _HomescreenState extends State<Homescreen> with SingleTickerProviderStateMixin {
-  
-  late final TabController _tabController = TabController(length: 3, vsync: this);
 
-  @override
-  void initState(){
-    super.initState();
-    _tabController.addListener((){
-      setState(() {
-      });
-    });
-  }
+class _HomescreenState extends State<Homescreen>{
+  int _currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -81,45 +73,35 @@ class _HomescreenState extends State<Homescreen> with SingleTickerProviderStateM
                     )),
               )),
         ),
-        drawer: myDrawer(),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: const [
-                Addiction(),
-                Achievements(),
-                Diary(),
-              ]),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: TabBar(
-                  controller: _tabController,
-                  indicatorColor: const Color(0xFF3A1078),
-                  labelColor: const Color(0xFF3A1078),
-                  unselectedLabelColor: Color(0xFF3A1078),
-                  tabs: [
-                    Tab(
-                      icon: Icon( _tabController.index == 0 ? Icons.home_rounded : Icons.home_outlined ),
-                      text: 'Início',
-                    ),
-                    Tab(
-                      icon: Icon( _tabController.index == 1 ? Icons.emoji_events : Icons.emoji_events_outlined),
-                      text: "Conquistas",
-                    ),
-                    Tab(
-                      icon: Icon(_tabController.index == 2 ? Icons.book : Icons.book_outlined),
-                      text: "Diário",
-                    ),
-                  ]),
-            )
-          ],
-        ),
+      drawer: myDrawer(),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _currentPageIndex,
+        onDestinationSelected: (int index) {
+          setState(() {
+            _currentPageIndex = index;
+          });
+        },
+        destinations:  <Widget>[
+          NavigationDestination(
+            icon: Icon( _currentPageIndex == 0 ? Icons.home_rounded : Icons.home_outlined ),
+            label: 'Início',
+          ),
+          NavigationDestination(
+            icon: Icon(_currentPageIndex == 1 ? Icons.emoji_events : Icons.emoji_events_outlined),
+            label: 'Conquistas',
+          ),
+          NavigationDestination(
+            icon: Icon(_currentPageIndex == 2 ? Icons.book : Icons.book_outlined),
+            label: 'Diário',
+          ),
+        ],
       ),
+      body: <Widget>[
+        Addiction(),
+        Achievements(),
+        Diary(),
+      ][_currentPageIndex],
+    )
     );
   }
 }

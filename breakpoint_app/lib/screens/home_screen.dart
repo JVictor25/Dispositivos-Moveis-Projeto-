@@ -3,6 +3,9 @@ import 'package:breakpoint_app/screens/addiction_screen.dart';
 import 'package:breakpoint_app/screens/diary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/components/drawer.dart';
+import 'package:breakpoint_app/model/Vice.dart';
+import 'package:breakpoint_app/widgets/todoForm.dart';
+import 'package:breakpoint_app/widgets/todoList.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -13,6 +16,32 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen>{
   int _currentPageIndex = 0;
+
+  List<Vice> _listaVices = [
+  ];
+
+  void _addVice(
+      String typeofvice,
+      DateTime dateSelect,) {
+    Vice _newVice = Vice(
+      typeofvice: typeofvice,
+      datesobriety: dateSelect,
+    );
+    setState(() {
+      _listaVices.add(_newVice);
+    });
+  }
+
+  void _openTaskForm() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: TodoForm(onSubmit: _addVice, isModifying: false,),
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +124,24 @@ class _HomescreenState extends State<Homescreen>{
           ),
         ],
       ),
-      body: <Widget>[
-        Addiction(),
-        Achievements(),
-        Diary(),
-      ][_currentPageIndex],
-      )
+       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openTaskForm,
+        child: Icon(Icons.add),
+      ),
+      body: _currentPageIndex == 0
+        ? Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Expanded(child: TodoList(listaVices: _listaVices)),
+              ],
+            ),
+          )
+        : _currentPageIndex == 1
+          ? Achievements()
+          : Diary(),
+    ),
     );
   }
 }

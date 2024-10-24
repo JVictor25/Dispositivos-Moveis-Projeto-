@@ -15,12 +15,19 @@ class _LoginscreenState extends State<Loginscreen> {
     User(username: "Admin", password: "teste123", birth: DateTime(23, 12, 2001))
   ];
 
+  void _showRegisterUser() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => Registeruser(onSubmit: _addUser)),
+    );
+  }
+
   void _addUser(String username, String password, DateTime nascimento) {
     User _newUser = User(
       username: username,
       password: password,
       birth: nascimento,
     );
+    print("adicionado");
     _userList.add(_newUser);
   }
 
@@ -160,11 +167,7 @@ class _LoginscreenState extends State<Loginscreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Registeruser(onSubmit: _addUser)),
-                            );
+                            _showRegisterUser();
                           },
                           child: Text(
                             "Increver-se",
@@ -172,9 +175,8 @@ class _LoginscreenState extends State<Loginscreen> {
                                 .textTheme
                                 .labelMedium!
                                 .copyWith(
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white
-                                ),
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white),
                           )),
                     ],
                   ),

@@ -55,63 +55,65 @@ class _TodoFormState extends State<TodoForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          // Campo para o título da tarefa
-          Text(
-            "Cadastre seu vício: ",
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          SizedBox(height: 16),
-          TextField(
-            controller: _vice,
-            decoration: InputDecoration(
-              hintText: "Qual o seu vicio?",
-              hintStyle: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Campo para o título da tarefa
+            Text(
+              "Cadastre seu vício: ",
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          ),
-          SizedBox(height: 16),
-
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Row(children: <Widget>[
-                Expanded(
-                  child: Text(
-                    _dataSelecionada == null
-                        ? 'Nenhuma data selecionada'
-                        : 'Data selecionada: ${DateFormat('dd/MM/y').format(_dataSelecionada)}',
-                  ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _vice,
+              decoration: InputDecoration(
+                hintText: "Qual o seu vicio?",
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
                 ),
-                TextButton(
-                    //style: TextButton.styleFrom(primary: Colors.blue),
-                    onPressed: _showDatePicker,
-                    child: Text(
-                      'Selecionar Data',
-                    ))
-              ]),
-            ),
-          ),
-          Column(children: [
-            ElevatedButton(
-              onPressed: () => _submitForm(),
-              child: Text(widget.isModifying ? "Modificar" : "Adicionar"),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Voltar',
-                style: TextStyle(color: Colors.blue, fontSize: 11),
               ),
             ),
-          ]),
-          SizedBox(
-            height: 16,
-          ),
-        ],
+            SizedBox(height: 16),
+        
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Row(children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      _dataSelecionada == null
+                          ? 'Nenhuma data selecionada'
+                          : 'Data selecionada: ${DateFormat('dd/MM/y').format(_dataSelecionada)}',
+                    ),
+                  ),
+                  TextButton(
+                      //style: TextButton.styleFrom(primary: Colors.blue),
+                      onPressed: _showDatePicker,
+                      child: Text(
+                        'Selecionar Data',
+                      ))
+                ]),
+              ),
+            ),
+            Column(children: [
+              ElevatedButton(
+                onPressed: () => _submitForm(),
+                child: Text(widget.isModifying ? "Modificar" : "Adicionar"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'Voltar',
+                  style: TextStyle(color: Colors.blue, fontSize: 11),
+                ),
+              ),
+            ]),
+            SizedBox(
+              height: 16,
+            ),
+          ],
+        ),
       ),
     );
   }

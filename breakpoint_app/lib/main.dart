@@ -29,7 +29,12 @@ void main() {
           fontFamily: 'Garamond',
           fontSize: 18,
           color: Colors.white,
-        ) 
+        ), 
+        displaySmall: TextStyle(
+          fontFamily: 'sans-serif',
+          fontSize: 14,
+          color: Colors.black,
+        ), 
       ),
     ),
     initialRoute: AppRoutes.WELLCOME,

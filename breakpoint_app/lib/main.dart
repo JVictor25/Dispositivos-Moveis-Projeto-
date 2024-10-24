@@ -6,7 +6,7 @@ void main() {
     theme: ThemeData(
       textTheme: const TextTheme(
         titleLarge: TextStyle(
-          fontFamily: 'Garamond',
+          fontFamily: 'Poppins',
           fontSize: 30,
           color: Colors.white,
         ),

@@ -18,6 +18,7 @@ class Wellcome extends StatelessWidget {
         ], 
         begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(

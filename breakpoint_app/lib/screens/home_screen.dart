@@ -65,41 +65,6 @@ class _HomescreenState extends State<Homescreen>{
               ),
             ),
           ),
-          bottom: PreferredSize(
-              preferredSize: Size.fromHeight(60),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Lembre seus motivos ",
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Expanded(
-                          flex: 1,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )),
-              )),
         ),
       drawer: myDrawer(),
       bottomNavigationBar: NavigationBar(

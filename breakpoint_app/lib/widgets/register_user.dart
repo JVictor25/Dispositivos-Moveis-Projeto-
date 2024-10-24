@@ -19,7 +19,6 @@ class _RegisteruserState extends State<Registeruser> {
   void _submitUser() {
     String _birthUser = _birthController.text;
     String _username = _usernameController.text;
-    ;
     String _password = _passwordController.text;
 
     if (_birthUser.isEmpty || _username.isEmpty || _password.isEmpty) {
@@ -85,6 +84,7 @@ class _RegisteruserState extends State<Registeruser> {
             ),
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20),
@@ -103,7 +103,7 @@ class _RegisteruserState extends State<Registeruser> {
                         filled: true,
                         label: Text("Usuário",
                             style: Theme.of(context).textTheme.labelLarge),
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: Icon(Icons.person, color: Colors.black,),
                       ),
                     ),
                   ),
@@ -119,32 +119,40 @@ class _RegisteruserState extends State<Registeruser> {
                           "Senha",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: Icon(Icons.lock, color: Colors.black,),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  SizedBox(
-                    child: TextField(
-                        controller: _birthController,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          label: Text(
-                            "Data de nascimento",
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          hintText: "dd/MM/yyyy",
-                          hintStyle: TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              color: Colors.grey),
-                          prefixIcon: Icon(Icons.calendar_today),
+                  Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 3,
+                          child: TextField(
+                              controller: _birthController,
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                label: Text(
+                                  "Data de nascimento",
+                                  style: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                hintText: "dd/MM/yyyy",
+                                hintStyle: Theme.of(context).textTheme.labelMedium,
+                              ),
+                              keyboardType: TextInputType.datetime,
+                              readOnly: true,
+                              onTap: _showDatePicker),
                         ),
-                        keyboardType: TextInputType.datetime,
-                        readOnly: true,
-                        onTap: _showDatePicker),
-                  ),
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(onPressed: (){
+                            _showDatePicker();
+                          }, 
+                          icon: Icon(Icons.calendar_today, color: Colors.black,),),
+                        ),
+                      ],
+                    ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {

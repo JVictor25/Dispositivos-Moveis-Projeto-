@@ -11,8 +11,11 @@ class Loginscreen extends StatefulWidget {
 
 class _LoginscreenState extends State<Loginscreen> {
   bool _isChecked = false;
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   final List<User> _userList = [
-    User(username: "Admin", password: "teste123", birth: DateTime(23, 12, 2001))
+    User(username: "Admin", password: "123", birth: DateTime(23, 12, 2001))
   ];
 
   void _showRegisterUser() {
@@ -27,12 +30,33 @@ class _LoginscreenState extends State<Loginscreen> {
       password: password,
       birth: nascimento,
     );
-    print("adicionado");
     _userList.add(_newUser);
   }
 
   void _removeUser(User user) {
     _userList.remove(user);
+  }
+
+  bool _validateUser() {
+    for(User u in _userList){
+      if(_usernameController.text == u.username && _passwordController.text == u.password){
+        return true;
+      }
+    }
+    showDialog(
+          context: context,
+          builder: (BuilderContext) {
+            return AlertDialog(
+              title: Text("Erro!!", style: Theme.of(context).textTheme.labelLarge, textAlign: TextAlign.center,),
+              content: Text("Nome de Usuário ou Senha incorretos!", style: Theme.of(context).textTheme.displaySmall,textAlign: TextAlign.center),
+              actions: [
+                TextButton(onPressed: () {
+                  Navigator.of(context).pop();
+                }, child: Text("Tentar novamente", style: Theme.of(context).textTheme.displaySmall,))
+              ],
+            );
+          });
+    return false;
   }
 
   @override
@@ -68,6 +92,7 @@ class _LoginscreenState extends State<Loginscreen> {
                   const SizedBox(height: 20),
                   SizedBox(
                     child: TextField(
+                      controller: _usernameController,
                       decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -81,6 +106,7 @@ class _LoginscreenState extends State<Loginscreen> {
                   const SizedBox(height: 20),
                   SizedBox(
                     child: TextField(
+                      controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
@@ -148,7 +174,9 @@ class _LoginscreenState extends State<Loginscreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'home');
+                        if(_validateUser()){
+                          Navigator.pushNamed(context, 'home');
+                        }
                     },
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 40),
@@ -180,18 +208,6 @@ class _LoginscreenState extends State<Loginscreen> {
                           )),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  FloatingActionButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      backgroundColor: const Color(0xFFADD8E6),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Color(0xFF37474F),
-                      ))
                 ],
               ),
             ),

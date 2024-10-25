@@ -13,12 +13,11 @@ class Homescreen extends StatefulWidget {
   State<Homescreen> createState() => _HomescreenState();
 }
 
-class _HomescreenState extends State<Homescreen>{
+class _HomescreenState extends State<Homescreen> {
   int _currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -29,9 +28,8 @@ class _HomescreenState extends State<Homescreen>{
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color(0xFF3A1078),
-                  Color(0xFF6A5ACD),
-                  Color(0xFF836FFF)
+                  Color(0xff133E87),
+                  Color(0xFF608BC1),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -39,35 +37,45 @@ class _HomescreenState extends State<Homescreen>{
             ),
           ),
         ),
-      drawer: myDrawer(),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            _currentPageIndex = index;
-          });
-        },
-        destinations:  <Widget>[
-          NavigationDestination(
-            icon: Icon( _currentPageIndex == 0 ? Icons.home_rounded : Icons.home_outlined ),
-            label: 'Início',
-          ),
-          NavigationDestination(
-            icon: Icon(_currentPageIndex == 1 ? Icons.emoji_events : Icons.emoji_events_outlined),
-            label: 'Conquistas',
-          ),
-          NavigationDestination(
-            icon: Icon(_currentPageIndex == 2 ? Icons.book : Icons.book_outlined),
-            label: 'Diário',
-          ),
-        ],
+        drawer: myDrawer(),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _currentPageIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              _currentPageIndex = index;
+            });
+          },
+          destinations: <Widget>[
+            NavigationDestination(
+              icon: Icon(
+                  _currentPageIndex == 0
+                      ? Icons.home_rounded
+                      : Icons.home_outlined,
+                  color: Color(0xFF134B70)),
+              label: 'Início',
+            ),
+            NavigationDestination(
+              icon: Icon(
+                  _currentPageIndex == 1
+                      ? Icons.emoji_events
+                      : Icons.emoji_events_outlined,
+                  color: Color(0xFF134B70)),
+              label: 'Conquistas',
+            ),
+            NavigationDestination(
+              icon: Icon(
+                  _currentPageIndex == 2 ? Icons.book : Icons.book_outlined,
+                  color: Color(0xFF134B70)),
+              label: 'Diário',
+            ),
+          ],
+        ),
+        body: _currentPageIndex == 0
+            ? Addiction()
+            : _currentPageIndex == 1
+                ? Achievements()
+                : Diary(),
       ),
-      body: _currentPageIndex == 0
-        ? Addiction()
-        : _currentPageIndex == 1
-          ? Achievements()
-          : Diary(),
-    ),
     );
   }
 }

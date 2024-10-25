@@ -4,8 +4,7 @@ import 'package:breakpoint_app/screens/diary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/components/drawer.dart';
 import 'package:breakpoint_app/model/Vice.dart';
-import 'package:breakpoint_app/widgets/todoForm.dart';
-import 'package:breakpoint_app/widgets/todoList.dart';
+import 'package:breakpoint_app/widgets/vice_form.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -37,7 +36,7 @@ class _HomescreenState extends State<Homescreen>{
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        content: TodoForm(onSubmit: _addVice, isModifying: false,),
+        content: ViceForm(onSubmit: _addVice, isModifying: false,),
       );
     },
   );
@@ -89,20 +88,8 @@ class _HomescreenState extends State<Homescreen>{
           ),
         ],
       ),
-       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: _openTaskForm,
-        child: Icon(Icons.add),
-      ),
       body: _currentPageIndex == 0
-        ? Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Expanded(child: TodoList(listaVices: _listaVices)),
-              ],
-            ),
-          )
+        ? Addiction()
         : _currentPageIndex == 1
           ? Achievements()
           : Diary(),

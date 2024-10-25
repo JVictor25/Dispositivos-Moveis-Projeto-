@@ -5,6 +5,11 @@ void main() {
   runApp(MaterialApp(
     theme: ThemeData(
       textTheme: const TextTheme(
+        headlineMedium: TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 24,
+          color: Color(0xFF3A1078),
+        ),
         titleLarge: TextStyle(
           fontFamily: 'Poppins',
           fontSize: 30,
@@ -37,7 +42,7 @@ void main() {
         ), 
       ),
     ),
-    initialRoute: AppRoutes.WELLCOME,
+    initialRoute: AppRoutes.HOMESCREEN,
     routes: AppRoutes.getRoutes(),
   ));
 }

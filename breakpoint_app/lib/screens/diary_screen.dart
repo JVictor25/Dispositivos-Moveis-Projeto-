@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/model/diaryEntry.dart';
+import 'package:breakpoint_app/widgets/diary_form.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -28,6 +29,19 @@ class Diary extends StatelessWidget {
                   'Passei na frente do bar, foi difícil mas consegui resistir.'),
         ];
 
+  void _openDiaryForm(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Padding(
+              padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
+              child: DiaryForm(),
+            );
+        }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +67,10 @@ class Diary extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete, color: Color.fromRGBO(30, 30, 30, 1),),
+                          icon: Icon(
+                            Icons.delete,
+                            color: Color.fromRGBO(30, 30, 30, 1),
+                          ),
                           onPressed: () {},
                         ),
                       ],
@@ -67,7 +84,7 @@ class Diary extends StatelessWidget {
             const SizedBox(height: 8),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => _openDiaryForm(context),
         child: Icon(Icons.add),
         backgroundColor: Color.fromRGBO(19, 75, 112, 1),
         foregroundColor: Colors.white,

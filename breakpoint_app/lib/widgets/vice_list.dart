@@ -105,6 +105,24 @@ class _ViceListState extends State<ViceList> {
             final progress =
                 calculateProgress(widget._vicesList[index].datesobriety);
             final milestone = nextMilestone(widget._vicesList[index].datesobriety);
+            Map<String, IconData> iconMap = {
+              'geral': Icons.add_box,
+              'alcool': Icons.local_bar,
+              'fumo': Icons.smoke_free_outlined,
+              'jogos_de_azar': Icons.casino,
+              'comida': Icons.restaurant,
+              'drogas': Icons.local_pharmacy,
+              'tecnologia': Icons.computer,
+              'trabalho': Icons.work,
+              'relacionamentos': Icons.person,
+            };
+
+                        Widget iconWidget = Icon(
+                          iconMap[widget._vicesList[index].viceType.toLowerCase()] ?? Icons.add_box,
+                          size: 24,
+                          color: Color.fromRGBO(19, 75, 112, 1),
+                        );
+
             return GestureDetector(
               onTap: (){},
               child: Card.filled(
@@ -119,8 +137,7 @@ class _ViceListState extends State<ViceList> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.local_drink,
-                                  color: Color.fromRGBO(19, 75, 112, 1)),
+                               iconWidget,
                               SizedBox(width: 8),
                               Text(
                                 widget._vicesList[index].typeofvice,

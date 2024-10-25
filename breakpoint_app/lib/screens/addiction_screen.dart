@@ -12,13 +12,14 @@ class Addiction extends StatefulWidget {
 
 class _AddictionState extends State<Addiction> {
   List<Vice> _vicesList = [
-    Vice(typeofvice: "Álcool", datesobriety: DateTime(2022))
+    Vice(typeofvice: "Álcool", datesobriety: DateTime(2022),viceType: "Alcool")
   ];
 
-  void _addVice(String typeofvice, DateTime dateSelect) {
+  void _addVice(String typeofvice, DateTime dateSelect, String viceType) {
     Vice _newVice = Vice(
       typeofvice: typeofvice,
       datesobriety: dateSelect,
+      viceType: viceType,
     );
 
     setState(() {
@@ -26,19 +27,20 @@ class _AddictionState extends State<Addiction> {
     });
   }
 
-  void _openViceForm() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: ViceForm(
-            onSubmit: _addVice,
-            isModifying: false,
-          ),
-        );
-      },
-    );
-  }
+
+    void _openViceForm() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: ViceForm(
+              onSubmit: _addVice,
+              isModifying: false,
+            ),
+          );
+        },
+      );
+    }
 
   @override
   Widget build(BuildContext context) {

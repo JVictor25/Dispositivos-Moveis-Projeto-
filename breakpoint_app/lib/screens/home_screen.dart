@@ -16,32 +16,6 @@ class Homescreen extends StatefulWidget {
 class _HomescreenState extends State<Homescreen>{
   int _currentPageIndex = 0;
 
-  List<Vice> _listaVices = [
-  ];
-
-  void _addVice(
-      String typeofvice,
-      DateTime dateSelect,) {
-    Vice _newVice = Vice(
-      typeofvice: typeofvice,
-      datesobriety: dateSelect,
-    );
-    setState(() {
-      _listaVices.add(_newVice);
-    });
-  }
-
-  void _openTaskForm() {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: ViceForm(onSubmit: _addVice, isModifying: false,),
-      );
-    },
-  );
-}
-
   @override
   Widget build(BuildContext context) {
 

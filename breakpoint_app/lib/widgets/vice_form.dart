@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ViceForm extends StatefulWidget {
-  final void Function(String, DateTime) onSubmit;
+  final void Function(String, DateTime, String) onSubmit;
   final bool isModifying;
 
-  const ViceForm ({
+  const ViceForm({
     super.key,
     required this.onSubmit,
     required this.isModifying,
@@ -18,37 +18,35 @@ class ViceForm extends StatefulWidget {
 class _ViceFormState extends State<ViceForm> {
   final TextEditingController _vice = TextEditingController();
   DateTime _dataSelecionada = DateTime.now();
+  String _selectedViceType = 'general'; // 'general' para vícios em geral, 'specific' para específicos
+
   
-
+   List<String> _viceTypes = ['Geral', 'Alcool', 'Fumo', 'Jogos de Azar', 'Comida', 'Drogas', 'Tecnologia', 'Trabalho', 'Relacionamentos'];
   void _submitForm() {
-    String _typeofvice = _vice.text;
-
-
-    if (_typeofvice.isEmpty ) {
+    if (_vice.text.isEmpty || _dataSelecionada == null) {
       return; // Verifica se os campos obrigatórios estão preenchidos
     }
 
     widget.onSubmit(
-      _typeofvice,
+      _vice.text,
       _dataSelecionada,
+      _selectedViceType,
     );
     Navigator.of(context).pop();
   }
 
   void _showDatePicker() {
     showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020, 1, 1),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      //chamada no futuro
-      if (pickedDate == null) {
-        return;
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020, 1, 1),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate != null) {
+        setState(() {
+          _dataSelecionada = pickedDate;
+        });
       }
-      setState(() {
-        _dataSelecionada = pickedDate;
-      });
     });
   }
 
@@ -58,59 +56,74 @@ class _ViceFormState extends State<ViceForm> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            // Campo para o título da tarefa
             Text(
-              "Cadastre seu vício: ",
+              "Cadastre seu vício:",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             SizedBox(height: 16),
             TextField(
               controller: _vice,
               decoration: InputDecoration(
-                hintText: "Qual o seu vicio?",
-                hintStyle: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
+                hintText: "Qual o seu vício?",
+                hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ),
+            SizedBox(height: 16),
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _dataSelecionada == null
+                            ? 'Nenhuma data selecionada'
+                            : 'Data selecionada: ${DateFormat('dd/MM/yyyy').format(_dataSelecionada)}',
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: _showDatePicker,
+                      child: Text('Selecionar Data'),
+                    ),
+                  ],
                 ),
               ),
             ),
             SizedBox(height: 16),
-        
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Row(children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      _dataSelecionada == null
-                          ? 'Nenhuma data selecionada'
-                          : 'Data selecionada: ${DateFormat('dd/MM/y').format(_dataSelecionada)}',
-                    ),
-                  ),
-                  TextButton(
-                      //style: TextButton.styleFrom(primary: Colors.blue),
-                      onPressed: _showDatePicker,
-                      child: Text(
-                        'Selecionar Data',
-                      ))
-                ]),
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                labelText: 'Tipo de Vício',
+                border: OutlineInputBorder(),
               ),
+              items: _viceTypes.map((String type) {
+                return DropdownMenuItem<String>(
+                  value: type.toLowerCase(), // Armazena como lowercase para comparação fácil
+                  child: Text(type),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedViceType = newValue ?? 'general';
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor, selecione um tipo de vício';
+                }
+                return null;
+              },
             ),
-            Column(children: [
-              ElevatedButton(
-                onPressed: () => _submitForm(),
-                child: Text(widget.isModifying ? "Modificar" : "Adicionar"),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => _submitForm(),
+              child: Text(widget.isModifying ? "Modificar" : "Adicionar"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Voltar',
+                style: TextStyle(color: Colors.blue, fontSize: 11),
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(
-                  'Voltar',
-                  style: TextStyle(color: Colors.blue, fontSize: 11),
-                ),
-              ),
-            ]),
-            SizedBox(
-              height: 16,
             ),
           ],
         ),

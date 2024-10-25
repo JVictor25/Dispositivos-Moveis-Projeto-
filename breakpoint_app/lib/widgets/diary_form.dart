@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 
 class DiaryForm extends StatelessWidget {
-  const DiaryForm({super.key});
+  final void Function(String) onSubmit;
+ 
+  DiaryForm({super.key, required this.onSubmit});
+
+  final TextEditingController _bodyController = TextEditingController();
+
+  void _submitForm(BuildContext context) {
+    final body = _bodyController.text;
+
+    if (body.isEmpty) {
+      return;
+    }
+
+    onSubmit(body);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +25,7 @@ class DiaryForm extends StatelessWidget {
           Text("Como você se sente hoje?", style: Theme.of(context).textTheme.labelLarge),
           SizedBox(height: 20),
           TextField(
+            controller: _bodyController,
             maxLines: 7,
             decoration: InputDecoration(
               filled: true,
@@ -34,7 +49,7 @@ class DiaryForm extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(19, 75, 112, 1),
               ),
             ),
-            onPressed: () {},
+            onPressed: () => _submitForm(context),
           )
         ],
       ),

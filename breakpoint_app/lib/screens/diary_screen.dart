@@ -4,30 +4,46 @@ import 'package:breakpoint_app/widgets/diary_form.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-class Diary extends StatelessWidget {
+class Diary extends StatefulWidget {
   final List<DiaryEntry> entries;
 
   Diary({super.key})
       : entries = [
-          DiaryEntry(
-              body:
-                  'Passei na frente do bar, foi difícil mas consegui resistir.'),
-          DiaryEntry(
-              body:
-                  'Hoje perdi de novo. Estava com um pressentimento de que iria ganhar dessa vez, mas não foi assim. Me sinto meio culpado, mas, ao mesmo tempo, tudo o que penso é em como posso melhorar minha próxima aposta. Acendi um cigarro logo que saí da casa de apostas. O gosto nem me agrada mais, mas ajuda a acalmar o nervosismo. Devo uns R\$500 agora.'),
-          DiaryEntry(
-              body:
-                  'Passei na frente do bar, foi difícil mas consegui resistir.'),
-          DiaryEntry(
-              body:
-                  'Passei na frente do bar, foi difícil mas consegui resistir.'),
-          DiaryEntry(
-              body:
-                  'Passei na frente do bar, foi difícil mas consegui resistir.'),
-          DiaryEntry(
-              body:
-                  'Passei na frente do bar, foi difícil mas consegui resistir.'),
+          // DiaryEntry(
+          //     body:
+          //         'Passei na frente do bar, foi difícil mas consegui resistir.'),
+          // DiaryEntry(
+          //     body:
+          //         'Hoje perdi de novo. Estava com um pressentimento de que iria ganhar dessa vez, mas não foi assim. Me sinto meio culpado, mas, ao mesmo tempo, tudo o que penso é em como posso melhorar minha próxima aposta. Acendi um cigarro logo que saí da casa de apostas. O gosto nem me agrada mais, mas ajuda a acalmar o nervosismo. Devo uns R\$500 agora.'),
+          // DiaryEntry(
+          //     body:
+          //         'Passei na frente do bar, foi difícil mas consegui resistir.'),
+          // DiaryEntry(
+          //     body:
+          //         'Passei na frente do bar, foi difícil mas consegui resistir.'),
+          // DiaryEntry(
+          //     body:
+          //         'Passei na frente do bar, foi difícil mas consegui resistir.'),
+          // DiaryEntry(
+          //     body:
+          //         'Passei na frente do bar, foi difícil mas consegui resistir.'),
         ];
+
+  @override
+  State<Diary> createState() => _DiaryState();
+}
+
+class _DiaryState extends State<Diary> {
+
+  void _addEntry(String body) {
+    widget.entries.add(DiaryEntry(body: body));
+
+    setState(() {
+      widget.entries;
+    });
+
+    Navigator.of(context).pop();
+  }
 
   void _openDiaryForm(BuildContext context) {
     showModalBottomSheet(
@@ -36,18 +52,69 @@ class Diary extends StatelessWidget {
         builder: (BuildContext context) {
           return Padding(
               padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
-              child: DiaryForm(),
+              child: DiaryForm(onSubmit: _addEntry),
             );
         }
+    );
+  }
+
+  void _removeEntry(DiaryEntry entry) {
+    widget.entries.remove(entry);
+
+    setState(() {
+      widget.entries;
+    });
+  }
+
+  void _openConfirmationModel(DiaryEntry entry) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Excluir entrada?'),
+          content: Text('Tem certeza que deseja excluir esse registro?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                _removeEntry(entry);
+                Navigator.of(context).pop();
+              },
+              child: Text('Excluir'),
+            ),
+          ],
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.separated(
+      body: widget.entries.isEmpty
+      ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/empty-diary.png', width: 150),
+            Text(
+              'Nenhum registro no diário',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      )
+      : ListView.separated(
         padding: const EdgeInsets.all(8),
-        itemCount: entries.length,
+        itemCount: widget.entries.length,
         itemBuilder: (BuildContext context, int index) {
           return Card.filled(
               color: Color.fromRGBO(128, 196, 233, 0.46),
@@ -60,7 +127,7 @@ class Diary extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          DateFormat('dd/MM/yyyy').format(entries[index].date),
+                          DateFormat('dd/MM/yyyy').format(widget.entries[index].date),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -71,11 +138,11 @@ class Diary extends StatelessWidget {
                             Icons.delete,
                             color: Color.fromRGBO(30, 30, 30, 1),
                           ),
-                          onPressed: () {},
+                          onPressed: () => _openConfirmationModel(widget.entries[index]),
                         ),
                       ],
                     ),
-                    Text(entries[index].body),
+                    Text(widget.entries[index].body),
                   ],
                 ),
               ));

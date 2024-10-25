@@ -12,9 +12,8 @@ class Wellcome extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
-          Color(0xFF3A1078),
-          Color(0xFF6A5ACD),
-          Color(0xFF836FFF)
+          Color(0xff133E87),
+          Color(0xFF608BC1),
         ], 
         begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: Column(
@@ -58,9 +57,9 @@ class Wellcome extends StatelessWidget {
               },
               child: const Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.white,
+                color: Color(0xffF3F3E0),
               ),
-            )
+            ),
           ],
         ),
       ),

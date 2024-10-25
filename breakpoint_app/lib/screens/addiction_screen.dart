@@ -33,6 +33,7 @@ class _AddictionState extends State<Addiction> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: Color(0xffCBDCEB),
             content: ViceForm(
               onSubmit: _addVice,
               isModifying: false,
@@ -55,7 +56,7 @@ class _AddictionState extends State<Addiction> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromRGBO(19, 75, 112, 1),
+        backgroundColor: Color(0xFF134B70),
         foregroundColor: Colors.white,
         onPressed: _openViceForm,
         child: Icon(Icons.add),

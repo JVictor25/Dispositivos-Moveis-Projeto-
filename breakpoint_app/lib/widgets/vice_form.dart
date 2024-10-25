@@ -18,10 +18,20 @@ class ViceForm extends StatefulWidget {
 class _ViceFormState extends State<ViceForm> {
   final TextEditingController _vice = TextEditingController();
   DateTime _dataSelecionada = DateTime.now();
-  String _selectedViceType = 'general'; // 'general' para vícios em geral, 'specific' para específicos
+  String _selectedViceType =
+      'general'; // 'general' para vícios em geral, 'specific' para específicos
 
-  
-   List<String> _viceTypes = ['Geral', 'Alcool', 'Fumo', 'Jogos de Azar', 'Comida', 'Drogas', 'Tecnologia', 'Trabalho', 'Relacionamentos'];
+  List<String> _viceTypes = [
+    'Geral',
+    'Alcool',
+    'Fumo',
+    'Jogos de Azar',
+    'Comida',
+    'Drogas',
+    'Tecnologia',
+    'Trabalho',
+    'Relacionamentos'
+  ];
   void _submitForm() {
     if (_vice.text.isEmpty || _dataSelecionada == null) {
       return; // Verifica se os campos obrigatórios estão preenchidos
@@ -58,14 +68,22 @@ class _ViceFormState extends State<ViceForm> {
           children: [
             Text(
               "Cadastre seu vício:",
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             SizedBox(height: 16),
             TextField(
               controller: _vice,
               decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Color(0xFF134B70),
+                    width: 2.0,
+                  ),
+                ),
+                filled: true,
                 hintText: "Qual o seu vício?",
-                hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
+                hintStyle: Theme.of(context).textTheme.bodySmall,
               ),
             ),
             SizedBox(height: 16),
@@ -92,12 +110,20 @@ class _ViceFormState extends State<ViceForm> {
             SizedBox(height: 16),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
+                filled: true,
                 labelText: 'Tipo de Vício',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Color(0xFF134B70),
+                    width: 2.0,
+                  ),
+                ),
               ),
               items: _viceTypes.map((String type) {
                 return DropdownMenuItem<String>(
-                  value: type.toLowerCase(), // Armazena como lowercase para comparação fácil
+                  value: type
+                      .toLowerCase(), // Armazena como lowercase para comparação fácil
                   child: Text(type),
                 );
               }).toList(),
@@ -117,12 +143,16 @@ class _ViceFormState extends State<ViceForm> {
             ElevatedButton(
               onPressed: () => _submitForm(),
               child: Text(widget.isModifying ? "Modificar" : "Adicionar"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF134B70),
+                foregroundColor: Colors.white,
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Voltar',
-                style: TextStyle(color: Colors.blue, fontSize: 11),
+              child: const Icon(
+                Icons.arrow_back,
+                color: Color(0xFF134B70),
               ),
             ),
           ],

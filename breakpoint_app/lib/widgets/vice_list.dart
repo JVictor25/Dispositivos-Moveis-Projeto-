@@ -104,12 +104,13 @@ class _ViceListState extends State<ViceList> {
           itemBuilder: (BuildContext context, int index) {
             final progress =
                 calculateProgress(widget._vicesList[index].datesobriety);
-            final milestone = nextMilestone(widget._vicesList[index].datesobriety);
+            final milestone =
+                nextMilestone(widget._vicesList[index].datesobriety);
             Map<String, IconData> iconMap = {
               'geral': Icons.add_box,
               'alcool': Icons.local_bar,
               'fumo': Icons.smoke_free_outlined,
-              'jogos_de_azar': Icons.casino,
+              'jogos de azar': Icons.casino,
               'comida': Icons.restaurant,
               'drogas': Icons.local_pharmacy,
               'tecnologia': Icons.computer,
@@ -117,79 +118,91 @@ class _ViceListState extends State<ViceList> {
               'relacionamentos': Icons.person,
             };
 
-                        Widget iconWidget = Icon(
-                          iconMap[widget._vicesList[index].viceType.toLowerCase()] ?? Icons.add_box,
-                          size: 24,
-                          color: Color.fromRGBO(19, 75, 112, 1),
-                        );
+            Widget iconWidget = Icon(
+              iconMap[widget._vicesList[index].viceType.toLowerCase()] ??
+                  Icons.add_box,
+              size: 24,
+              color: Color.fromRGBO(19, 75, 112, 1),
+            );
 
             return GestureDetector(
-              onTap: (){},
+              onTap: () {},
               child: Card.filled(
-                color: Color.fromRGBO(128, 196, 233, 0.46),
+                color: Color(0x7580C4E9),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                               iconWidget,
-                              SizedBox(width: 8),
-                              Text(
-                                widget._vicesList[index].typeofvice,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                          iconWidget,
+                          SizedBox(width: 8),
                           Text(
-                            _calculateTimeDifference(
-                                widget._vicesList[index].datesobriety),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(height: 10), // Espacamento acima da barra
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                width: 100, // Ajuste conforme necessário
-                                height: 100, // Ajuste conforme necessário
-                                child: CircularProgressIndicator(
-                                  value: progress / 100,
-                                  backgroundColor: Colors.grey[200],
-                                  color: const Color.fromRGBO(19, 75, 112, 1),
-                                  strokeWidth: 7,
-                                ),
-                              ),
-                              Positioned.fill(
-                                child: Center(
-                                  child: Text(
-                                    '${progress.round()}%',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(19, 75, 112, 1),
-                                        fontSize: 24),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10), // Espacamento abaixo da barra
-                          Text(
-                            milestone,
-                            style: Theme.of(context).textTheme.bodySmall,
+                            widget._vicesList[index].typeofvice,
+                            style: Theme.of(context).textTheme.titleSmall,
                             textAlign: TextAlign.center,
                           ),
                         ],
-                      )
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Tempo de abstinência:",
+                                  style:
+                                      Theme.of(context).textTheme.bodySmall),
+                              Text(
+                                _calculateTimeDifference(
+                                    widget._vicesList[index].datesobriety),
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                  height: 10), // Espacamento acima da barra
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 70, // Ajuste conforme necessário
+                                    height: 70, // Ajuste conforme necessário
+                                    child: CircularProgressIndicator(
+                                      value: progress / 100,
+                                      backgroundColor: Colors.grey[200],
+                                      color:
+                                          const Color.fromRGBO(19, 75, 112, 1),
+                                      strokeWidth: 7,
+                                    ),
+                                  ),
+                                  Positioned.fill(
+                                    child: Center(
+                                      child: Text(
+                                        '${progress.round()}%',
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(19, 75, 112, 1),
+                                            fontSize: 24),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                  height: 10), // Espacamento abaixo da barra
+                              Text(
+                                milestone,
+                                style: Theme.of(context).textTheme.titleSmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),

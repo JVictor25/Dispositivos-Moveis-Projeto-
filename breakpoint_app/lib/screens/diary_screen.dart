@@ -153,7 +153,7 @@ class _DiaryState extends State<Diary> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openDiaryForm(context),
         child: Icon(Icons.add),
-        backgroundColor: Color.fromRGBO(19, 75, 112, 1),
+        backgroundColor: Color(0xFF134B70),
         foregroundColor: Colors.white,
       ),
     );

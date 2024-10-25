@@ -19,9 +19,8 @@ class myDrawer extends StatelessWidget {
             ),
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-              Color(0xFF3A1078),
-              Color(0xFF6A5ACD),
-              Color(0xFF836FFF)
+              Color(0xff133E87),
+              Color(0xFF608BC1),
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           ),
           ListTile(
@@ -30,9 +29,7 @@ class myDrawer extends StatelessWidget {
               size: 30,
             ),
             title: Text('Perfil',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'sans-serif')),
+                style: TextStyle(fontSize: 24, fontFamily: 'sans-serif')),
             //onTap: ,
           ),
           ListTile(
@@ -41,9 +38,7 @@ class myDrawer extends StatelessWidget {
               size: 30,
             ),
             title: Text('Amigos',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'sans-serif')),
+                style: TextStyle(fontSize: 24, fontFamily: 'sans-serif')),
             //onTap: ,
           ),
           ListTile(
@@ -52,9 +47,7 @@ class myDrawer extends StatelessWidget {
               size: 30,
             ),
             title: Text('Missões',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'sans-serif')),
+                style: TextStyle(fontSize: 24, fontFamily: 'sans-serif')),
             //onTap: ,
           ),
           ListTile(
@@ -63,9 +56,7 @@ class myDrawer extends StatelessWidget {
               size: 30,
             ),
             title: Text('Configurações',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'sans-serif')),
+                style: TextStyle(fontSize: 24, fontFamily: 'sans-serif')),
             //onTap: ,
           ),
         ],

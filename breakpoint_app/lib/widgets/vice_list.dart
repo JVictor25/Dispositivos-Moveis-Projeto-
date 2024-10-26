@@ -91,9 +91,20 @@ class _ViceListState extends State<ViceList> {
   @override
   Widget build(BuildContext context) {
     if (widget._vicesList.isEmpty) {
-      return Text(
-        "Nenhum vicío cadastrado",
-        style: Theme.of(context).textTheme.headlineMedium,
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/brokenchain.png', width: 150),
+            Text(
+              'Busque o autocrontrole',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       );
     }
     return Expanded(

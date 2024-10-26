@@ -65,6 +65,8 @@ class _ViceFormState extends State<ViceForm> {
     return Container(
       child: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Cadastre seu vício:",
@@ -87,31 +89,11 @@ class _ViceFormState extends State<ViceForm> {
               ),
             ),
             SizedBox(height: 16),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _dataSelecionada == null
-                            ? 'Nenhuma data selecionada'
-                            : 'Data selecionada: ${DateFormat('dd/MM/yyyy').format(_dataSelecionada)}',
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: _showDatePicker,
-                      child: Text('Selecionar Data'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 filled: true,
                 labelText: 'Tipo de Vício',
+                labelStyle: Theme.of(context).textTheme.bodySmall,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide(
@@ -138,6 +120,43 @@ class _ViceFormState extends State<ViceForm> {
                 }
                 return null;
               },
+            ),
+            SizedBox(height: 16),
+            Text(
+              "Última vez que praticou:",
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        _showDatePicker();
+                      },
+                      icon: Icon(
+                        Icons.calendar_month,
+                        color: Color(0xFF134B70),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: _showDatePicker,
+                      child: Text(
+                        _dataSelecionada == null
+                            ? 'Nenhuma data Selectionada'
+                            : DateFormat('dd/MM/yyyy')
+                                .format(_dataSelecionada),
+                        style:
+                            Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  decoration: TextDecoration.underline,
+                                ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             SizedBox(height: 16),
             ElevatedButton(

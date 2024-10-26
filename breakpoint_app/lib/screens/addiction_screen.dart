@@ -12,7 +12,6 @@ class Addiction extends StatefulWidget {
 
 class _AddictionState extends State<Addiction> {
   List<Vice> _vicesList = [
-    Vice(typeofvice: "Álcool", datesobriety: DateTime(2022),viceType: "Alcool")
   ];
 
   void _addVice(String typeofvice, DateTime dateSelect, String viceType) {
@@ -48,11 +47,7 @@ class _AddictionState extends State<Addiction> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            ViceList(vicesList: _vicesList),
-          ],
-        ),
+        child: ViceList(vicesList: _vicesList),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(

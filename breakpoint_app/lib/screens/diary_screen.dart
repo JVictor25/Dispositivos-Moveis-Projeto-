@@ -71,21 +71,22 @@ class _DiaryState extends State<Diary> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Excluir entrada?'),
-          content: Text('Tem certeza que deseja excluir esse registro?'),
+          backgroundColor: Color(0xffCBDCEB),
+          title: Text('Excluir entrada?',style: Theme.of(context).textTheme.headlineMedium,),
+          content: Text('Tem certeza que deseja excluir esse registro?', style: Theme.of(context).textTheme.bodySmall,),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar'),
+              child: Text('Cancelar', style: Theme.of(context).textTheme.titleSmall),
             ),
             TextButton(
               onPressed: () {
                 _removeEntry(entry);
                 Navigator.of(context).pop();
               },
-              child: Text('Excluir'),
+              child: Text('Excluir', style: Theme.of(context).textTheme.titleSmall),
             ),
           ],
         );

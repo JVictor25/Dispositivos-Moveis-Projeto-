@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Registeruser extends StatefulWidget {
-  final void Function(String, String, DateTime) onSubmit;
+  final void Function(String, String, String, DateTime) onSubmit;
 
   const Registeruser({super.key, required this.onSubmit});
 
@@ -15,30 +15,50 @@ class _RegisteruserState extends State<Registeruser> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   late DateTime _birth = DateTime.now();
+  String? _selectedAvatar;
+
+  final List<String> avatars = [
+    'assets/images/avatar1.png',
+    'assets/images/avatar2.png',
+    'assets/images/avatar3.png',
+    'assets/images/avatar4.png',
+    'assets/images/avatar5.png',
+    'assets/images/avatar6.png',
+  ];
 
   void _submitUser() {
     String _birthUser = _birthController.text;
     String _username = _usernameController.text;
     String _password = _passwordController.text;
 
-    if (_birthUser.isEmpty || _username.isEmpty || _password.isEmpty) {
+    if (_birthUser.isEmpty || _username.isEmpty || _password.isEmpty || _selectedAvatar!.isEmpty) {
       showDialog(
           context: context,
           builder: (BuilderContext) {
             return AlertDialog(
-              title: Text("Erro!!", style: Theme.of(context).textTheme.labelLarge, textAlign: TextAlign.center,),
-              content: Text("Nome de Usuário ou Senha não foram informados!", style: Theme.of(context).textTheme.displaySmall,textAlign: TextAlign.center),
+              backgroundColor: Color(0xffCBDCEB),
+              title: Text(
+                "Erro!!",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              content: Text("Por favor preencha todos os campos e tente efetuar o cadastro novamente!",
+                  style: Theme.of(context).textTheme.bodySmall,),
               actions: [
-                TextButton(onPressed: () {
-                  Navigator.of(context).pop();
-                }, child: Text("Tentar novamente", style: Theme.of(context).textTheme.displaySmall,))
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Tentar novamente",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ))
               ],
             );
           });
       return;
     }
 
-    widget.onSubmit(_username, _password, _birth);
+    widget.onSubmit(_selectedAvatar!, _username, _password, _birth);
     Navigator.of(context).pop();
   }
 
@@ -59,6 +79,38 @@ class _RegisteruserState extends State<Registeruser> {
     });
   }
 
+  void _showAvatarSelectionModal() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color:  Color(0xffCBDCEB),
+          padding: EdgeInsets.all(16),
+          child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, // Número de colunas
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+            ),
+            itemCount: avatars.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedAvatar = avatars[index];
+                  });
+                  Navigator.pop(context); // Fecha o modal
+                },
+                child: Image.asset(avatars[index]),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,22 +118,21 @@ class _RegisteruserState extends State<Registeruser> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: SafeArea(
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF3A1078),
-                  Color(0xFF6A5ACD),
-                  Color(0xFF836FFF)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xff133E87),
+                Color(0xFF608BC1),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
+          ),
+          child: SingleChildScrollView(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -95,6 +146,40 @@ class _RegisteruserState extends State<Registeruser> {
                   const SizedBox(
                     height: 20,
                   ),
+                  Column(
+                    children: [
+                      Text(
+                        _selectedAvatar == null
+                            ? "Selecione um avatar: "
+                            : "Avatar selecionado:",
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      _selectedAvatar == null
+                          ? IconButton(
+                              onPressed: () {
+                                _showAvatarSelectionModal();
+                              },
+                              icon: Icon(
+                                Icons.add_box_outlined,
+                                size: 80,
+                                color: Colors.white,
+                              ),
+                            )
+                          : TextButton(
+                              onPressed: () {
+                                _showAvatarSelectionModal();
+                              },
+                              child:
+                                  Image.asset(_selectedAvatar!, width: 80)),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text("Informe seus dados: ", style: Theme.of(context).textTheme.labelMedium,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   SizedBox(
                     child: TextField(
                       controller: _usernameController,
@@ -103,7 +188,10 @@ class _RegisteruserState extends State<Registeruser> {
                         filled: true,
                         label: Text("Usuário",
                             style: Theme.of(context).textTheme.labelLarge),
-                        prefixIcon: Icon(Icons.person, color: Colors.black,),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color(0xff133E87),
+                        ),
                       ),
                     ),
                   ),
@@ -119,40 +207,34 @@ class _RegisteruserState extends State<Registeruser> {
                           "Senha",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
-                        prefixIcon: Icon(Icons.lock, color: Colors.black,),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: Color(0xff133E87),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 3,
-                          child: TextField(
-                              controller: _birthController,
-                              decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                label: Text(
-                                  "Data de nascimento",
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
-                                hintText: "dd/MM/yyyy",
-                                hintStyle: Theme.of(context).textTheme.labelMedium,
-                              ),
-                              keyboardType: TextInputType.datetime,
-                              readOnly: true,
-                              onTap: _showDatePicker),
+                  SizedBox(
+                    child: TextField(
+                        controller: _birthController,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          label: Text(
+                            "Data de nascimento",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.calendar_today,
+                            color: Color(0xff133E87),
+                          ),
+                          hintStyle: Theme.of(context).textTheme.labelMedium,
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: IconButton(onPressed: (){
-                            _showDatePicker();
-                          }, 
-                          icon: Icon(Icons.calendar_today, color: Colors.black,),),
-                        ),
-                      ],
-                    ),
+                        keyboardType: TextInputType.datetime,
+                        readOnly: true,
+                        onTap: _showDatePicker),
+                  ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
@@ -160,14 +242,11 @@ class _RegisteruserState extends State<Registeruser> {
                     },
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 40),
-                        backgroundColor: Color(0xFF3A1078)),
+                        backgroundColor: Color(0xff133E87)),
                     child: Text(
                       "Cadastrar",
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -186,9 +265,8 @@ class _RegisteruserState extends State<Registeruser> {
                                 .textTheme
                                 .labelMedium!
                                 .copyWith(
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white
-                                ),
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white),
                           )),
                     ],
                   ),

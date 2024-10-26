@@ -17,7 +17,7 @@ class ViceForm extends StatefulWidget {
 
 class _ViceFormState extends State<ViceForm> {
   final TextEditingController _vice = TextEditingController();
-  DateTime _dataSelecionada = DateTime.now();
+  DateTime? _dataSelecionada;
   String _selectedViceType =
       'general'; // 'general' para vícios em geral, 'specific' para específicos
 
@@ -39,7 +39,7 @@ class _ViceFormState extends State<ViceForm> {
 
     widget.onSubmit(
       _vice.text,
-      _dataSelecionada,
+      _dataSelecionada!,
       _selectedViceType,
     );
     Navigator.of(context).pop();
@@ -145,9 +145,9 @@ class _ViceFormState extends State<ViceForm> {
                       onPressed: _showDatePicker,
                       child: Text(
                         _dataSelecionada == null
-                            ? 'Nenhuma data Selectionada'
+                            ? 'Selecionar data'
                             : DateFormat('dd/MM/yyyy')
-                                .format(_dataSelecionada),
+                                .format(_dataSelecionada!),
                         style:
                             Theme.of(context).textTheme.bodySmall!.copyWith(
                                   decoration: TextDecoration.underline,

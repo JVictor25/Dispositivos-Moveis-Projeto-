@@ -8,7 +8,7 @@ void main() {
         headlineMedium: TextStyle(
           fontFamily: 'PoppinsBlack',
           fontSize: 24,
-          color: Color(0xFF3A1078),
+          color: Color(0xff133E87),
         ),
         titleLarge: TextStyle(
           fontFamily: 'PoppinsBlack',
@@ -18,11 +18,11 @@ void main() {
         labelLarge: TextStyle(
           fontFamily: 'sans-serif',
           fontSize: 18,
-          color: Colors.black
+          color: Color(0xff133E87)
         ),
         labelMedium: TextStyle(
-          fontFamily: 'sans-serif',
-          fontSize: 14,
+          fontFamily: 'PoppinsLight',
+          fontSize: 13,
           color: Colors.white,
         ),
         labelSmall: TextStyle(
@@ -31,8 +31,8 @@ void main() {
           color: Colors.grey
         ),
         displayMedium: TextStyle(
-          fontFamily: 'Garamond',
-          fontSize: 18,
+          fontFamily: 'PoppinsLight',
+          fontSize: 16,
           color: Color(0xffF3F3E0),
         ), 
         displaySmall: TextStyle(
@@ -52,7 +52,7 @@ void main() {
         ),
       ),
     ),
-    initialRoute: AppRoutes.HOMESCREEN,
-    routes: AppRoutes.getRoutes(),
+    initialRoute: AppRoutes.WELLCOME,
+    onGenerateRoute: AppRoutes.onGenerateRoute,
   ));
 }

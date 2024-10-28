@@ -45,6 +45,7 @@ class _DiaryFormState extends State<DiaryForm> {
                 borderRadius: BorderRadius.circular(20),
               ),
               hintText: 'Hoje eu...',
+              hintStyle: Theme.of(context).textTheme.bodyMedium
             ),
           ),
           SizedBox(height: 20),

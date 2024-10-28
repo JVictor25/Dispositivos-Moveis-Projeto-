@@ -21,7 +21,7 @@ class _myDrawerState extends State<myDrawer> {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Sair', style: Theme.of(context).textTheme.headlineMedium, ),
+        title: Text('Sair', style: Theme.of(context).textTheme.titleMedium, ),
         backgroundColor: Color(0xffCBDCEB),
         content: Text('Você realmente deseja fechar o aplicativo?',  style: Theme.of(context).textTheme.bodySmall),
         actions: [

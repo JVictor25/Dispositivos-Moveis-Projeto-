@@ -14,8 +14,7 @@ class Wellcome extends StatelessWidget {
             gradient: LinearGradient(colors: [
           Color(0xff133E87),
           Color(0xFF608BC1),
-        ], 
-        begin: Alignment.topLeft, end: Alignment.bottomRight)),
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,28 +22,39 @@ class Wellcome extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Text("BreakPoint",
-                textDirection: TextDirection.ltr,
-                style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              "BreakPoint",
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontFamily: 'PoppinsLight',
+                fontSize: 30,
+                color: Color(0xffF3F3E0),
+              ),
+            ),
             const SizedBox(
               height: 40,
             ),
-            const Icon(
-              Icons.handshake_outlined,
-              size: 150,
-              color: Colors.white,
-            ),
+            Image.asset('assets/images/handshake.png', width: 150),
             const SizedBox(
               height: 20,
             ),
-            Text("Bem-Vindo(a)!",
-                textDirection: TextDirection.ltr,
-                style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              "Bem-Vindo(a)!",
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontFamily: 'PoppinsLight',
+                fontSize: 30,
+                color: Color(0xffF3F3E0),
+              ),
+            ),
             Text(
               "Estamos aqui para ajudar você a ter mais controle e equilíbrio em sua jornada.\n \nVamos começar?",
               textDirection: TextDirection.ltr,
-              style:
-                  Theme.of(context).textTheme.displayMedium,
+              style: TextStyle(
+                fontFamily: 'PoppinsLight',
+                fontSize: 16,
+                color: Color(0xffF3F3E0),
+              ),
               softWrap: true,
               textAlign: TextAlign.center,
             ),

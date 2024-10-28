@@ -31,7 +31,10 @@ class _RegisteruserState extends State<Registeruser> {
     String _username = _usernameController.text;
     String _password = _passwordController.text;
 
-    if (_birthUser.isEmpty || _username.isEmpty || _password.isEmpty || _selectedAvatar!.isEmpty) {
+    if (_birthUser.isEmpty ||
+        _username.isEmpty ||
+        _password.isEmpty ||
+        _selectedAvatar!.isEmpty) {
       showDialog(
           context: context,
           builder: (BuilderContext) {
@@ -39,10 +42,12 @@ class _RegisteruserState extends State<Registeruser> {
               backgroundColor: Color(0xffCBDCEB),
               title: Text(
                 "Erro!!",
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-              content: Text("Por favor preencha todos os campos e tente efetuar o cadastro novamente!",
-                  style: Theme.of(context).textTheme.bodySmall,),
+              content: Text(
+                "Por favor preencha todos os campos e tente efetuar o cadastro novamente!",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
               actions: [
                 TextButton(
                     onPressed: () {
@@ -84,7 +89,7 @@ class _RegisteruserState extends State<Registeruser> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          color:  Color(0xffCBDCEB),
+          color: Color(0xffCBDCEB),
           padding: EdgeInsets.all(16),
           child: GridView.builder(
             shrinkWrap: true,
@@ -141,7 +146,11 @@ class _RegisteruserState extends State<Registeruser> {
                   const SizedBox(height: 20),
                   Text(
                     "Cadastrar",
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: TextStyle(
+                      fontFamily: 'PoppinsBlack',
+                      fontSize: 20,
+                      color: Color(0xffF3F3E0),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -169,14 +178,16 @@ class _RegisteruserState extends State<Registeruser> {
                               onPressed: () {
                                 _showAvatarSelectionModal();
                               },
-                              child:
-                                  Image.asset(_selectedAvatar!, width: 80)),
+                              child: Image.asset(_selectedAvatar!, width: 80)),
                     ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  Text("Informe seus dados: ", style: Theme.of(context).textTheme.labelMedium,),
+                  Text(
+                    "Informe seus dados: ",
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),

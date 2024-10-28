@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:breakpoint_app/model/diaryEntry.dart';
+import 'package:breakpoint_app/model/DiaryEntry.dart';
 import 'package:breakpoint_app/widgets/diary_form.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -72,7 +72,7 @@ class _DiaryState extends State<Diary> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Color(0xffCBDCEB),
-          title: Text('Excluir entrada?',style: Theme.of(context).textTheme.headlineMedium,),
+          title: Text('Excluir entrada?',style: Theme.of(context).textTheme.titleMedium,),
           content: Text('Tem certeza que deseja excluir esse registro?', style: Theme.of(context).textTheme.bodySmall,),
           actions: [
             TextButton(

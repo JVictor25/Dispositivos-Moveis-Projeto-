@@ -56,10 +56,12 @@ class _LoginscreenState extends State<Loginscreen> {
                 backgroundColor: Color(0xffCBDCEB),
                 title: Text(
                   "Erro!!",
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                content: Text("Nome de Usuário ou Senha incorretos!",
-                    style: Theme.of(context).textTheme.bodySmall,),
+                content: Text(
+                  "Nome de Usuário ou Senha incorretos!",
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
                 actions: [
                   TextButton(
                       onPressed: () {
@@ -103,7 +105,14 @@ class _LoginscreenState extends State<Loginscreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
-                Text("Entrar", style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  "Entrar",
+                  style: TextStyle(
+                    fontFamily: 'PoppinsBlack',
+                    fontSize: 30,
+                    color: Color(0xffF3F3E0),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 SizedBox(
                   child: TextField(
@@ -182,8 +191,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                       .textTheme
                                       .labelMedium!
                                       .copyWith(
-                                          decoration:
-                                              TextDecoration.underline,
+                                          decoration: TextDecoration.underline,
                                           decorationColor: Colors.white))),
                         ],
                       ),

@@ -102,6 +102,11 @@ class _ViceFormState extends State<ViceForm> {
                   ),
                 ),
               ),
+              style: TextStyle(
+                fontFamily: 'roboto',
+                fontSize: 14,
+                color: Colors.black87,
+              ),
               items: _viceTypes.map((String type) {
                 return DropdownMenuItem<String>(
                   value: type
@@ -148,10 +153,9 @@ class _ViceFormState extends State<ViceForm> {
                             ? 'Selecionar data'
                             : DateFormat('dd/MM/yyyy')
                                 .format(_dataSelecionada!),
-                        style:
-                            Theme.of(context).textTheme.bodySmall!.copyWith(
-                                  decoration: TextDecoration.underline,
-                                ),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              decoration: TextDecoration.underline,
+                            ),
                       ),
                     ),
                   ],

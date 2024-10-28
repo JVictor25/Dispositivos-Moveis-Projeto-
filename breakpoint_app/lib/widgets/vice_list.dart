@@ -139,19 +139,19 @@ class _ViceListState extends State<ViceList> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("Confirmar Exclusão"),
-                  content: Text("Tem certeza que deseja excluir este vício?"),
+                  title: Text("Excluir hábito?"),
+                  content: Text("Tem certeza que deseja excluir este hábito?"),
                   actions: <Widget>[
-                    TextButton(
-                      child: Text("Cancelar"),
-                      onPressed: () {
-                        Navigator.of(context).pop(false); // Cancela a exclusão
-                      },
-                    ),
                     TextButton(
                       child: Text("Confirmar"),
                       onPressed: () {
-                        Navigator.of(context).pop(true); // Confirma a exclusão
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                    TextButton(
+                      child: Text("Cancelar"),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
                       },
                     ),
                   ],
@@ -169,7 +169,7 @@ class _ViceListState extends State<ViceList> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Icon(Icons.delete, color: Colors.white),
           ),
-          child: Card(
+          child: Card.filled(
             color: Color(0x7580C4E9),
             child: Padding(
               padding: const EdgeInsets.all(16),

@@ -82,6 +82,7 @@ class _AddictionState extends State<Addiction> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF134B70),
+        foregroundColor: Colors.white,
         onPressed: _openViceForm,
         child: Icon(Icons.add),
       ),

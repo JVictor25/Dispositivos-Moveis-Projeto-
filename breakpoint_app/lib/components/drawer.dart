@@ -21,20 +21,19 @@ class _myDrawerState extends State<myDrawer> {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Sair', style: Theme.of(context).textTheme.titleMedium, ),
-        backgroundColor: Color(0xffCBDCEB),
-        content: Text('Você realmente deseja fechar o aplicativo?',  style: Theme.of(context).textTheme.bodySmall),
+        title: Text('Sair'),
+        content: Text('Deseja fechar o aplicativo?'),
         actions: [
           TextButton(
-            child: Text('Não', style: Theme.of(context).textTheme.titleSmall),
+            child: Text('Sim'),
             onPressed: () {
-              Navigator.of(context).pop(); // Fecha o diálogo
+              SystemNavigator.pop();
             },
           ),
           TextButton(
-            child: Text('Sim', style: Theme.of(context).textTheme.titleSmall,),
+            child: Text('Não'),
             onPressed: () {
-              SystemNavigator.pop(); // Fecha a aplicação
+              Navigator.of(context).pop();
             },
           ),
         ],

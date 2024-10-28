@@ -34,15 +34,23 @@ class _AddictionState extends State<Addiction> {
         viceType: 'Tecnologia'),
   ];
 
-  void _addVice(String typeofvice, DateTime dateSelect, String viceType) {
-    Vice _newVice = Vice(
+   void _addVice(String typeofvice, DateTime dateSelect, String viceType) {
+    Vice newVice = Vice(
       typeofvice: typeofvice,
       datesobriety: dateSelect,
       viceType: viceType,
     );
 
     setState(() {
-      _vicesList.add(_newVice);
+      _vicesList.add(newVice);
+    });
+  }
+
+  void _removeVice(Vice vice) {
+    setState(() {
+      _vicesList.removeWhere((v) =>
+          v.typeofvice == vice.typeofvice &&
+          v.datesobriety == vice.datesobriety);
     });
   }
 
@@ -61,31 +69,19 @@ class _AddictionState extends State<Addiction> {
     );
   }
 
-  /*void _removeVice(Vice vice) {
-    for(Vice v in _vicesList){
-      if(v.typeofvice == vice.typeofvice && v.datesobriety == v.datesobriety){
-        setState(() {
-          _vicesList.remove(v);
-        });
-      }
-    }
-  }
-*/
-
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ViceList(
           vicesList: _vicesList,
-          //onDelete: _removeVice,
+          onDelete: _removeVice,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF134B70),
-        foregroundColor: Colors.white,
         onPressed: _openViceForm,
         child: Icon(Icons.add),
       ),

@@ -45,14 +45,16 @@ class _DiaryState extends State<Diary> {
     Navigator.of(context).pop();
   }
 
-  void _openDiaryForm(BuildContext context) {
+  void _openDiaryForm() {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        builder: (BuildContext context) {
+        builder: (context) {
           return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
-              child: DiaryForm(onSubmit: _addEntry),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+              child: SingleChildScrollView(child: DiaryForm(onSubmit: _addEntry)),
             );
         }
     );
@@ -71,22 +73,21 @@ class _DiaryState extends State<Diary> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color(0xffCBDCEB),
-          title: Text('Excluir entrada?',style: Theme.of(context).textTheme.titleMedium,),
-          content: Text('Tem certeza que deseja excluir esse registro?', style: Theme.of(context).textTheme.bodySmall,),
+          title: Text('Excluir entrada?'),
+          content: Text('Tem certeza que deseja excluir esse registro?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar', style: Theme.of(context).textTheme.titleSmall),
+              child: Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
                 _removeEntry(entry);
                 Navigator.of(context).pop();
               },
-              child: Text('Excluir', style: Theme.of(context).textTheme.titleSmall),
+              child: Text('Excluir'),
             ),
           ],
         );
@@ -152,7 +153,7 @@ class _DiaryState extends State<Diary> {
             const SizedBox(height: 8),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openDiaryForm(context),
+        onPressed: _openDiaryForm,
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF134B70),
         foregroundColor: Colors.white,

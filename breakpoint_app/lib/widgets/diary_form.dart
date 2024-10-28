@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-class DiaryForm extends StatelessWidget {
+class DiaryForm extends StatefulWidget {
   final void Function(String) onSubmit;
  
   DiaryForm({super.key, required this.onSubmit});
 
+  @override
+  State<DiaryForm> createState() => _DiaryFormState();
+}
+
+class _DiaryFormState extends State<DiaryForm> {
   final TextEditingController _bodyController = TextEditingController();
 
   void _submitForm(BuildContext context) {
@@ -14,12 +19,13 @@ class DiaryForm extends StatelessWidget {
       return;
     }
 
-    onSubmit(body);
+    widget.onSubmit(body);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(16),
       child: Column(
         children: [
           Text("Como você se sente hoje?", style: Theme.of(context).textTheme.labelLarge),

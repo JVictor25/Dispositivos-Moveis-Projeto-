@@ -2,12 +2,12 @@ import '../model/Vice.dart';
 import 'package:flutter/material.dart';
 
 class ViceList extends StatefulWidget {
-  //final Function(Vice) onDelete;
+   final Function(Vice) onDelete;
 
   const ViceList({
     super.key,
     required List<Vice> vicesList,
-    //required this.onDelete,
+    required this.onDelete,
   }) : _vicesList = vicesList;
 
   final List<Vice> _vicesList;
@@ -92,7 +92,7 @@ class _ViceListState extends State<ViceList> {
     return "";
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     if (widget._vicesList.isEmpty) {
       return Center(
@@ -111,119 +111,138 @@ class _ViceListState extends State<ViceList> {
         ),
       );
     }
-    return Container(
-      child: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: widget._vicesList.length,
-        itemBuilder: (BuildContext context, int index) {
-          final progress =
-              calculateProgress(widget._vicesList[index].datesobriety);
-          final milestone =
-              nextMilestone(widget._vicesList[index].datesobriety);
-          Map<String, IconData> iconMap = {
-            'geral': Icons.add_box,
-            'alcool': Icons.local_bar,
-            'fumo': Icons.smoke_free_outlined,
-            'jogos de azar': Icons.casino,
-            'comida': Icons.restaurant,
-            'drogas': Icons.local_pharmacy,
-            'tecnologia': Icons.computer,
-            'trabalho': Icons.work,
-            'relacionamentos': Icons.person,
-          };
-    
-          Widget iconWidget = Icon(
-            iconMap[widget._vicesList[index].viceType.toLowerCase()] ??
-                Icons.add_box,
-            size: 24,
-            color: Color.fromRGBO(19, 75, 112, 1),
-          );
-    
-          return GestureDetector(
-            //onHorizontalDragEnd: widget.onDelete(widget._vicesList[index]),
-            child: Card.filled(
-              color: Color(0x7580C4E9),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        iconWidget,
-                        SizedBox(width: 8),
-                        Text(
-                          widget._vicesList[index].typeofvice,
-                          style: Theme.of(context).textTheme.titleSmall,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+    return ListView.builder(
+      padding: const EdgeInsets.all(8),
+      itemCount: widget._vicesList.length,
+      itemBuilder: (BuildContext context, int index) {
+        final vice = widget._vicesList[index];
+        final progress = calculateProgress(vice.datesobriety);
+        final milestone = nextMilestone(vice.datesobriety);
+
+        Map<String, IconData> iconMap = {
+          'geral': Icons.add_box,
+          'alcool': Icons.local_bar,
+          'fumo': Icons.smoke_free_outlined,
+          'jogos de azar': Icons.casino,
+          'comida': Icons.restaurant,
+          'drogas': Icons.local_pharmacy,
+          'tecnologia': Icons.computer,
+          'trabalho': Icons.work,
+          'relacionamentos': Icons.person,
+        };
+
+        return Dismissible(
+          key: Key(vice.typeofvice),
+          direction: DismissDirection.endToStart,
+          confirmDismiss: (direction) async {
+            final result = await showDialog<bool>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Excluir hábito?"),
+                  content: Text("Tem certeza que deseja excluir este hábito?"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text("Confirmar"),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Tempo de abstinência:",
-                                style:
-                                    Theme.of(context).textTheme.bodySmall),
-                            Text(
-                              _calculateTimeDifference(
-                                  widget._vicesList[index].datesobriety),
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                                height: 10), // Espacamento acima da barra
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 70, // Ajuste conforme necessário
-                                  height: 70, // Ajuste conforme necessário
-                                  child: CircularProgressIndicator(
-                                    value: progress / 100,
-                                    backgroundColor: Colors.grey[200],
-                                    color:
-                                        const Color.fromRGBO(19, 75, 112, 1),
-                                    strokeWidth: 7,
-                                  ),
-                                ),
-                                Positioned.fill(
-                                  child: Center(
-                                    child: Text(
-                                      '${progress.round()}%',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(19, 75, 112, 1),
-                                          fontSize: 24),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                                height: 10), // Espacamento abaixo da barra
-                            Text(
-                              milestone,
-                              style: Theme.of(context).textTheme.titleSmall,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        )
-                      ],
+                    TextButton(
+                      child: Text("Cancelar"),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
                     ),
                   ],
-                ),
+                );
+              },
+            );
+            return result ?? false; // Exclui apenas se confirmado
+          },
+          onDismissed: (direction) {
+            widget.onDelete(vice); // Chama o callback para deletar
+          },
+          background: Container(
+            alignment: Alignment.centerRight,
+            color: Colors.red,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Icon(Icons.delete, color: Colors.white),
+          ),
+          child: Card.filled(
+            color: Color(0x7580C4E9),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        iconMap[vice.viceType.toLowerCase()] ?? Icons.add_box,
+                        size: 24,
+                        color: Color.fromRGBO(19, 75, 112, 1),
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        vice.typeofvice,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Tempo de abstinência:",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          Text(
+                            _calculateTimeDifference(vice.datesobriety),
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 70,
+                                height: 70,
+                                child: CircularProgressIndicator(
+                                  value: progress / 100,
+                                  backgroundColor: Colors.grey[200],
+                                  color: Color.fromRGBO(19, 75, 112, 1),
+                                  strokeWidth: 7,
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  '${progress.round()}%',
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(19, 75, 112, 1),
+                                      fontSize: 24),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            milestone,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

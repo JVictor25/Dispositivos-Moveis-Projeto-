@@ -47,6 +47,11 @@ class _DiaryFormState extends State<DiaryForm> {
               hintText: 'Hoje eu...',
               hintStyle: Theme.of(context).textTheme.bodyMedium
             ),
+            style: TextStyle(
+                fontFamily: 'roboto',
+                fontSize: 14,
+                color: Colors.black87,
+              ),
           ),
           SizedBox(height: 20),
           IconButton.filled(

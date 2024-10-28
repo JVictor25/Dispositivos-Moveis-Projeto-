@@ -39,14 +39,11 @@ class _RegisteruserState extends State<Registeruser> {
           context: context,
           builder: (BuilderContext) {
             return AlertDialog(
-              backgroundColor: Color(0xffCBDCEB),
               title: Text(
                 "Erro!!",
-                style: Theme.of(context).textTheme.titleMedium,
               ),
               content: Text(
                 "Por favor preencha todos os campos e tente efetuar o cadastro novamente!",
-                style: Theme.of(context).textTheme.bodySmall,
               ),
               actions: [
                 TextButton(
@@ -55,7 +52,6 @@ class _RegisteruserState extends State<Registeruser> {
                     },
                     child: Text(
                       "Tentar novamente",
-                      style: Theme.of(context).textTheme.titleSmall,
                     ))
               ],
             );

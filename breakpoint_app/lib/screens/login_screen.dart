@@ -53,14 +53,11 @@ class _LoginscreenState extends State<Loginscreen> {
             context: context,
             builder: (BuilderContext) {
               return AlertDialog(
-                backgroundColor: Color(0xffCBDCEB),
                 title: Text(
                   "Erro!!",
-                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 content: Text(
                   "Nome de Usuário ou Senha incorretos!",
-                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 actions: [
                   TextButton(
@@ -69,7 +66,6 @@ class _LoginscreenState extends State<Loginscreen> {
                       },
                       child: Text(
                         "Tentar novamente",
-                        style: Theme.of(context).textTheme.titleSmall,
                       ))
                 ],
               );

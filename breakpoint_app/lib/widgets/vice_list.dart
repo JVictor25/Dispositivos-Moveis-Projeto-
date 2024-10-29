@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import '../model/Vice.dart';
 import 'package:flutter/material.dart';
 
@@ -100,7 +102,7 @@ class _ViceListState extends State<ViceList> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/images/brokenchain.png', width: 150),
-            Text(
+            const Text(
               'Busque o autocrontrole',
               style: TextStyle(
                 fontSize: 18,
@@ -182,7 +184,7 @@ class _ViceListState extends State<ViceList> {
                         size: 24,
                         color: Color.fromRGBO(19, 75, 112, 1),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
                         vice.typeofvice,
                         style: Theme.of(context).textTheme.titleSmall,
@@ -208,27 +210,27 @@ class _ViceListState extends State<ViceList> {
                           Stack(
                             alignment: Alignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 70,
                                 height: 70,
                                 child: CircularProgressIndicator(
                                   value: progress / 100,
                                   backgroundColor: Colors.grey[200],
-                                  color: Color.fromRGBO(19, 75, 112, 1),
+                                  color: const Color.fromRGBO(19, 75, 112, 1),
                                   strokeWidth: 7,
                                 ),
                               ),
                               Center(
                                 child: Text(
                                   '${progress.round()}%',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Color.fromRGBO(19, 75, 112, 1),
                                       fontSize: 24),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             milestone,
                             style: Theme.of(context).textTheme.titleSmall,

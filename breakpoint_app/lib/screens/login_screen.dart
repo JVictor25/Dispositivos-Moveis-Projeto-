@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:breakpoint_app/widgets/register_user.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/model/User.dart';
@@ -57,7 +59,7 @@ class _LoginscreenState extends State<Loginscreen> {
                   "Erro!!",
                 ),
                 content: Text(
-                  "Nome de Usuário ou Senha incorretos!",
+                  "Usuário ou Senha incorreto!",
                 ),
                 actions: [
                   TextButton(

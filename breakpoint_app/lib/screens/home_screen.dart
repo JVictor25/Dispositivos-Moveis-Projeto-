@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:breakpoint_app/model/User.dart';
+import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/screens/achievements_screen.dart';
 import 'package:breakpoint_app/screens/addiction_screen.dart';
-import 'package:breakpoint_app/screens/diary_screen.dart';
+import 'package:breakpoint_app/screens/Diary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/components/drawer.dart';
 
@@ -13,12 +16,18 @@ class Homescreen extends StatefulWidget {
 
   final User _activeUser;
 
+
   @override
   State<Homescreen> createState() => _HomescreenState();
 }
 
 class _HomescreenState extends State<Homescreen> {
   int _currentPageIndex = 0;
+  List<Vice> _addictionList = []; 
+  
+  void _receiveList(List<Vice> list){
+    _addictionList = list;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +84,9 @@ class _HomescreenState extends State<Homescreen> {
           ],
         ),
         body: _currentPageIndex == 0
-            ? Addiction()
+            ? Addiction(onSubmit: _receiveList,)
             : _currentPageIndex == 1
-                ? Achievements()
+                ? Achievements(viceList: _addictionList)
                 : Diary(),
       ),
     );

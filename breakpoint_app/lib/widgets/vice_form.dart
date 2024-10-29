@@ -32,9 +32,10 @@ class _ViceFormState extends State<ViceForm> {
     'Trabalho',
     'Relacionamentos'
   ];
+
   void _submitForm() {
     if (_vice.text.isEmpty || _dataSelecionada == null) {
-      return; // Verifica se os campos obrigatórios estão preenchidos
+      return;
     }
 
     widget.onSubmit(

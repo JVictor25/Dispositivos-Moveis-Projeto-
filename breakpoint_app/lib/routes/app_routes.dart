@@ -18,7 +18,6 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const Loginscreen());
 
       case HOMESCREEN:
-        // Verifique se o argumento é uma instância da classe `User`
         if (settings.arguments is User) {
           final user = settings.arguments as User;
           return MaterialPageRoute(

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/model/DiaryEntry.dart';
 import 'package:breakpoint_app/widgets/diary_form.dart';

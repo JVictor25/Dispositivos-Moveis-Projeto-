@@ -1,29 +1,34 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/widgets/vice_form.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/widgets/vice_list.dart';
 
 class Addiction extends StatefulWidget {
-  const Addiction({super.key});
+  final void Function(List<Vice>) onSubmit;
+
+  const Addiction({super.key, required this.onSubmit});
 
   @override
   State<Addiction> createState() => _AddictionState();
 }
 
 class _AddictionState extends State<Addiction> {
-  List<Vice> _vicesList = [
-    Vice(
-        typeofvice: 'Cigarro',
-        datesobriety: DateTime(2023, 1, 15),
-        viceType: 'Fumo'),
+  final List<Vice> _vicesList = [
+    Vice(typeofvice: 'Cigarro', datesobriety: DateTime.now(), viceType: 'Fumo'),
     Vice(
         typeofvice: 'Bebida Alcoólica',
-        datesobriety: DateTime(2023, 2, 20),
+        datesobriety: DateTime(2024, 8, 20),
         viceType: 'Alcool'),
     Vice(
         typeofvice: 'Jogos de Azar',
-        datesobriety: DateTime(2023, 3, 10),
+        datesobriety: DateTime(2024, 3, 10),
         viceType: 'Jogos de Azar'),
+    Vice(
+        typeofvice: 'Cocaína',
+        datesobriety: DateTime(2024, 3, 10),
+        viceType: 'drogas'),
     Vice(
         typeofvice: 'Comer Doces',
         datesobriety: DateTime(2023, 4, 5),
@@ -34,7 +39,13 @@ class _AddictionState extends State<Addiction> {
         viceType: 'Tecnologia'),
   ];
 
-   void _addVice(String typeofvice, DateTime dateSelect, String viceType) {
+  @override
+  void initState() {
+    _submitList();
+    super.initState();
+  }
+
+  void _addVice(String typeofvice, DateTime dateSelect, String viceType) {
     Vice newVice = Vice(
       typeofvice: typeofvice,
       datesobriety: dateSelect,
@@ -54,6 +65,10 @@ class _AddictionState extends State<Addiction> {
     });
   }
 
+  void _submitList() {
+    widget.onSubmit(_vicesList);
+  }
+
   void _openViceForm() {
     showDialog(
       context: context,
@@ -69,7 +84,7 @@ class _AddictionState extends State<Addiction> {
     );
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(

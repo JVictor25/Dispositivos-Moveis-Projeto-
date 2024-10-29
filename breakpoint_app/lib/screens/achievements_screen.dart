@@ -10,7 +10,7 @@ class Achievements extends StatelessWidget{
     super.key,
     required this.viceList,
   });
-
+  
   int _timeBetween(DateTime from, DateTime to) {
     return (to.year - from.year) * 12 + to.month - from.month;
   }

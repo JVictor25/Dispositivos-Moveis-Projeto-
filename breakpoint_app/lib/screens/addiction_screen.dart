@@ -16,27 +16,23 @@ class Addiction extends StatefulWidget {
 
 class _AddictionState extends State<Addiction> {
   final List<Vice> _vicesList = [
-    Vice(typeofvice: 'Cigarro', datesobriety: DateTime.now(), viceType: 'Fumo'),
+    /*Vice(typeofvice: 'Cigarro', datesobriety: DateTime.now(), viceType: 'Fumo'),
     Vice(
         typeofvice: 'Bebida Alcoólica',
-        datesobriety: DateTime(2024, 8, 20),
+        datesobriety: DateTime(2024, 7, 20),
         viceType: 'Alcool'),
     Vice(
         typeofvice: 'Jogos de Azar',
-        datesobriety: DateTime(2024, 3, 10),
+        datesobriety: DateTime(2024, 4, 10),
         viceType: 'Jogos de Azar'),
     Vice(
-        typeofvice: 'Cocaína',
-        datesobriety: DateTime(2024, 3, 10),
-        viceType: 'drogas'),
-    Vice(
         typeofvice: 'Comer Doces',
-        datesobriety: DateTime(2023, 4, 5),
+        datesobriety: DateTime(2023, 10, 5),
         viceType: 'Comida'),
     Vice(
         typeofvice: 'Uso Excessivo de Smartphone',
-        datesobriety: DateTime(2023, 5, 1),
-        viceType: 'Tecnologia'),
+        datesobriety: DateTime(2022, 10, 1),
+        viceType: 'Tecnologia'),*/
   ];
 
   @override

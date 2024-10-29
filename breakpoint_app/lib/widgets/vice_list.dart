@@ -103,7 +103,7 @@ class _ViceListState extends State<ViceList> {
           children: [
             Image.asset('assets/images/brokenchain.png', width: 150),
             const Text(
-              'Busque o autocrontrole',
+              'Encontre o seu autocontrole!',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -185,9 +185,11 @@ class _ViceListState extends State<ViceList> {
                         color: Color.fromRGBO(19, 75, 112, 1),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        vice.typeofvice,
-                        style: Theme.of(context).textTheme.titleSmall,
+                      Expanded(
+                        child: Text(
+                          vice.typeofvice,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
                       ),
                     ],
                   ),
@@ -201,7 +203,7 @@ class _ViceListState extends State<ViceList> {
                               style: Theme.of(context).textTheme.bodySmall),
                           Text(
                             _calculateTimeDifference(vice.datesobriety),
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -233,7 +235,7 @@ class _ViceListState extends State<ViceList> {
                           const SizedBox(height: 10),
                           Text(
                             milestone,
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ],
                       ),

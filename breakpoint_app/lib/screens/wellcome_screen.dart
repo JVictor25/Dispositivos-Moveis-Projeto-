@@ -28,7 +28,7 @@ class Wellcome extends StatelessWidget {
               "BreakPoint",
               textDirection: TextDirection.ltr,
               style: TextStyle(
-                fontFamily: 'PoppinsLight',
+                fontFamily: 'PoppinsBlack',
                 fontSize: 30,
                 color: Color(0xffF3F3E0),
               ),
@@ -47,6 +47,7 @@ class Wellcome extends StatelessWidget {
                 fontFamily: 'PoppinsLight',
                 fontSize: 30,
                 color: Color(0xffF3F3E0),
+                fontWeight: FontWeight.bold
               ),
             ),
             Text(

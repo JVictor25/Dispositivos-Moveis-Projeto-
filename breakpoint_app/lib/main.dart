@@ -13,7 +13,8 @@ void main() {
         labelLarge: TextStyle(
           fontFamily: 'PoppinsLight',
           fontSize: 18,
-          color: Color(0xff133E87)
+          color: Color(0xff133E87),
+          fontWeight: FontWeight.bold
         ),
         labelMedium: TextStyle(
           fontFamily: 'PoppinsLight',

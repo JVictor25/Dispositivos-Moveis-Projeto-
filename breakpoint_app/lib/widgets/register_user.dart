@@ -233,7 +233,7 @@ class _RegisteruserState extends State<Registeruser> {
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                           prefixIcon: Icon(
-                            Icons.calendar_today,
+                            Icons.calendar_month,
                             color: Color(0xff133E87),
                           ),
                           hintStyle: Theme.of(context).textTheme.labelMedium,

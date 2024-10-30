@@ -10,7 +10,7 @@ class Diary extends StatefulWidget {
   final List<DiaryEntry> entries;
 
   Diary({super.key})
-      : entries = [/*
+      : entries = [
           DiaryEntry(
             body: 'Passei na frente do bar, foi difícil mas consegui resistir.',
             date: DateTime(2024, 10, 1),
@@ -21,21 +21,16 @@ class Diary extends StatefulWidget {
             date: DateTime(2024, 10, 5),
           ),
           DiaryEntry(
-            body: 'Passei na frente do bar, foi difícil mas consegui resistir.',
-            date: DateTime(2024, 10, 10),
+            body: 'Hoje completei 30 dias sem consumir cafeína. Me sinto com mais energia e foco.',
+            date: DateTime(2024, 10, 1),
           ),
           DiaryEntry(
-            body: 'Passei na frente do bar, foi difícil mas consegui resistir.',
+            body: 'Passei uma semana inteira sem acessar redes sociais! Estou sentindo menos ansiedade.',
             date: DateTime(2024, 10, 15),
           ),
           DiaryEntry(
-            body: 'Passei na frente do bar, foi difícil mas consegui resistir.',
-            date: DateTime(2024, 10, 20),
+            body: 'Completo 60 dias sem jogar hoje. Consegui dedicar mais tempo aos estudos e ao trabalho.',
           ),
-          DiaryEntry(
-            body: 'Passei na frente do bar, foi difícil mas consegui resistir.',
-            date: DateTime(2024, 10, 25),
-          ),*/
         ];
 
   @override

@@ -98,142 +98,144 @@ class _LoginscreenState extends State<Loginscreen> {
             ),
           ),
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                Text(
-                  "Entrar",
-                  style: TextStyle(
-                    fontFamily: 'PoppinsBlack',
-                    fontSize: 30,
-                    color: Color(0xffF3F3E0),
+            child: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    "Entrar",
+                    style: TextStyle(
+                      fontFamily: 'PoppinsBlack',
+                      fontSize: 30,
+                      color: Color(0xffF3F3E0),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  child: TextField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    child: TextField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          label: Text(
+                            "Usuário",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Color(0xff133E87),
+                          )),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    child: TextField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
                         label: Text(
-                          "Usuário",
+                          "Senha",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.lock,
                           color: Color(0xff133E87),
-                        )),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      label: Text(
-                        "Senha",
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.lock,
-                        color: Color(0xff133E87),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Checkbox(
-                            fillColor: MaterialStateProperty.resolveWith(
-                                (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.selected)) {
-                                return Color(0xff133E87);
-                              }
-                              return Colors.white;
-                            }),
-                            value: _isChecked,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _isChecked = value!;
-                              });
-                            },
-                          ),
-                          Text(
-                            "Lembre-me",
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                //Ainda não foi implementado
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Checkbox(
+                              fillColor: MaterialStateProperty.resolveWith(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.selected)) {
+                                  return Color(0xff133E87);
+                                }
+                                return Colors.white;
+                              }),
+                              value: _isChecked,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _isChecked = value!;
+                                });
                               },
-                              child: Text("Esqueceu a senha?",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium!
-                                      .copyWith(
-                                          decoration: TextDecoration.underline,
-                                          decorationColor: Colors.white))),
-                        ],
+                            ),
+                            Text(
+                              "Lembre-me",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _validateUser();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 40),
-                      backgroundColor: Color(0xff133E87)),
-                  child: Text(
-                    "Acessar",
-                    style: Theme.of(context).textTheme.labelMedium,
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  //Ainda não foi implementado
+                                },
+                                child: Text("Esqueceu a senha?",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                            decoration: TextDecoration.underline,
+                                            decorationColor: Colors.white))),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Não tem uma conta?",
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _validateUser();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 40),
+                        backgroundColor: Color(0xff133E87)),
+                    child: Text(
+                      "Acessar",
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
-                    TextButton(
-                        onPressed: () {
-                          _showRegisterUser();
-                        },
-                        child: Text(
-                          "Increver-se",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium!
-                              .copyWith(
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white),
-                        )),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Não tem uma conta?",
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            _showRegisterUser();
+                          },
+                          child: Text(
+                            "Increver-se",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white),
+                          )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

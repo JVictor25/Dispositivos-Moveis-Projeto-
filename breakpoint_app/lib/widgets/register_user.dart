@@ -135,149 +135,151 @@ class _RegisteruserState extends State<Registeruser> {
           ),
           child: SingleChildScrollView(
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    "Cadastrar",
-                    style: TextStyle(
-                      fontFamily: 'PoppinsBlack',
-                      fontSize: 20,
-                      color: Color(0xffF3F3E0),
+              child: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      "Cadastrar",
+                      style: TextStyle(
+                        fontFamily: 'PoppinsBlack',
+                        fontSize: 20,
+                        color: Color(0xffF3F3E0),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    children: [
-                      Text(
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          _selectedAvatar == null
+                              ? "Selecione um avatar: "
+                              : "Avatar selecionado:",
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
                         _selectedAvatar == null
-                            ? "Selecione um avatar: "
-                            : "Avatar selecionado:",
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                      _selectedAvatar == null
-                          ? IconButton(
-                              onPressed: () {
-                                _showAvatarSelectionModal();
-                              },
-                              icon: Icon(
-                                Icons.add_box_outlined,
-                                size: 80,
-                                color: Colors.white,
-                              ),
-                            )
-                          : TextButton(
-                              onPressed: () {
-                                _showAvatarSelectionModal();
-                              },
-                              child: Image.asset(_selectedAvatar!, width: 80)),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Informe seus dados: ",
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    child: TextField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        label: Text("Usuário",
-                            style: Theme.of(context).textTheme.labelLarge),
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: Color(0xff133E87),
+                            ? IconButton(
+                                onPressed: () {
+                                  _showAvatarSelectionModal();
+                                },
+                                icon: Icon(
+                                  Icons.add_box_outlined,
+                                  size: 80,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : TextButton(
+                                onPressed: () {
+                                  _showAvatarSelectionModal();
+                                },
+                                child: Image.asset(_selectedAvatar!, width: 80)),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Informe seus dados: ",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      child: TextField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          label: Text("Usuário",
+                              style: Theme.of(context).textTheme.labelLarge),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Color(0xff133E87),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    child: TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        label: Text(
-                          "Senha",
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Color(0xff133E87),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    child: TextField(
-                        controller: _birthController,
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      child: TextField(
+                        controller: _passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
                           label: Text(
-                            "Data de nascimento",
+                            "Senha",
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                           prefixIcon: Icon(
-                            Icons.calendar_month,
+                            Icons.lock,
                             color: Color(0xff133E87),
                           ),
-                          hintStyle: Theme.of(context).textTheme.labelMedium,
                         ),
-                        keyboardType: TextInputType.datetime,
-                        readOnly: true,
-                        onTap: _showDatePicker),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      _submitUser();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 40),
-                        backgroundColor: Color(0xff133E87)),
-                    child: Text(
-                      "Cadastrar",
-                      style: Theme.of(context).textTheme.labelMedium,
+                      ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Já tem uma conta?",
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      child: TextField(
+                          controller: _birthController,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            label: Text(
+                              "Data de nascimento",
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.calendar_month,
+                              color: Color(0xff133E87),
+                            ),
+                            hintStyle: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          keyboardType: TextInputType.datetime,
+                          readOnly: true,
+                          onTap: _showDatePicker),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        _submitUser();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 40),
+                          backgroundColor: Color(0xff133E87)),
+                      child: Text(
+                        "Cadastrar",
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "Acesse aqui",
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.white),
-                          )),
-                    ],
-                  ),
-                ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Já tem uma conta?",
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              "Acesse aqui",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.white),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

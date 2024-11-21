@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
+import 'dart:io';
+
 import 'package:breakpoint_app/model/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,31 +19,30 @@ class myDrawer extends StatefulWidget {
 }
 
 class _myDrawerState extends State<myDrawer> {
-
-  void _exit(){
+  void _exit() {
     showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Sair'),
-        content: Text('Deseja fechar o aplicativo?'),
-        actions: [
-          TextButton(
-            child: Text('Sim'),
-            onPressed: () {
-              SystemNavigator.pop();
-            },
-          ),
-          TextButton(
-            child: Text('Não'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Sair'),
+          content: Text('Deseja fechar o aplicativo?'),
+          actions: [
+            TextButton(
+              child: Text('Sim'),
+              onPressed: () {
+                SystemNavigator.pop();
+              },
+            ),
+            TextButton(
+              child: Text('Não'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -47,14 +50,7 @@ class _myDrawerState extends State<myDrawer> {
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xff133E87),
-              Color(0xFF608BC1),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: Color(0xff133E87),
         ),
         child: SafeArea(
           child: ListView(
@@ -68,25 +64,34 @@ class _myDrawerState extends State<myDrawer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFF608BC1), // Cor do fundo do avatar
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          widget.activeUser.avatar!,
-                          fit: BoxFit.cover,
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF608BC1),
                         ),
-                      ),
-                    ),
+                        child: widget.activeUser.avatar != null || widget.activeUser.email != 'Visitante@breakpoin.com'
+                            ? ClipOval(
+                                child: Image.file(
+                                  File(widget.activeUser.avatar!),
+                                  fit: BoxFit.fill,
+                                ),
+                              )
+                            : ClipOval(
+                                child: Image.asset(
+                                  'assets/images/default.png',
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
                     SizedBox(
                       width: 16,
                     ),
                     Text(
                       widget.activeUser.username,
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

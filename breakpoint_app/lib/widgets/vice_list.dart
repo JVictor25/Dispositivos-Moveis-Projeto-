@@ -120,7 +120,7 @@ class _ViceListState extends State<ViceList> {
         final vice = widget._vicesList[index];
         final progress = calculateProgress(vice.datesobriety);
         final milestone = nextMilestone(vice.datesobriety);
-
+    
         Map<String, IconData> iconMap = {
           'geral': Icons.add_box,
           'alcool': Icons.local_bar,
@@ -132,7 +132,7 @@ class _ViceListState extends State<ViceList> {
           'trabalho': Icons.work,
           'relacionamentos': Icons.person,
         };
-
+    
         return Dismissible(
           key: Key(vice.typeofvice),
           direction: DismissDirection.endToStart,
@@ -171,8 +171,9 @@ class _ViceListState extends State<ViceList> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Icon(Icons.delete, color: Colors.white),
           ),
-          child: Card.filled(
-            color: Color(0x7580C4E9),
+          child: Card(
+            shadowColor: Colors.black87.withOpacity(0.3),
+            color: Colors.black87,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -182,13 +183,14 @@ class _ViceListState extends State<ViceList> {
                       Icon(
                         iconMap[vice.viceType.toLowerCase()] ?? Icons.add_box,
                         size: 24,
-                        color: Color.fromRGBO(19, 75, 112, 1),
+                        color: Colors.white,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           vice.typeofvice,
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: TextStyle(
+            fontFamily: 'PoppinsLight', fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -200,10 +202,12 @@ class _ViceListState extends State<ViceList> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Tempo de abstinência:",
-                              style: Theme.of(context).textTheme.bodySmall),
+                              style: TextStyle(
+            fontFamily: 'PoppinsLight', fontSize: 14, color: Colors.white,),),
                           Text(
                             _calculateTimeDifference(vice.datesobriety),
-                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+            fontFamily: 'PoppinsLight', fontSize: 14, color: Color(0xffA8DADC), fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -218,15 +222,15 @@ class _ViceListState extends State<ViceList> {
                                 child: CircularProgressIndicator(
                                   value: progress / 100,
                                   backgroundColor: Colors.grey[200],
-                                  color: const Color.fromRGBO(19, 75, 112, 1),
+                                  color: Color.fromRGBO(19, 75, 112, 1),
                                   strokeWidth: 7,
                                 ),
                               ),
                               Center(
                                 child: Text(
                                   '${progress.round()}%',
-                                  style: const TextStyle(
-                                      color: Color.fromRGBO(19, 75, 112, 1),
+                                  style: TextStyle(
+                                      color: Color(0xffA8DADC),
                                       fontSize: 24),
                                 ),
                               ),
@@ -235,7 +239,8 @@ class _ViceListState extends State<ViceList> {
                           const SizedBox(height: 10),
                           Text(
                             milestone,
-                            style: Theme.of(context).textTheme.labelLarge,
+                            style: TextStyle(
+            fontFamily: 'PoppinsLight', fontSize: 14, color: Color(0xffA8DADC)),
                           ),
                         ],
                       ),

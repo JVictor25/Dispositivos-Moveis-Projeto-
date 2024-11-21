@@ -1,9 +1,9 @@
 class User{
 
-  User({required this.avatar, required this.username, required this.password, required this.birth});
+  User({this.avatar,required this.username, required this.email, required this.password});
 
   String? avatar;
   String username;
+  String email;
   String password;
-  DateTime birth;
 }

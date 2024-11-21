@@ -1,77 +1,119 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:breakpoint_app/model/User.dart';
 
 class Wellcome extends StatelessWidget {
   const Wellcome({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    User _visitor = User(
+      username: "Visitante",
+      email: "Visitante@breakpoin.com",
+      password: "000", 
+      );
+
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [
-          Color(0xff133E87),
-          Color(0xFF608BC1),
-        ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+        color: Color(0xffF5F5F5),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, 
+                  boxShadow: [ BoxShadow(
+                    color: Color(0xff424242).withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    offset: Offset(3, 3),
+                  )
+                ]),
+                child: Image.asset('assets/images/target.png', width: 200)),
             const SizedBox(
               height: 20,
             ),
             Text(
-              "BreakPoint",
+              "Bem-Vindo(a) ao Breakpoint!",
               textDirection: TextDirection.ltr,
               style: TextStyle(
-                fontFamily: 'PoppinsBlack',
-                fontSize: 30,
-                color: Color(0xffF3F3E0),
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Image.asset('assets/images/handshake.png', width: 150),
-            const SizedBox(
-              height: 20,
+                  fontFamily: 'roboto',
+                  fontSize: 18,
+                  color: Color(0xff424242),
+                  fontWeight: FontWeight.bold),
             ),
             Text(
-              "Bem-Vindo(a)!",
+              "Estamos aqui para ajudá-lo a focar em seu objetivo e alcançar suas metas. \n Vamos começar?",
               textDirection: TextDirection.ltr,
               style: TextStyle(
                 fontFamily: 'PoppinsLight',
-                fontSize: 30,
-                color: Color(0xffF3F3E0),
-                fontWeight: FontWeight.bold
-              ),
-            ),
-            Text(
-              "Estamos aqui para ajudar você a ter mais controle e equilíbrio em sua jornada.\n \nVamos começar?",
-              textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontFamily: 'PoppinsLight',
-                fontSize: 16,
-                color: Color(0xffF3F3E0),
+                fontSize: 14,
+                color: Color(0xff424242),
               ),
               softWrap: true,
               textAlign: TextAlign.center,
             ),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'login');
-              },
-              child: const Icon(
-                Icons.arrow_forward_ios,
-                color: Color(0xffF3F3E0),
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    color: Colors.black87,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('home', arguments: _visitor);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor: Color(0xffA8DADC)),
+                          child: Text(
+                            "Visitante",
+                            style: TextStyle(
+                                fontFamily: "PoppinsLight",
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10
+                        ),
+                        Text("Já tem uma conta?", style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xffA8DADC))),
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'login');
+                          },
+                          style: OutlinedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor: Colors.transparent,
+                              side: BorderSide(color: Color(0xffA8DADC), width: 1)
+                              ),
+                          child: Text(
+                            "Entrar",
+                            style: TextStyle(
+                                fontFamily: "PoppinsLight",
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffA8DADC)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

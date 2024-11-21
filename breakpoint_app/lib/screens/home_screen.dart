@@ -39,19 +39,14 @@ class _HomescreenState extends State<Homescreen> {
           flexibleSpace: Container(
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xff133E87),
-                  Color(0xFF608BC1),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+              color: Color(0xff133E87)
             ),
           ),
         ),
         drawer: myDrawer(activeUser: widget._activeUser,),
         bottomNavigationBar: NavigationBar(
+          indicatorColor: Colors.black,
+          backgroundColor: Color(0xff133E87),
           selectedIndex: _currentPageIndex,
           onDestinationSelected: (int index) {
             setState(() {
@@ -64,24 +59,26 @@ class _HomescreenState extends State<Homescreen> {
                   _currentPageIndex == 0
                       ? Icons.home_rounded
                       : Icons.home_outlined,
-                  color: Color(0xFF134B70)),
+                  color: Color(0xffA8DADC)),
               label: 'Início',
+              
             ),
             NavigationDestination(
               icon: Icon(
                   _currentPageIndex == 1
                       ? Icons.emoji_events
                       : Icons.emoji_events_outlined,
-                  color: Color(0xFF134B70)),
+                  color: Color(0xffA8DADC)),
               label: 'Conquistas',
             ),
             NavigationDestination(
               icon: Icon(
                   _currentPageIndex == 2 ? Icons.book : Icons.book_outlined,
-                  color: Color(0xFF134B70)),
+                  color: Color(0xffA8DADC)),
               label: 'Diário',
             ),
           ],
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         ),
         body: _currentPageIndex == 0
             ? Addiction(onSubmit: _receiveList,)

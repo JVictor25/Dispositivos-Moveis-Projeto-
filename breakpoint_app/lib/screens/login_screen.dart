@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/widgets/register_user.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/model/User.dart';
@@ -30,9 +31,8 @@ class _LoginscreenState extends State<Loginscreen> {
     );
   }
 
-  void _addUser(String avatar, String username, String email, String password) {
+  void _addUser(String username, String email, String password) {
     User _newUser = User(
-      avatar: avatar,
       username: username,
       email: email,
       password: password,
@@ -300,7 +300,7 @@ class _LoginscreenState extends State<Loginscreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                     child: ElevatedButton(
                       onPressed: () {
                         _validateUser();
@@ -357,115 +357,3 @@ class _LoginscreenState extends State<Loginscreen> {
     );
   }
 }
-/*Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    child: TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        label: Text(
-                          "Senha",
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Color(0xff133E87),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Checkbox(
-                              fillColor: MaterialStateProperty.resolveWith(
-                                  (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.selected)) {
-                                  return Color(0xff133E87);
-                                }
-                                return Colors.white;
-                              }),
-                              value: _isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _isChecked = value!;
-                                });
-                              },
-                            ),
-                            Text(
-                              "Lembre-me",
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                                onPressed: () {
-                                  //Ainda não foi implementado
-                                },
-                                child: Text("Esqueceu a senha?",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor: Colors.white))),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _validateUser();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 40),
-                        backgroundColor: Color(0xff133E87)),
-                    child: Text(
-                      "Acessar",
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Não tem uma conta?",
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            _showRegisterUser();
-                          },
-                          child: Text(
-                            "Increver-se",
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.white),
-                          )),
-                    ],
-                  ),
-                ],
-              ),*/

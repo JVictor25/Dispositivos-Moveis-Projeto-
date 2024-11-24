@@ -63,29 +63,6 @@ class _myDrawerState extends State<myDrawer> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF608BC1),
-                        ),
-                        child: widget.activeUser.avatar != null || widget.activeUser.email != 'Visitante@breakpoin.com'
-                            ? ClipOval(
-                                child: Image.file(
-                                  File(widget.activeUser.avatar!),
-                                  fit: BoxFit.fill,
-                                ),
-                              )
-                            : ClipOval(
-                                child: Image.asset(
-                                  'assets/images/default.png',
-                                  fit: BoxFit.fill,
-                                ),
-                              )),
-                    SizedBox(
-                      width: 16,
-                    ),
                     Text(
                       widget.activeUser.username,
                       style: Theme.of(context)

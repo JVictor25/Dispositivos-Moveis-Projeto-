@@ -12,7 +12,7 @@ class Wellcome extends StatelessWidget {
     User _visitor = User(
       username: "Visitante",
       email: "Visitante@breakpoin.com",
-      password: "000", 
+      password: "000",
       );
 
     return Scaffold(

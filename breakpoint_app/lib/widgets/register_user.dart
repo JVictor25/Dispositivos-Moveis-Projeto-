@@ -1,13 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:image_picker/image_picker.dart';
 
 class Registeruser extends StatefulWidget {
-  final void Function(String, String, String, String) onSubmit;
+  final void Function(String, String, String) onSubmit;
 
   const Registeruser({super.key, required this.onSubmit});
 
@@ -20,7 +15,6 @@ class _RegisteruserState extends State<Registeruser> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   bool _obscureText = true;
-  String? _imagePath;
 
   void _submitUser() {
     String _username = _usernameController.text;
@@ -29,8 +23,7 @@ class _RegisteruserState extends State<Registeruser> {
 
     if (_username.isEmpty ||
         _email.isEmpty ||
-        _password.isEmpty ||
-        _imagePath == null) {
+        _password.isEmpty) {
       showDialog(
         context: context,
         builder: (context) {
@@ -98,43 +91,10 @@ class _RegisteruserState extends State<Registeruser> {
       );
     }
     else{
-      widget.onSubmit(_imagePath!, _username, _email, _password);
+      widget.onSubmit(_username, _email, _password);
       Navigator.of(context).pop();
     }
 
-  }
-
-  void _showImageSelection(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            width: double.infinity,
-            color: Color(0xffA8DADC),
-            padding: EdgeInsets.all(16),
-            child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _pickImage(ImageSource.gallery);
-                },
-                child: Icon(
-                  Icons.image_outlined,
-                  size: 50,
-                  color: Color(0xff424242),
-                )),
-          );
-        });
-  }
-
-  Future<void> _pickImage(ImageSource gallery) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      setState(() {
-        _imagePath = image.path;
-      });
-    }
   }
 
   @override
@@ -218,39 +178,16 @@ class _RegisteruserState extends State<Registeruser> {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16, 30, 16, 10),
-                    child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xffA8DADC),
-                      ),
-                      child: _imagePath != null
-                          ? GestureDetector(
-                              onTap: () {
-                                _showImageSelection(context);
-                              },
-                              child: ClipOval(
-                                child: Image.file(
-                                  File(_imagePath!),
-                                  fit: BoxFit.fill,
-                                ),
-                              ))
-                          : GestureDetector(
-                              onTap: () {
-                                _showImageSelection(context);
-                              },
-                              child: Icon(
-                                Icons.add_a_photo_outlined,
-                                size: 60,
-                                color: Colors.black87,
-                              )),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 35, horizontal: 16),
+                    child: Text(
+                      "BreakPoint",
+                      style: TextStyle(
+                          fontFamily: "PoppinsBlack",
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                          color: Color(0xffA8DADC)),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
                   ),
                   Padding(
                     padding:

@@ -1,8 +1,10 @@
-class User{
+import 'package:breakpoint_app/model/DiaryEntry.dart';
+import 'package:breakpoint_app/model/Vice.dart';
+import 'package:flutter/material.dart';
 
-  User({this.avatar,required this.username, required this.email, required this.password});
+class User with ChangeNotifier{
+  User({required this.username, required this.email, required this.password});
 
-  String? avatar;
   String username;
   String email;
   String password;

@@ -76,9 +76,9 @@ class _HomescreenState extends State<Homescreen> {
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         ),
         body: _currentPageIndex == 0
-            ? Addiction() // Remova a passagem do parâmetro onSubmit
+            ? Addiction() // Nenhuma alteração necessária aqui
             : _currentPageIndex == 1
-                ? Achievements(viceList: _addictionList)
+                ? Achievements() // Remova a passagem de `viceList`
                 : Diary(),
       ),
     );

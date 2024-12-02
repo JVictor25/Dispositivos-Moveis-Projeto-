@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors
+
+import 'package:breakpoint_app/data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,18 +23,6 @@ class _ViceFormState extends State<ViceForm> {
   DateTime? _dataSelecionada;
   String _selectedViceType =
       'general'; // 'general' para vícios em geral, 'specific' para específicos
-
-  List<String> _viceTypes = [
-    'Geral',
-    'Alcool',
-    'Fumo',
-    'Jogos de Azar',
-    'Comida',
-    'Drogas',
-    'Tecnologia',
-    'Trabalho',
-    'Relacionamentos'
-  ];
 
   void _submitForm() {
     if (_vice.text.isEmpty || _dataSelecionada == null) {
@@ -108,7 +99,7 @@ class _ViceFormState extends State<ViceForm> {
                 fontSize: 14,
                 color: Colors.black87,
               ),
-              items: _viceTypes.map((String type) {
+              items: viceType.map((String type) {
                 return DropdownMenuItem<String>(
                   value: type
                       .toLowerCase(), // Armazena como lowercase para comparação fácil

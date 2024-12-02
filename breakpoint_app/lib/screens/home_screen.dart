@@ -45,8 +45,6 @@ class _HomescreenState extends State<Homescreen> {
         ),
         drawer: myDrawer(activeUser: widget._activeUser,),
         bottomNavigationBar: NavigationBar(
-          indicatorColor: Colors.black,
-          backgroundColor: Color(0xffDCDCDC),
           selectedIndex: _currentPageIndex,
           onDestinationSelected: (int index) {
             setState(() {
@@ -56,19 +54,19 @@ class _HomescreenState extends State<Homescreen> {
           destinations: <Widget>[
             NavigationDestination(
               icon: _currentPageIndex == 0 ?
-              Icon( Icons.home_rounded, color: Color(0xffA8DADC))
+              Icon( Icons.home_rounded, color: Colors.black)
               : Icon( Icons.home_outlined, color:Colors.black),
               label: 'Início',
             ),
             NavigationDestination(
               icon: _currentPageIndex == 1 ?
-              Icon(Icons.emoji_events, color: Color(0xffA8DADC),) 
+              Icon(Icons.emoji_events, color: Colors.black,) 
               : Icon(Icons.emoji_events_outlined, color: Colors.black,),
               label: 'Conquistas',
             ),
             NavigationDestination(
               icon: _currentPageIndex == 2 ?
-              Icon(Icons.book, color: Color(0xffA8DADC),)
+              Icon(Icons.book, color: Colors.black,)
               : Icon(Icons.book_outlined, color: Colors.black,),
               label: 'Diário',
             ),

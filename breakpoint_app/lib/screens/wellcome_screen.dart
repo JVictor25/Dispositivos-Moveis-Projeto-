@@ -10,6 +10,7 @@ class Wellcome extends StatelessWidget {
   Widget build(BuildContext context) {
 
     User _visitor = User(
+      id: '0',
       username: "Visitante",
       email: "Visitante@breakpoin.com",
       password: "000",
@@ -41,7 +42,7 @@ class Wellcome extends StatelessWidget {
               "Bem-Vindo(a) ao Breakpoint!",
               textDirection: TextDirection.ltr,
               style: TextStyle(
-                  fontFamily: 'roboto',
+                  fontFamily: 'PoppinsRegular',
                   fontSize: 18,
                   color: Color(0xff424242),
                   fontWeight: FontWeight.bold),
@@ -50,7 +51,7 @@ class Wellcome extends StatelessWidget {
               "Estamos aqui para ajudá-lo a focar em seu objetivo e alcançar suas metas. \n Vamos começar?",
               textDirection: TextDirection.ltr,
               style: TextStyle(
-                fontFamily: 'PoppinsLight',
+                fontFamily: 'PoppinsRegular',
                 fontSize: 14,
                 color: Color(0xff424242),
               ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/providers/vice_provider.dart';
 import 'package:breakpoint_app/widgets/medal_list.dart';
 

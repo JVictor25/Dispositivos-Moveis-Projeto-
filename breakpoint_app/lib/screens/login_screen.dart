@@ -19,6 +19,7 @@ class _LoginscreenState extends State<Loginscreen> {
 
   final List<User> _userList = [
     User(
+      id: '0',
       username: "Admin",
       email: "Admin@breakpoint.com",
       password: "123",
@@ -33,6 +34,7 @@ class _LoginscreenState extends State<Loginscreen> {
 
   void _addUser(String username, String email, String password) {
     User _newUser = User(
+      id: '0',
       username: username,
       email: email,
       password: password,

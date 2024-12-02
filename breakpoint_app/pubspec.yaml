@@ -61,15 +61,15 @@ flutter:
     - assets/images/
   
   fonts:
-    - family: Garamond
-      fonts:
-        - asset: assets/fonts/Garamond.ttf
     - family: PoppinsBlack
       fonts:
         - asset: assets/fonts/Poppins-Black.ttf
     - family: PoppinsLight
       fonts:
         - asset: assets/fonts/Poppins-Light.ttf
+    - family: PoppinsRegular
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
 
 
   # The following line ensures that the Material Icons font is

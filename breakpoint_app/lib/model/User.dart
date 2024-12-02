@@ -1,11 +1,63 @@
-import 'package:breakpoint_app/model/DiaryEntry.dart';
-import 'package:breakpoint_app/model/Vice.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class User with ChangeNotifier{
-  User({required this.username, required this.email, required this.password});
+class User with ChangeNotifier {
+  String _id;
+  String _username;
+  String _email;
+  String _password;
 
-  String username;
-  String email;
-  String password;
+  String get id => _id;
+
+  String get username => _username;
+
+  set username(String value) {
+    _username = value;
+  }
+
+  String get email => _email;
+
+  set email(String value) {
+    _email = value;
+  }
+
+  String get password => _password;
+
+  set password(String value) {
+    _password = value;
+  }
+
+  User({
+    required String id,
+    required String username,
+    required String email,
+    required String password,
+  })  : _id = id,
+        _username = username,
+        _email = email,
+        _password = password;
+
+  User.fromUser(User _user)
+      : _id = _user._id,
+        _username = _user._username,
+        _email = _user._email,
+        _password = _user._password;
+
+  factory User.fromJson(String id, Map<String, dynamic> json) {
+    return User(
+        id: id,
+        username: json['username'],
+        email: json['email'],
+        password: json['password']);
+  }
+
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = {
+      'id' : _id,
+      'username': _username,
+      'email' : _email,
+      'password' : _password,
+    };
+    
+    return data;
+  }
 }

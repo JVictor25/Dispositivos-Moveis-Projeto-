@@ -138,6 +138,7 @@ class _ViceFormState extends State<ViceForm> {
                 labelStyle: Theme.of(context).textTheme.bodySmall,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
+                  
                   borderSide: BorderSide(
                     color: Color(0xFF134B70),
                     width: 2.0,
@@ -172,7 +173,7 @@ class _ViceFormState extends State<ViceForm> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   filled: true, // Ativa o preenchimento do campo
-                  fillColor: const Color.fromARGB(255, 121, 120, 120), // Define o fundo branco
+                 // fillColor: const Color.fromARGB(255, 230, 230, 230), // Define o fundo branco
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide(
@@ -183,12 +184,13 @@ class _ViceFormState extends State<ViceForm> {
                   hintText: _selectedImpactType == 'money'
                       ? 'Valor perdido por semana (ex: 100.50)'
                       : 'Horas perdidas por dia (ex: 3)',
+                  hintStyle: Theme.of(context).textTheme.bodySmall,
                 ),
-                style: TextStyle(
-                  fontFamily: 'roboto',
-                  fontSize: 14,
-                  color: Colors.black87,
-                ),
+                //style: TextStyle(
+                //  fontFamily: 'roboto',
+                //  fontSize: 14,
+//color: Colors.black87,
+               // ),
               ),
             ],
             SizedBox(height: 16),

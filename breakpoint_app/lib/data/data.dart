@@ -76,25 +76,41 @@ List<Vice> exampleVices = [
     typeofvice: 'Cigarro', 
     datesobriety: DateTime.now(), 
     dateCreation: DateTime.now(),
-    viceType: 'Fumo'),
+    viceType: 'Fumo',
+    impactType: 'money', // Exemplo de tipo de impacto
+    impactValue: 50.0, // Exemplo de valor de impacto (R$)
+  ),
   Vice(
-      typeofvice: 'Bebida Alcoólica',
-      datesobriety: DateTime(2024, 7, 20),
-      dateCreation: DateTime(2024, 7, 20),
-      viceType: 'Alcool'),
+    typeofvice: 'Bebida Alcoólica',
+    datesobriety: DateTime(2024, 7, 20),
+    dateCreation: DateTime(2024, 7, 20),
+    viceType: 'Alcool',
+    impactType: 'money', // Tipo de impacto: tempo
+    impactValue: 200,  // Exemplo de valor de impacto (R$)
+  ),
   Vice(
-      typeofvice: 'Jogos de Azar',
-      datesobriety: DateTime(2024, 4, 10),
-      dateCreation: DateTime(2024, 4, 10),
-      viceType: 'Jogos de Azar'),
+    typeofvice: 'Jogos de Azar',
+    datesobriety: DateTime(2024, 4, 10),
+    dateCreation: DateTime(2024, 4, 10),
+    viceType: 'Jogos de Azar',
+    impactType: 'money',
+    impactValue: 100.0, // Exemplo de valor de impacto (R$)
+  ),
   Vice(
-      typeofvice: 'Comer Doces',
-      datesobriety: DateTime(2023, 10, 5),
-      dateCreation: DateTime(2023, 10, 5),
-      viceType: 'Comida'),
+    typeofvice: 'Comer Doces',
+    datesobriety: DateTime(2023, 10, 5),
+    dateCreation: DateTime(2023, 10, 5),
+    viceType: 'Comida',
+    impactType: 'none',
+    impactValue: null, // Exemplo de valor de impacto (horas perdidas por dia)
+  ),
   Vice(
-      typeofvice: 'Uso Excessivo de Smartphone',
-      datesobriety: DateTime(2022, 10, 1),
-      dateCreation: DateTime(2022, 10, 1),
-      viceType: 'Tecnologia'),
+    typeofvice: 'Uso Excessivo de Smartphone',
+    datesobriety: DateTime(2022, 10, 1),
+    dateCreation: DateTime(2022, 10, 1),
+    viceType: 'Tecnologia',
+    impactType: 'time', // Nenhum impacto calculável
+    impactValue: 4, // Nenhum valor de impacto
+  ),
 ];
+

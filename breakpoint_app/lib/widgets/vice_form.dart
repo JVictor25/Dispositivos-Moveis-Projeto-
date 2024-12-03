@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ViceForm extends StatefulWidget {
-  final void Function(String, DateTime, String) onSubmit;
+  final void Function(String, DateTime, String, String, dynamic) onSubmit; // Atualizado para incluir novos atributos
   final bool isModifying;
 
   const ViceForm({
@@ -20,19 +20,31 @@ class ViceForm extends StatefulWidget {
 
 class _ViceFormState extends State<ViceForm> {
   final TextEditingController _vice = TextEditingController();
+  final TextEditingController _impactValueController = TextEditingController();
   DateTime? _dataSelecionada;
   String _selectedViceType =
       'general'; // 'general' para vícios em geral, 'specific' para específicos
+  String _selectedImpactType =
+      'none'; // Inicializa como "nenhum impacto"
 
   void _submitForm() {
     if (_vice.text.isEmpty || _dataSelecionada == null) {
       return;
     }
 
+  dynamic impactValue;
+    if (_selectedImpactType == 'money' || _selectedImpactType == 'time') {
+      impactValue = double.tryParse(_impactValueController.text);
+    } else {
+      impactValue = null; // Para casos onde o impacto não é calculável
+    }
+
     widget.onSubmit(
       _vice.text,
       _dataSelecionada!,
       _selectedViceType,
+      _selectedImpactType,
+      impactValue,
     );
     Navigator.of(context).pop();
   }
@@ -118,6 +130,67 @@ class _ViceFormState extends State<ViceForm> {
                 return null;
               },
             ),
+             SizedBox(height: 16),
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                filled: true,
+                labelText: 'Tipo de Impacto',
+                labelStyle: Theme.of(context).textTheme.bodySmall,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Color(0xFF134B70),
+                    width: 2.0,
+                  ),
+                ),
+              ),
+              style: TextStyle(
+                fontFamily: 'roboto',
+                fontSize: 14,
+                color: Colors.black87,
+              ),
+              items: ['none', 'money', 'time'].map((String type) {
+                return DropdownMenuItem<String>(
+                  value: type,
+                  child: Text(type == 'none'
+                      ? 'Não calculável'
+                      : type == 'money'
+                          ? 'Dinheiro perdido por semana (R\$)'
+                          : 'Horas perdidas por dia'),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedImpactType = newValue ?? 'none';
+                });
+              },
+            ),
+            if (_selectedImpactType != 'none') ...[
+              SizedBox(height: 16),
+              TextField(
+                controller: _impactValueController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  filled: true, // Ativa o preenchimento do campo
+                  fillColor: const Color.fromARGB(255, 121, 120, 120), // Define o fundo branco
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: Color(0xFF134B70),
+                      width: 2.0,
+                    ),
+                  ),
+                  hintText: _selectedImpactType == 'money'
+                      ? 'Valor perdido por semana (ex: 100.50)'
+                      : 'Horas perdidas por dia (ex: 3)',
+                ),
+                style: TextStyle(
+                  fontFamily: 'roboto',
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
             SizedBox(height: 16),
             Text(
               "Última vez que praticou:",

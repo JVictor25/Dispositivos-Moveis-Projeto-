@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:breakpoint_app/model/Vice.dart';
@@ -37,12 +35,14 @@ class Addiction extends StatelessWidget {
         return AlertDialog(
           backgroundColor: Color(0xffCBDCEB),
           content: ViceForm(
-            onSubmit: (typeofvice, dateSelect, viceType) {
+            onSubmit: (typeofvice, dateSelect, viceType, impactType, impactValue) {
               final newVice = Vice(
                 typeofvice: typeofvice,
                 datesobriety: dateSelect,
                 dateCreation: dateSelect,
                 viceType: viceType,
+                impactType: impactType, // Novo campo para o tipo de impacto
+                impactValue: impactValue, // Novo campo para o valor do impacto
               );
               Provider.of<ViceProvider>(context, listen: false).addVice(newVice);
             },

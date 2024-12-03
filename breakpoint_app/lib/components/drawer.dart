@@ -3,16 +3,13 @@
 import 'dart:io';
 
 import 'package:breakpoint_app/model/User.dart';
+import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class myDrawer extends StatefulWidget {
-  final User activeUser;
-
-  const myDrawer({
-    super.key,
-    required User this.activeUser,
-  });
+  const myDrawer({super.key,});
 
   @override
   State<myDrawer> createState() => _myDrawerState();
@@ -47,6 +44,7 @@ class _myDrawerState extends State<myDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<ActiveUser>(context).currentUser as User;
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
@@ -64,7 +62,7 @@ class _myDrawerState extends State<myDrawer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      widget.activeUser.username,
+                      user.username,
                       style: Theme.of(context)
                           .textTheme
                           .labelMedium!

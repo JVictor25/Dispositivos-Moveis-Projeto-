@@ -41,6 +41,7 @@ class Addiction extends StatelessWidget {
               final newVice = Vice(
                 typeofvice: typeofvice,
                 datesobriety: dateSelect,
+                dateCreation: dateSelect,
                 viceType: viceType,
               );
               Provider.of<ViceProvider>(context, listen: false).addVice(newVice);

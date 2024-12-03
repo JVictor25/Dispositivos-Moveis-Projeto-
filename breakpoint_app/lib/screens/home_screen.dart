@@ -2,20 +2,16 @@
 
 import 'package:breakpoint_app/model/User.dart';
 import 'package:breakpoint_app/model/Vice.dart';
+import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:breakpoint_app/screens/achievements_screen.dart';
 import 'package:breakpoint_app/screens/addiction_screen.dart';
 import 'package:breakpoint_app/screens/Diary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/components/drawer.dart';
+import 'package:provider/provider.dart';
 
 class Homescreen extends StatefulWidget {
-  const Homescreen({
-    super.key,
-    required User activeUser
-    }) : _activeUser = activeUser;
-
-  final User _activeUser;
-
+  const Homescreen({super.key});
 
   @override
   State<Homescreen> createState() => _HomescreenState();
@@ -23,11 +19,6 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int _currentPageIndex = 0;
-  List<Vice> _addictionList = []; 
-  
-  void _receiveList(List<Vice> list){
-    _addictionList = list;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +34,7 @@ class _HomescreenState extends State<Homescreen> {
             ),
           ),
         ),
-        drawer: myDrawer(activeUser: widget._activeUser,),
+        drawer: myDrawer(),
         bottomNavigationBar: NavigationBar(
           selectedIndex: _currentPageIndex,
           onDestinationSelected: (int index) {

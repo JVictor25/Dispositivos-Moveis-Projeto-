@@ -1,13 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
-import 'package:breakpoint_app/model/Vice.dart';
 import 'package:flutter/material.dart';
 
 class Clock extends StatefulWidget {
-  const Clock({super.key, required this.vice});
+  const Clock({super.key, required this.date});
 
-  final Vice vice;
+  final DateTime date;
 
   @override
   State<Clock> createState() => _ClockState();
@@ -22,10 +21,19 @@ class _ClockState extends State<Clock> {
   void initState() {
     super.initState();
 
-    _startDateTime = widget.vice.datesobriety;
+    _startDateTime = widget.date;
 
     _currentTime = _formatTime(DateTime.now());
     _startClock();
+  }
+
+  @override
+  void didUpdateWidget(Clock oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.date != oldWidget.date) {
+      _resetClock();
+    }
   }
 
   @override
@@ -62,6 +70,13 @@ class _ClockState extends State<Clock> {
         _currentTime = _formatTime(_startDateTime);
       });
     });
+  }
+
+  void _resetClock() {
+    _startDateTime = widget.date;
+    _currentTime = _formatTime(_startDateTime);
+    _timer.cancel();
+    _startClock();
   }
 
   @override

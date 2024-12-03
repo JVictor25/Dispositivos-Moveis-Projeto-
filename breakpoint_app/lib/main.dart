@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:breakpoint_app/providers/active_user.dart';
+import 'package:breakpoint_app/providers/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Importa o pacote Provider
 import 'package:breakpoint_app/routes/app_routes.dart';
@@ -8,9 +10,9 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => ViceProvider(), // Gerencia o estado dos vícios
-        ),
+        ChangeNotifierProvider(create: (context) => ViceProvider(),),
+        ChangeNotifierProvider(create: (context) => ActiveUser()),
+        ChangeNotifierProvider(create: (context) => UserService())
       ],
       child: MyApp(),
     ),
@@ -44,9 +46,13 @@ class MyApp extends StatelessWidget {
             color: Color(0xffF3F3E0),
           ),
           titleSmall: TextStyle(
-              fontFamily: 'PoppinsLight', fontSize: 14, color: Color(0xFF134B70)),
+              fontFamily: 'PoppinsLight',
+              fontSize: 14,
+              color: Color(0xFF134B70)),
           bodySmall: TextStyle(
-              fontFamily: 'PoppinsLight', fontSize: 14, color: Color(0xFF134B70)),
+              fontFamily: 'PoppinsLight',
+              fontSize: 14,
+              color: Color(0xFF134B70)),
         ),
       ),
       initialRoute: AppRoutes.WELLCOME,

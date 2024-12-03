@@ -4,9 +4,9 @@ import 'package:breakpoint_app/model/Vice.dart';
 import 'package:flutter/material.dart';
 
 class Progress extends StatefulWidget {
-  const Progress({super.key, required this.vice});
+  const Progress({super.key, required this.date});
 
-  final Vice vice;
+  final DateTime date;
 
   @override
   State<Progress> createState() => _ProgressState();
@@ -70,8 +70,8 @@ class _ProgressState extends State<Progress> {
 
   @override
   Widget build(BuildContext context) {
-    final progress = calculateProgress(widget.vice.datesobriety);
-    final milestone = nextMilestone(widget.vice.datesobriety);
+    final progress = calculateProgress(widget.date);
+    final milestone = nextMilestone(widget.date);
     return Column(
       children: [
         Stack(

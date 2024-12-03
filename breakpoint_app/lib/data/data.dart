@@ -1,3 +1,4 @@
+import 'package:breakpoint_app/model/User.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 import 'package:flutter/material.dart';
 
@@ -54,23 +55,46 @@ const List<String> viceType = [
   'Doce',
 ];
 
+List<User> userList = [
+    User(
+      id: '0',
+      username: "Admin",
+      email: "Admin@breakpoint.com",
+      password: "123",
+    ),
+    User(
+      id: '0',
+      username: "Visitante",
+      email: "Visitante@breakpoin.com",
+      password: "000",
+      )
+  ];
+
 
 List<Vice> exampleVices = [
-  Vice(typeofvice: 'Cigarro', datesobriety: DateTime.now(), viceType: 'Fumo'),
+  Vice(
+    typeofvice: 'Cigarro', 
+    datesobriety: DateTime.now(), 
+    dateCreation: DateTime.now(),
+    viceType: 'Fumo'),
   Vice(
       typeofvice: 'Bebida Alcoólica',
       datesobriety: DateTime(2024, 7, 20),
+      dateCreation: DateTime(2024, 7, 20),
       viceType: 'Alcool'),
   Vice(
       typeofvice: 'Jogos de Azar',
       datesobriety: DateTime(2024, 4, 10),
+      dateCreation: DateTime(2024, 4, 10),
       viceType: 'Jogos de Azar'),
   Vice(
       typeofvice: 'Comer Doces',
       datesobriety: DateTime(2023, 10, 5),
+      dateCreation: DateTime(2023, 10, 5),
       viceType: 'Comida'),
   Vice(
       typeofvice: 'Uso Excessivo de Smartphone',
       datesobriety: DateTime(2022, 10, 1),
+      dateCreation: DateTime(2022, 10, 1),
       viceType: 'Tecnologia'),
 ];

@@ -14,8 +14,8 @@ class ActiveUser with ChangeNotifier{
     return _instance;
   }
 
-  void setCurrentUser(User user) {
-    _currentUser = user;
+  void setCurrentUser(Future<User> user) async {
+    _currentUser = await user;
   }
 
   void clear() {

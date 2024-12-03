@@ -21,17 +21,10 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const Loginscreen());
 
       case HOMESCREEN:
-        if (settings.arguments is User) {
-          final user = settings.arguments as User;
-          return MaterialPageRoute(
-            builder: (context) => Homescreen(activeUser: user),
-          );
-        }
-        return _errorRoute();
+          return MaterialPageRoute(builder: (context) => Homescreen());
 
       case VICEDETAIL:
-        final Vice vice =
-            settings.arguments as Vice;
+      final Vice vice = settings.arguments as Vice;
         return MaterialPageRoute(
           builder: (context) =>
               ViceDetail(vice: vice),

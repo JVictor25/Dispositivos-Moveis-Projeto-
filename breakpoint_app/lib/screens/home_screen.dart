@@ -5,7 +5,7 @@ import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:breakpoint_app/screens/achievements_screen.dart';
 import 'package:breakpoint_app/screens/addiction_screen.dart';
-import 'package:breakpoint_app/screens/Diary_screen.dart';
+import 'package:breakpoint_app/screens/diary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/components/drawer.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +68,7 @@ class _HomescreenState extends State<Homescreen> {
             ? Addiction() // Nenhuma alteração necessária aqui
             : _currentPageIndex == 1
                 ? Achievements() // Remova a passagem de `viceList`
-                : Diary(),
+                : DiaryScreen(),
       ),
     );
   }

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:breakpoint_app/providers/active_user.dart';
+import 'package:breakpoint_app/providers/diary_provider.dart';
 import 'package:breakpoint_app/providers/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Importa o pacote Provider
@@ -12,7 +13,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => ViceProvider(),),
         ChangeNotifierProvider(create: (context) => ActiveUser()),
-        ChangeNotifierProvider(create: (context) => UserService())
+        ChangeNotifierProvider(create: (context) => UserService()),
+        ChangeNotifierProvider(create: (context) => DiaryProvider())
       ],
       child: MyApp(),
     ),

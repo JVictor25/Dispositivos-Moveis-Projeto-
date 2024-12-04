@@ -1,7 +1,9 @@
 class DiaryEntry {
 
-  DiaryEntry({required this.body, DateTime? date}): date = date ?? DateTime.now();
+  DiaryEntry({required this.title, required this.text, required this.emotion, required this.createdAt});
 
-  String body;
-  DateTime date;
+  String title;
+  String text;
+  String emotion = '';
+  DateTime createdAt;
 }

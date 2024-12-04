@@ -1,9 +1,11 @@
+import 'package:breakpoint_app/model/DiaryEntry.dart';
+import 'package:breakpoint_app/providers/diary_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DiaryForm extends StatefulWidget {
-  final void Function(String) onSubmit;
  
-  DiaryForm({super.key, required this.onSubmit});
+  DiaryForm({super.key});
 
   @override
   State<DiaryForm> createState() => _DiaryFormState();
@@ -12,18 +14,10 @@ class DiaryForm extends StatefulWidget {
 class _DiaryFormState extends State<DiaryForm> {
   final TextEditingController _bodyController = TextEditingController();
 
-  void _submitForm(BuildContext context) {
-    final body = _bodyController.text;
-
-    if (body.isEmpty) {
-      return;
-    }
-
-    widget.onSubmit(body);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final diaryProvider = Provider.of<DiaryProvider>(context);
+
     return Container(
       padding: EdgeInsets.all(16),
       child: Column(
@@ -61,7 +55,14 @@ class _DiaryFormState extends State<DiaryForm> {
               backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(19, 75, 112, 1),
               ),
             ),
-            onPressed: () => _submitForm(context),
+            onPressed: () {diaryProvider.addEntry(DiaryEntry(
+              title: "Nova entrada",
+              text: _bodyController.text,
+              emotion: "Feliz",
+              createdAt: DateTime.now(),
+            ));
+            Navigator.of(context).pop();
+            },
           )
         ],
       ),

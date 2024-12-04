@@ -70,6 +70,7 @@ List<User> userList = [
       )
   ];
 
+List<String> emotions = ["Feliz", "Triste", "Raiva", "Ansioso", "Cansado"];
 
 List<Vice> exampleVices = [
   Vice(

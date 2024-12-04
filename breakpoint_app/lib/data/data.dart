@@ -83,7 +83,7 @@ List<Vice> exampleVices = [
   ),
   Vice(
     typeofvice: 'Bebida Alcoólica',
-    datesobriety: DateTime(2024, 7, 20),
+    datesobriety: DateTime(2024, 3, 20),
     dateCreation: DateTime(2024, 7, 20),
     viceType: 'Alcool',
     impactType: 'money', // Tipo de impacto: tempo
@@ -91,7 +91,7 @@ List<Vice> exampleVices = [
   ),
   Vice(
     typeofvice: 'Jogos de Azar',
-    datesobriety: DateTime(2024, 4, 10),
+    datesobriety: DateTime(2024, 1, 10),
     dateCreation: DateTime(2024, 4, 10),
     viceType: 'Jogos de Azar',
     impactType: 'money',
@@ -99,7 +99,7 @@ List<Vice> exampleVices = [
   ),
   Vice(
     typeofvice: 'Comer Doces',
-    datesobriety: DateTime(2023, 10, 5),
+    datesobriety: DateTime(2023, 8, 5),
     dateCreation: DateTime(2023, 10, 5),
     viceType: 'Comida',
     impactType: 'none',
@@ -107,7 +107,7 @@ List<Vice> exampleVices = [
   ),
   Vice(
     typeofvice: 'Uso Excessivo de Smartphone',
-    datesobriety: DateTime(2022, 10, 1),
+    datesobriety: DateTime(2022, 7, 1),
     dateCreation: DateTime(2022, 10, 1),
     viceType: 'Tecnologia',
     impactType: 'time', // Nenhum impacto calculável

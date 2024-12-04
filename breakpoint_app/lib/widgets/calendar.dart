@@ -25,19 +25,49 @@ class _CalendarState extends State<Calendar> {
     _focusedDay = DateTime.now();
   }
 
+  bool isMarked(DateTime day) {
+  DateTime now = DateTime.now();
+
+  if (day.year == now.year && day.month == now.month && day.day == now.day) {
+    return false;
+  }
+  return day.isAfter(widget.dateCreation.subtract(Duration(days: 1))) &&
+      day.isBefore(now.add(Duration(days: 1)));
+}
+
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
       firstDay: widget.dateCreation,
       lastDay: DateTime.now(),
       focusedDay: _focusedDay,
+      selectedDayPredicate: (day) => isMarked(day), // Chama a função para marcar os dias
+      calendarBuilders: CalendarBuilders(
+        defaultBuilder: (context, day, focusedDay) {
+          if (isMarked(day)) {
+            return Container(
+              margin: const EdgeInsets.all(6.0),
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.5),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                day.day.toString(),
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+          return null; // Usa o estilo padrão para os outros dias
+        },
+      ),
       calendarStyle: CalendarStyle(
         selectedDecoration: BoxDecoration(
-          color: Colors.blue,
+          color: Color(0xffA8DADC),
           shape: BoxShape.circle,
         ),
         todayDecoration: BoxDecoration(
-          color: Colors.orange,
+          color: Color(0xff133E87),
           shape: BoxShape.circle,
         ),
       ),

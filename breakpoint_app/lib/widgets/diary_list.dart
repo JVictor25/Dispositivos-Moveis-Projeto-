@@ -1,3 +1,4 @@
+import 'package:breakpoint_app/data/data.dart';
 import 'package:breakpoint_app/model/DiaryEntry.dart';
 import 'package:breakpoint_app/providers/diary_provider.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,13 @@ class _DiaryListState extends State<DiaryList> {
     "Cansado": Colors.grey.shade400,
   };
 
-  final Map<String, String> emotionEmojis = {
-    "Feliz": "😊",
-    "Triste": "😔",
-    "Raiva": "😡",
-    "Ansioso": "😖",
-    "Cansado": "😩",
-  };
+  // final Map<String, String> emotionEmojis = {
+  //   "Feliz": "😊",
+  //   "Triste": "😔",
+  //   "Raiva": "😡",
+  //   "Ansioso": "😖",
+  //   "Cansado": "😩",
+  // };
 
   void _openConfirmationModel(DiaryEntry entry) {
     showDialog(
@@ -58,10 +59,24 @@ class _DiaryListState extends State<DiaryList> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<DiaryProvider>(context, listen: false).fetchEntries();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<DiaryProvider>(
       builder: (context, diaryProvider, child) {
-          return (diaryProvider.diaryEntries.isEmpty
+          if (diaryProvider.isLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          // inverter lista
+          final entries = diaryProvider.diaryEntries.reversed.toList();
+          return (entries.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +94,7 @@ class _DiaryListState extends State<DiaryList> {
             )
           : ListView.separated(
               padding: const EdgeInsets.all(8),
-              itemCount: diaryProvider.diaryEntries.length,
+              itemCount: entries.length,
               itemBuilder: (BuildContext context, int index) {
                 final entry = diaryProvider.diaryEntries[index];
                 final color = emotionColors[entry.emotion] ?? Colors.white;

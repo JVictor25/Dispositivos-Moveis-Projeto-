@@ -1,9 +1,28 @@
 class DiaryEntry {
 
-  DiaryEntry({required this.title, required this.text, required this.emotion, required this.createdAt});
+  DiaryEntry({this.id,  required this.title, required this.text, required this.emotion, required this.createdAt});
 
+  int? id;
   String title;
   String text;
   String emotion = '';
   DateTime createdAt;
+
+  factory DiaryEntry.fromJson(Map<String, dynamic> json) {
+    return DiaryEntry(
+      id: json['id'],
+      title: json['title'],
+      text: json['text'],
+      emotion: json['emotion'],
+      createdAt: DateTime.parse(json['createdAt']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'text': text,
+      'emotion': emotion,
+    };
+  }
 }

@@ -1,52 +1,49 @@
+import 'dart:io';
 
 import 'package:breakpoint_app/model/DiaryEntry.dart';
+import 'package:breakpoint_app/providers/diary_service.dart';
 import 'package:flutter/material.dart';
 
-List<DiaryEntry> mockData = [
-    DiaryEntry(
-      title: "Primeiro dia de trabalho",
-      text: "Hoje foi meu primeiro dia no novo emprego. Tudo correu bem!",
-      emotion: "Feliz",
-      createdAt: DateTime(2024, 12, 1, 10, 30),
-    ),
-    DiaryEntry(
-      title: "Treino intenso",
-      text: "O treino de hoje foi muito puxado, mas consegui superar meus limites.",
-      emotion: "Triste",
-      createdAt: DateTime(2024, 12, 2, 18, 15),
-    ),
-    DiaryEntry(
-      title: "Caminhada na praia",
-      text: "Caminhei pela praia ao entardecer. A vista era deslumbrante.",
-      emotion: "Ansioso",
-      createdAt: DateTime(2024, 12, 3, 17, 45),
-    ),
-    DiaryEntry(
-      title: "Dia cansativo",
-      text: "Hoje tive muitas reuniões, me sinto exausto.",
-      emotion: "Raiva",
-      createdAt: DateTime(2024, 12, 4, 20, 0),
-    ),
-    DiaryEntry(
-      title: "Jantar com amigos",
-      text: "Jantei com amigos antigos e foi ótimo relembrar velhas histórias.",
-      emotion: "Cansado",
-      createdAt: DateTime(2024, 12, 5, 21, 30),
-    ),
-  ];
-
 class DiaryProvider with ChangeNotifier {
-  final List<DiaryEntry> _diaryEntries = mockData;
+  DiaryService _diaryService = DiaryService();
+  final List<DiaryEntry> _diaryEntries = [];
+  bool _isLoading = false;
 
-  List<DiaryEntry> get diaryEntries => List.unmodifiable(_diaryEntries);
+  //List<DiaryEntry> get diaryEntries => List.unmodifiable(_diaryEntries);
 
-  void addEntry(DiaryEntry diaryEntry) {
-    _diaryEntries.add(diaryEntry);
-    notifyListeners();
+  List<DiaryEntry> get diaryEntries => _diaryEntries;
+  bool get isLoading => _isLoading;
+
+  Future<void> fetchEntries() async {
+    try {
+      final entries = await _diaryService.fetchDiaryEntries();
+      _diaryEntries.clear();
+      _diaryEntries.addAll(entries);
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 
-  void removeEntry(DiaryEntry diaryEntry) {
-    _diaryEntries.remove(diaryEntry);
-    notifyListeners();
+  Future<void> addEntry(DiaryEntry diaryEntry) async {
+    try {
+      await _diaryService.addDiaryEntry(diaryEntry);
+      _diaryEntries.add(diaryEntry);
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> removeEntry(DiaryEntry diaryEntry) async {
+    try {
+      await _diaryService.removeDiaryEntry(diaryEntry);
+      _diaryEntries.remove(diaryEntry);
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -72,6 +72,14 @@ List<User> userList = [
 
 List<String> emotions = ["Feliz", "Triste", "Raiva", "Ansioso", "Cansado"];
 
+final Map<String, String> emotionEmojis = {
+  "Feliz": "😊",
+  "Triste": "😔",
+  "Raiva": "😡",
+  "Ansioso": "😖",
+  "Cansado": "😩",
+};
+
 List<Vice> exampleVices = [
   Vice(
     typeofvice: 'Cigarro', 

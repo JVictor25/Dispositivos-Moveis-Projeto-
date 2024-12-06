@@ -149,9 +149,9 @@ class _ViceDetailState extends State<ViceDetail> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      setState(() {
-                        widget.vice.datesobriety = DateTime.now();
-                      });
+                    setState(() {
+                      widget.vice = widget.vice.copyWith(datesobriety: DateTime.now());
+                    });
                     },
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),

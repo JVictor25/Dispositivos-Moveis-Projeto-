@@ -6,6 +6,7 @@ import 'package:breakpoint_app/data/data.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/providers/vice_provider.dart';
 import 'package:breakpoint_app/routes/app_routes.dart';
+import 'package:breakpoint_app/screens/vice_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,6 @@ class ViceItem extends StatefulWidget {
 }
 
 class _ViceItemState extends State<ViceItem> {
-
   Future<bool?> alertDelete() async {
     final result = await showDialog<bool>(
       context: context,
@@ -47,27 +47,61 @@ class _ViceItemState extends State<ViceItem> {
     return result;
   }
 
+  void _editVice() {
+  Navigator.pushNamed(
+    context,
+    AppRoutes.VICEFORMPAGE,
+    arguments: {
+      'vice': widget.vice,  // Passa o vice para edição
+      'isModifying': true,   // Indica que estamos no modo de edição
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice),
+      onTap: () => Navigator.of(context)
+          .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice),
       child: Dismissible(
         key: Key(widget.vice.typeofvice),
-        direction: DismissDirection.endToStart,
-        confirmDismiss: (direction) {
-          return alertDelete();
+        direction: DismissDirection.horizontal, // Permitir deslizar para ambos os lados
+        confirmDismiss: (direction) async {
+          if (direction == DismissDirection.endToStart) {
+            // Caso o uuário deslize para a esquerda, confirma a exclusão
+            return alertDelete();
+          }
+          if (direction == DismissDirection.startToEnd) {
+           _editVice();
+            return false;
+          }
+          return true; // Previne que a exclusão aconteça ao deslizar para a direita
         },
         onDismissed: (direction) {
-          Provider.of<ViceProvider>(context, listen: false).removeVice(widget.vice);
+          if (direction == DismissDirection.startToEnd) {
+             //_editVice();
+          } else if (direction == DismissDirection.endToStart) {
+            // Deslizando para a esquerda: exclui o vício
+            Provider.of<ViceProvider>(context, listen: false).removeVice(widget.vice);
+          }
         },
         background: Card(
           shadowColor: Colors.black87.withOpacity(0.3),
+          color: Colors.blueAccent,
+          child: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerRight,
+              child: Icon(Icons.edit, color: Colors.white)),
+        ),
+        secondaryBackground: Card(
+          shadowColor: Colors.black87.withOpacity(0.3),
           color: Colors.red,
           child: Container(
-            padding: const EdgeInsets.all(16.0),
-            alignment: Alignment.centerRight,
-            child: Icon(Icons.delete, color: Colors.white)),
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Icon(Icons.delete, color: Colors.white)),
         ),
+        
         child: Card(
           shadowColor: Colors.black87.withOpacity(0.3),
           color: Color(0xffE6E6FA),
@@ -113,7 +147,7 @@ class _ViceItemState extends State<ViceItem> {
                         Clock(date: widget.vice.datesobriety),
                       ],
                     ),
-                    Progress(date:widget.vice.datesobriety),
+                    Progress(date: widget.vice.datesobriety),
                   ],
                 ),
               ],

@@ -11,6 +11,18 @@ class ViceProvider with ChangeNotifier {
     _vicesList.add(vice);
     notifyListeners(); // Notifica os ouvintes da mudança
   }
+   // Método para atualizar o Vice
+  void updateVice(Vice updatedVice) {
+  // Busca o índice do Vice usando o id
+  int index = _vicesList.indexWhere((vice) => vice.id == updatedVice.id);
+
+  if (index != -1) {
+    // Se encontrar o índice, substitui o item da lista
+    _vicesList[index] = updatedVice;
+    notifyListeners();
+  }
+}
+
 
   void removeVice(Vice vice) {
     _vicesList.removeWhere((v) =>

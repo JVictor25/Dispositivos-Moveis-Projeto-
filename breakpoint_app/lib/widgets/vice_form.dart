@@ -1,38 +1,60 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors
 
 import 'package:breakpoint_app/data/data.dart';
+import 'package:breakpoint_app/model/Vice.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ViceForm extends StatefulWidget {
-  final void Function(String, DateTime, String, String, dynamic) onSubmit; // Atualizado para incluir novos atributos
+  final void Function(String, DateTime, String, String, dynamic) onSubmit;
   final bool isModifying;
+  final Vice? existingVice; // Parâmetro opcional para edição
 
   const ViceForm({
-    super.key,
+    Key? key,
     required this.onSubmit,
     required this.isModifying,
-  });
+    this.existingVice,
+  }) : super(key: key);
 
   @override
   State<ViceForm> createState() => _ViceFormState();
 }
 
 class _ViceFormState extends State<ViceForm> {
-  final TextEditingController _vice = TextEditingController();
-  final TextEditingController _impactValueController = TextEditingController();
+  late TextEditingController _vice;
+  late TextEditingController _impactValueController;
   DateTime? _dataSelecionada;
-  String _selectedViceType =
-      'general'; // 'general' para vícios em geral, 'specific' para específicos
-  String _selectedImpactType =
-      'none'; // Inicializa como "nenhum impacto"
+  late String _selectedViceType;
+  late String _selectedImpactType;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Inicializa os valores com base no objeto existente ou valores padrão
+    _vice = TextEditingController(text: widget.existingVice?.typeofvice ?? '');
+    _impactValueController = TextEditingController(
+      text: widget.existingVice?.impactValue?.toString() ?? '',
+    );
+    _dataSelecionada = widget.existingVice?.datesobriety;
+    _selectedViceType = widget.existingVice?.viceType ?? 'general';
+    _selectedImpactType = widget.existingVice?.impactType ?? 'none';
+  }
+
+  @override
+  void dispose() {
+    _vice.dispose();
+    _impactValueController.dispose();
+    super.dispose();
+  }
 
   void _submitForm() {
     if (_vice.text.isEmpty || _dataSelecionada == null) {
       return;
     }
 
-  dynamic impactValue;
+    dynamic impactValue;
     if (_selectedImpactType == 'money' || _selectedImpactType == 'time') {
       impactValue = double.tryParse(_impactValueController.text);
     } else {
@@ -130,7 +152,7 @@ class _ViceFormState extends State<ViceForm> {
                 return null;
               },
             ),
-             SizedBox(height: 16),
+            SizedBox(height: 16),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 filled: true,
@@ -138,7 +160,6 @@ class _ViceFormState extends State<ViceForm> {
                 labelStyle: Theme.of(context).textTheme.bodySmall,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  
                   borderSide: BorderSide(
                     color: Color(0xFF134B70),
                     width: 2.0,
@@ -173,7 +194,7 @@ class _ViceFormState extends State<ViceForm> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   filled: true, // Ativa o preenchimento do campo
-                 // fillColor: const Color.fromARGB(255, 230, 230, 230), // Define o fundo branco
+                  // fillColor: const Color.fromARGB(255, 230, 230, 230), // Define o fundo branco
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide(
@@ -190,7 +211,7 @@ class _ViceFormState extends State<ViceForm> {
                 //  fontFamily: 'roboto',
                 //  fontSize: 14,
 //color: Colors.black87,
-               // ),
+                // ),
               ),
             ],
             SizedBox(height: 16),

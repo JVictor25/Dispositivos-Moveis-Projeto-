@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class ActiveUser with ChangeNotifier{
   static final ActiveUser _instance = ActiveUser._internal();
 
-  User? _currentUser;
+  String? _currentUser;
 
-  User? get currentUser => _currentUser;
+  String? get currentUser => _currentUser;
 
   ActiveUser._internal();
 
@@ -14,8 +14,8 @@ class ActiveUser with ChangeNotifier{
     return _instance;
   }
 
-  void setCurrentUser(Future<User> user) async {
-    _currentUser = await user;
+  void setCurrentUser(String user){
+    _currentUser = user;
   }
 
   void clear() {

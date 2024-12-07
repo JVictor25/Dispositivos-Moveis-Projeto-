@@ -34,7 +34,7 @@ class _HomescreenState extends State<Homescreen> {
             ),
           ),
         ),
-        drawer: myDrawer(),
+        //drawer: myDrawer(),
         bottomNavigationBar: NavigationBar(
           selectedIndex: _currentPageIndex,
           onDestinationSelected: (int index) {

@@ -1,104 +1,116 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-import 'package:breakpoint_app/providers/active_user.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:breakpoint_app/model/User.dart';
-import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class UserService with ChangeNotifier {
-  final String baseUrl =
-      "https://breakpoint-testes-default-rtdb.firebaseio.com/";
+  final String _baseUrl = "https://breakpoint.onrender.com";
+  final String _bearerToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCcmVha3BvaW50IiwiZXhwIjoxNzMzNTMwMTMyLCJzdWIiOiI2OTUxMjBiMi0yZWVmLTRmYjUtODVjZi0zNmRjYTE2MjI3MWMifQ.f0WJKa6Ak8od0KGUtsA5chslzdqskQwy8fCUs9jQuWc";
+
+  Map<String, String> get _headers => {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer $_bearerToken',
+      };
 
   Future<void> addUser(User user) async {
     try {
-      registerAuthList(user.email, user.password);
-
-      final response = await http.post(Uri.parse('$baseUrl/users.json'),
-          body: jsonEncode(user.toJson()));
+      final response = await http.post(
+        Uri.parse('$_baseUrl/user/'),
+        headers: _headers,
+        body: jsonEncode(user.toJson()),
+      );
 
       if (response.statusCode != 200) {
-        throw Exception('Erro ao criar usuário: ${response.body}');
+        throw Exception('Error creating user: ${response.body}');
       }
     } catch (e) {
+      debugPrint('Error in addUser: $e');
       rethrow;
     }
   }
 
-  // Atualizar um usuário existente
   Future<void> updateUser(User updatedUser) async {
     try {
-      final response = await http.patch(
-          Uri.parse('$baseUrl/users/${updatedUser.id}.json'),
-          body: jsonEncode(updatedUser.toJson()));
+      final response = await http.put(
+        Uri.parse('$_baseUrl/user/${updatedUser.id}'),
+        headers: _headers,
+        body: jsonEncode(updatedUser.toJson()),
+      );
 
       if (response.statusCode != 200) {
-        throw Exception('Erro ao atualizar usuário: ${response.body}');
+        throw Exception('Error updating user: ${response.body}');
       }
     } catch (e) {
+      debugPrint('Error in updateUser: $e');
       rethrow;
     }
   }
 
-  Future<User> fetchUser(String authToken) async {
-    late User getUser;
-    try{
-      final response = await http.get(Uri.parse('$baseUrl/users.json?auth=$authToken'));
-      if(response.statusCode == 200){
-        final data = jsonDecode(response.body);
-
-        data.forEach((userId, userData) {
-          User user = User.fromJson(userId, userData);
-          getUser = user;
-        });
-        return getUser;
-      }else{
-        throw Exception("Erro ao acessar dados do usuário: ${response.body}");
-      }
-    }catch(e){
-      rethrow;
-    }
-  } 
-
-  // Deletar um usuário
-  Future<void> deleteUser(User user) async {
+  /*Future<User> fetchUser(String tokenJWT) async {
     try {
-      final response =
-          await http.delete(Uri.parse('$baseUrl/users/${user.id}.json'));
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(tokenJWT);
+      String? userId = decodedToken['sub'];
 
-      if (response.statusCode != 200) {
-        throw Exception('Erro ao deletar usuário: ${response.body}');
+      final response = await http.get(
+        Uri.parse('$_baseUrl/user/$userId'),
+        headers: _headers
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return User.fromJson(data['id'], data);
+      } else {
+        throw Exception('Error fetching user: ${response.body}');
       }
     } catch (e) {
+      debugPrint('Error in fetchUser: $e');
+      rethrow;
+    }
+  }
+  */
+  
+  Future<void> deleteUser(String userId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/user/$userId'),
+        headers: _headers,
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Error deleting user: ${response.body}');
+      }
+    } catch (e) {
+      debugPrint('Error in deleteUser: $e');
       rethrow;
     }
   }
 
-  Future<void> saveUserData(Map<String, Object> data) async {
+  // Save or update user data
+  Future<void> saveUserData(Map<String, dynamic> data) async {
     bool hasId = data['id'] != null;
     final user = User(
-      id: hasId ? data['id'] as String : Random().nextDouble().toString(),
+      id: data['id'] ?? Uuid().v4(),
       username: data['username'] as String,
       email: data['email'] as String,
       password: data['password'] as String,
     );
 
     if (hasId) {
-      return updateUser(user);
+      await updateUser(user);
     } else {
-      return addUser(user);
+      await addUser(user);
     }
   }
 
-  Future<void> registerAuthList(String email, String password) async {
-    final apiKey = "AIzaSyDZzyGnC-bH0AdJEqJ2_71qK49uenLIn7M";
-    final url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$apiKey";
-
+  // User login
+  Future<String?> loginUser(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse(url),
+        Uri.parse('$_baseUrl/auth/user'),
+        headers: _headers,
         body: jsonEncode({
           'email': email,
           'password': password,
@@ -106,55 +118,17 @@ class UserService with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        print("Usuário registrado com sucesso no Firebase Authentication!");
+        print(response.body);
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(response.body);
+        print(decodedToken);
+
+        return response.body;
       } else {
-        final errorData = jsonDecode(response.body);
-        throw Exception(
-            "Erro ao registrar usuário: ${errorData['error']['message']}");
+        final error = jsonDecode(response.body);
+        throw Exception('Error authenticating user: ${error['message']}');
       }
     } catch (e) {
-      print("Erro de requisição: $e");
-      return null;
-    }
-  }
-
-  Future<Map<String, String>?> loginUser(Map<String, Object> formData) async {
-    final apiKey = "AIzaSyDZzyGnC-bH0AdJEqJ2_71qK49uenLIn7M";
-    final url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$apiKey";
-
-    try {
-      final email = formData['email'] as String;
-      final password = formData['password'] as String;
-
-      final response = await http.post(
-        Uri.parse(url),
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-          'returnSecureToken': true,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        print(data);
-        final uid = data['localId'];
-        final token = data['idToken'];
-
-        print("UID: $uid");
-        print("ID Token: $token");
-        return {
-          'idToken': token,
-          'uid': uid,
-        };
-      } else {
-        final errorData = jsonDecode(response.body);
-        throw Exception(
-            "Erro ao autenticar usuário: ${errorData['error']['message']}");
-      }
-    } catch (e) {
-      print("Erro de requisição: $e");
+      debugPrint('Error in loginUser: $e');
       return null;
     }
   }

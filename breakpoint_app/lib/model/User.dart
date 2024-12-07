@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 
 class User with ChangeNotifier {
-  String _id;
+  final String _id;
   String _username;
   String _email;
   String _password;
@@ -31,7 +32,7 @@ class User with ChangeNotifier {
     required String username,
     required String email,
     required String password,
-  })  : _id = id,
+  })   : _id = id,
         _username = username,
         _email = email,
         _password = password;
@@ -45,15 +46,14 @@ class User with ChangeNotifier {
   factory User.fromJson(String id, Map<String, dynamic> json) {
     return User(
         id: id,
-        username: json['username'],
+        username: json['name'],
         email: json['email'],
         password: json['password']);
   }
 
   Map<String, dynamic> toJson(){
     final Map<String, dynamic> data = {
-      'id' : _id,
-      'username': _username,
+      'name': _username,
       'email' : _email,
       'password' : _password,
     };

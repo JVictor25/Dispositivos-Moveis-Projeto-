@@ -43,8 +43,10 @@ class _ClockState extends State<Clock> {
   }
 
   String _formatTime(DateTime startDateTime) {
-    DateTime now = DateTime.now();
-    Duration difference = now.difference(startDateTime);
+    DateTime now = DateTime.now().toUtc();
+    DateTime nowWithoutMilliseconds = DateTime(
+        now.year, now.month, now.day, now.hour, now.minute, now.second);
+    final difference = nowWithoutMilliseconds.difference(startDateTime);
 
     int years = (difference.inDays / 365).floor();
     int months = ((difference.inDays % 365) / 30).floor();

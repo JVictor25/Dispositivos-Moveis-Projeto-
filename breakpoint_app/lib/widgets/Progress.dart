@@ -16,9 +16,10 @@ class _ProgressState extends State<Progress> {
   final double maxProgressValue = 100;
 
   double calculateProgress(DateTime targetDate) {
-    final now = DateTime.now();
-    final difference = now.difference(targetDate);
-
+    DateTime now = DateTime.now().toUtc();
+    DateTime nowWithoutMilliseconds = DateTime(
+        now.year, now.month, now.day, now.hour, now.minute, now.second);
+    final difference = nowWithoutMilliseconds.difference(targetDate);
     if (difference.inMinutes <= 10080) {
       return (difference.inMinutes) / 10080 * maxProgressValue;
     } else if (difference.inMinutes <= 20160) {
@@ -43,8 +44,10 @@ class _ProgressState extends State<Progress> {
   }
 
   String nextMilestone(DateTime targetDate) {
-    final now = DateTime.now();
-    final difference = now.difference(targetDate);
+    DateTime now = DateTime.now().toUtc();
+    DateTime nowWithoutMilliseconds = DateTime(
+        now.year, now.month, now.day, now.hour, now.minute, now.second);
+    final difference = nowWithoutMilliseconds.difference(targetDate);
 
     if (difference.inMinutes <= 10080) {
       return "1 Semana";
@@ -90,7 +93,10 @@ class _ProgressState extends State<Progress> {
             Center(
               child: Text(
                 '${progress.round()}%',
-                style: TextStyle(color: Color(0xff133E87), fontSize: 24, fontFamily: 'PoppinsRegular'),
+                style: TextStyle(
+                    color: Color(0xff133E87),
+                    fontSize: 24,
+                    fontFamily: 'PoppinsRegular'),
               ),
             ),
           ],

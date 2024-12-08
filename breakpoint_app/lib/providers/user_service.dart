@@ -118,10 +118,6 @@ class UserService with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
-        Map<String, dynamic> decodedToken = JwtDecoder.decode(response.body);
-        print(decodedToken);
-
         return response.body;
       } else {
         final error = jsonDecode(response.body);

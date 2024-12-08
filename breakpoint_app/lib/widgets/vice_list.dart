@@ -1,45 +1,71 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:async';
-import 'package:breakpoint_app/components/vice_item.dart';
-
-import '../model/Vice.dart';
+import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../components/vice_item.dart';
+import '../model/Vice.dart';
+import '../providers/vice_provider.dart';
 
-class ViceList extends StatelessWidget {
-   final Function(Vice) onDelete;
+class ViceList extends StatefulWidget {
+  final Function(Vice) onDelete;
 
   const ViceList({
-    super.key,
-    required List<Vice> vicesList,
+    Key? key,
     required this.onDelete,
-  }) : _vicesList = vicesList;
+  }) : super(key: key);
 
-  final List<Vice> _vicesList;
-   @override
+  @override
+  State<ViceList> createState() => _ViceListState();
+}
+
+class _ViceListState extends State<ViceList> {
+  @override
+  void initState() {
+    super.initState();
+    _fetchVices(); // Inicializa o carregamento no initState
+  }
+
+  Future<void> _fetchVices() async {
+    final activeUser = Provider.of<ActiveUser>(context, listen: false);
+    final provider = Provider.of<ViceProvider>(context, listen: false);
+    await provider.fetchVices(activeUser.currentUser!); // Atualiza os dados no provider
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (_vicesList.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/brokenchain.png', width: 150),
-            const Text(
-              'Encontre o seu autocontrole!',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+    return Consumer<ViceProvider>(
+      builder: (context, viceProvider, child) {
+        if (viceProvider.isLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (viceProvider.vices.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/brokenchain.png', width: 150),
+                const Text(
+                  'Encontre o seu autocontrole!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
-    }
-    return ListView.builder(
-      padding: const EdgeInsets.all(8),
-      itemCount: _vicesList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ViceItem(vice: _vicesList.elementAt(index));
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: viceProvider.vices.length,
+          itemBuilder: (context, index) {
+            final vice = viceProvider.vices[index];
+            return ViceItem(
+              vice: vice,
+            );
+          },
+        );
       },
     );
   }

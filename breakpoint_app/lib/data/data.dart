@@ -1,3 +1,4 @@
+import 'package:breakpoint_app/model/DiaryEntry.dart';
 import 'package:breakpoint_app/model/User.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 import 'package:flutter/material.dart';
@@ -82,44 +83,66 @@ final Map<String, String> emotionEmojis = {
 
 List<Vice> exampleVices = [
   Vice(
-    typeofvice: 'Cigarro', 
     datesobriety: DateTime.now(), 
     dateCreation: DateTime.now(),
     viceType: 'Fumo',
-    impactType: 'money', // Exemplo de tipo de impacto
-    impactValue: 50.0, // Exemplo de valor de impacto (R$)
+    /*impactType: 'money', // Exemplo de tipo de impacto
+    impactValue: 50.0, // Exemplo de valor de impacto (R$)*/
   ),
   Vice(
-    typeofvice: 'Bebida Alcoólica',
-    datesobriety: DateTime(2024, 3, 20),
-    dateCreation: DateTime(2024, 7, 20),
+    datesobriety: DateTime(2024, 9, 20),
+    dateCreation: DateTime(2024, 10, 20),
     viceType: 'Alcool',
-    impactType: 'money', // Tipo de impacto: tempo
-    impactValue: 200,  // Exemplo de valor de impacto (R$)
+    /*impactType: 'money', // Tipo de impacto: tempo
+    impactValue: 200,  // Exemplo de valor de impacto (R$)*/
   ),
   Vice(
-    typeofvice: 'Jogos de Azar',
     datesobriety: DateTime(2024, 1, 10),
     dateCreation: DateTime(2024, 4, 10),
     viceType: 'Jogos de Azar',
-    impactType: 'money',
-    impactValue: 100.0, // Exemplo de valor de impacto (R$)
+    /*impactType: 'money',
+    impactValue: 100.0, // Exemplo de valor de impacto (R$)*/
   ),
   Vice(
-    typeofvice: 'Comer Doces',
     datesobriety: DateTime(2023, 8, 5),
     dateCreation: DateTime(2023, 10, 5),
     viceType: 'Comida',
-    impactType: 'none',
-    impactValue: null, // Exemplo de valor de impacto (horas perdidas por dia)
+    /*impactType: 'none',
+    impactValue: null, // Exemplo de valor de impacto (horas perdidas por dia)*/
   ),
   Vice(
-    typeofvice: 'Uso Excessivo de Smartphone',
     datesobriety: DateTime(2022, 7, 1),
     dateCreation: DateTime(2022, 10, 1),
     viceType: 'Tecnologia',
-    impactType: 'time', // Nenhum impacto calculável
-    impactValue: 4, // Nenhum valor de impacto
+    /*impactType: 'time', // Nenhum impacto calculável
+    impactValue: 4, // Nenhum valor de impacto*/
   ),
 ];
 
+// (NOTE): Lembrar de remover o mockData depois 
+final List<DiaryEntry> mockData = [
+  DiaryEntry(
+    title: "Diário de Bordo",
+    createdAt: DateTime(2021, 11, 1),
+    emotion: "Feliz",
+    text: "Hoje foi um dia muito bom!",
+  ),
+  DiaryEntry(
+    title: "Diário de Bordo",
+    createdAt: DateTime(2024, 5, 2),
+    emotion: "Triste",
+    text: "Hoje foi um dia muito ruim!",
+  ),
+  DiaryEntry(
+    title: "Diário de Bordo",
+    createdAt: DateTime(2024, 11, 3),
+    emotion: "Raiva",
+    text: "Hoje foi um dia muito irritante!",
+  ),
+  DiaryEntry(
+    title: "Diário de Bordo",
+    createdAt: DateTime(2024, 11, 4),
+    emotion: "Ansioso",
+    text: "Hoje foi um dia muito estressante!",
+  ),
+];

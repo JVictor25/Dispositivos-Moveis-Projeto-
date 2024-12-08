@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
+import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:breakpoint_app/widgets/Progress.dart';
 import 'package:breakpoint_app/widgets/clock.dart';
 import 'package:breakpoint_app/data/data.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/providers/vice_provider.dart';
 import 'package:breakpoint_app/routes/app_routes.dart';
-import 'package:breakpoint_app/screens/vice_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,11 +50,8 @@ class _ViceItemState extends State<ViceItem> {
   void _editVice() {
   Navigator.pushNamed(
     context,
-    AppRoutes.VICEFORMPAGE,
-    arguments: {
-      'vice': widget.vice,  // Passa o vice para edição
-      'isModifying': true,   // Indica que estamos no modo de edição
-    },
+    AppRoutes.VICEFORM,
+    arguments: widget.vice
   );
 }
 
@@ -64,7 +61,7 @@ class _ViceItemState extends State<ViceItem> {
       onTap: () => Navigator.of(context)
           .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice),
       child: Dismissible(
-        key: Key(widget.vice.typeofvice),
+        key: Key(widget.vice.viceType),
         direction: DismissDirection.horizontal, // Permitir deslizar para ambos os lados
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.endToStart) {
@@ -82,7 +79,7 @@ class _ViceItemState extends State<ViceItem> {
              //_editVice();
           } else if (direction == DismissDirection.endToStart) {
             // Deslizando para a esquerda: exclui o vício
-            Provider.of<ViceProvider>(context, listen: false).removeVice(widget.vice);
+            Provider.of<ViceProvider>(context, listen: false).removeVice(widget.vice, Provider.of<ActiveUser>(context, listen: false).currentUser!);
           }
         },
         background: Card(
@@ -90,7 +87,7 @@ class _ViceItemState extends State<ViceItem> {
           color: Colors.blueAccent,
           child: Container(
               padding: const EdgeInsets.all(16.0),
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               child: Icon(Icons.edit, color: Colors.white)),
         ),
         secondaryBackground: Card(
@@ -98,7 +95,7 @@ class _ViceItemState extends State<ViceItem> {
           color: Colors.red,
           child: Container(
               padding: const EdgeInsets.all(16.0),
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.centerRight,
               child: Icon(Icons.delete, color: Colors.white)),
         ),
         
@@ -120,7 +117,7 @@ class _ViceItemState extends State<ViceItem> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        widget.vice.typeofvice,
+                        widget.vice.viceType,
                         style: TextStyle(
                             fontFamily: 'PoppinsRegular',
                             fontSize: 16,

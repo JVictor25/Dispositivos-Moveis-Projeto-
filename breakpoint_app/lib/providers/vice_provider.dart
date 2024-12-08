@@ -1,34 +1,79 @@
-import 'package:breakpoint_app/data/data.dart';
+import 'package:breakpoint_app/providers/vice_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 
 class ViceProvider with ChangeNotifier {
-  final List<Vice> _vicesList = exampleVices;
+  final ViceService _viceService = ViceService();
+  final List<Vice> _vicesList = [];
+  bool _isLoading = false;
 
   List<Vice> get vices => List.unmodifiable(_vicesList);
+  bool get isLoading => _isLoading;
 
-  void addVice(Vice vice) {
-    _vicesList.add(vice);
-    notifyListeners(); // Notifica os ouvintes da mudança
+  // Busca os Vices do serviço
+  Future<List<Vice>> fetchVices(String _bearerToken) async {
+    _isLoading = true;
+    try {
+      final fetchedVices = await _viceService.fetchVices(_bearerToken);
+      _vicesList.clear();
+      // (NOTE): Adiciona mockData apenas para testes
+      _vicesList.addAll(fetchedVices);
+      _isLoading = false;
+      notifyListeners();
+      return fetchedVices;
+    } catch (e) {
+      print("Error fetching vices: $e");
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
   }
-   // Método para atualizar o Vice
-  void updateVice(Vice updatedVice) {
-  // Busca o índice do Vice usando o id
-  int index = _vicesList.indexWhere((vice) => vice.id == updatedVice.id);
 
-  if (index != -1) {
-    // Se encontrar o índice, substitui o item da lista
-    _vicesList[index] = updatedVice;
-    notifyListeners();
+  // Adiciona um novo Vice
+  Future<void> addVice(Vice vice, String _bearerToken) async {
+    _isLoading = true;
+    try {
+      await _viceService.addVice(vice, _bearerToken);
+      _vicesList.add(vice);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print("Error adding vice: $e");
+      _isLoading = false;
+      notifyListeners();
+    }
   }
-}
 
+  // Atualiza um Vice existente
+  Future<void> updateVice(Vice updatedVice, String _bearerToken) async {
+    _isLoading = true;
+    try {
+      await _viceService.updateVice(updatedVice, _bearerToken);
+      int index = _vicesList.indexWhere((vice) => vice.id == updatedVice.id);
+      if (index != -1) {
+        _vicesList[index] = updatedVice;
+      }
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print("Error updating vice: $e");
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
-  void removeVice(Vice vice) {
-    _vicesList.removeWhere((v) =>
-        v.typeofvice == vice.typeofvice &&
-        v.datesobriety == vice.datesobriety &&
-        v.viceType == vice.viceType);
-    notifyListeners(); // Notifica os ouvintes da mudança
+  // Remove um Vice
+  Future<void> removeVice(Vice vice, String _bearerToken) async {
+    _isLoading = true;
+    try {
+      await _viceService.removeVice(vice, _bearerToken);
+      _vicesList.removeWhere((v) => v.id == vice.id);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print("Error removing vice: $e");
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

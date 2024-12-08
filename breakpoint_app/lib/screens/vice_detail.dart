@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable, unused_field, prefer_interpolation_to_compose_strings
 import 'package:breakpoint_app/model/Vice.dart';
+import 'package:breakpoint_app/providers/active_user.dart';
+import 'package:breakpoint_app/providers/vice_provider.dart';
 import 'package:breakpoint_app/widgets/Progress.dart';
 import 'package:breakpoint_app/widgets/calendar.dart';
 import 'package:breakpoint_app/widgets/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ViceDetail extends StatefulWidget {
   Vice vice;
@@ -17,11 +20,13 @@ class ViceDetail extends StatefulWidget {
 class _ViceDetailState extends State<ViceDetail> {
   @override
   Widget build(BuildContext context) {
+    final viceProvider = Provider.of<ViceProvider>(context);
+    final vice = viceProvider.vices.firstWhere((v) => v.id == widget.vice.id);
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Color(0xfff5f5f5),
         backgroundColor: Color(0xff133E87),
-        title: Text(widget.vice.typeofvice),
+        title: Text(vice.viceType),
       ),
       body: SingleChildScrollView(
           child: Container(
@@ -39,7 +44,7 @@ class _ViceDetailState extends State<ViceDetail> {
                     SizedBox(
                       height: 20,
                     ),
-                    Progress(date: widget.vice.datesobriety),
+                    Progress(date: vice.datesobriety),
                   ],
                 ),
                 Column(
@@ -64,8 +69,8 @@ class _ViceDetailState extends State<ViceDetail> {
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
-                    Clock(date: widget.vice.datesobriety),
-                    widget.vice.impactType == 'time'
+                    Clock(date: vice.datesobriety),
+                    /*vice.impactType == 'time'
                         ? Column(
                             children: [
                               Text(
@@ -77,7 +82,7 @@ class _ViceDetailState extends State<ViceDetail> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                '${(widget.vice.impactValue * widget.vice.dateCreation.difference(widget.vice.datesobriety).inDays).toString()} horas',
+                                '${(vice.impactValue * vice.dateCreation.difference(vice.datesobriety).inDays) < 0 ? 0 : (vice.impactValue * vice.dateCreation.difference(vice.datesobriety).inDays).toString()} horas',
                                 style: TextStyle(
                                   fontFamily: 'PoppinsRegular',
                                   fontSize: 14,
@@ -87,7 +92,7 @@ class _ViceDetailState extends State<ViceDetail> {
                               ),
                             ],
                           )
-                        : widget.vice.impactType == 'money'
+                        : vice.impactType == 'money'
                             ? Column(
                                 children: [
                                   Text(
@@ -104,10 +109,14 @@ class _ViceDetailState extends State<ViceDetail> {
                                           locale: 'pt_BR',
                                           symbol: '',
                                           decimalDigits: 2,
-                                        ).format(widget.vice.impactValue *
-                                            widget.vice.dateCreation
+                                        ).format(vice.impactValue *
+                                            vice.dateCreation
                                                 .difference(
-                                                    widget.vice.datesobriety)
+                                                    vice.datesobriety)
+                                                .inDays < 0 ? 0 : vice.impactValue *
+                                            vice.dateCreation
+                                                .difference(
+                                                    vice.datesobriety)
                                                 .inDays),
                                     style: TextStyle(
                                         fontFamily: 'PoppinsRegular',
@@ -117,22 +126,23 @@ class _ViceDetailState extends State<ViceDetail> {
                                   ),
                                 ],
                               )
-                            : Row(
-                                children: [
-                                  Text(
-                                    "Imensurável...",
-                                    style: TextStyle(
-                                        fontFamily: 'PoppinsRegular',
-                                        fontSize: 14,
-                                        color: Color(0xff133E87),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Icon(
-                                    Icons.favorite,
-                                    color: Colors.red,
-                                  )
-                                ],
-                              )
+                            : */
+                    Row(
+                      children: [
+                        Text(
+                          "Imensurável...",
+                          style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14,
+                              color: Color(0xff133E87),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      ],
+                    )
                   ],
                 ),
               ],
@@ -142,16 +152,23 @@ class _ViceDetailState extends State<ViceDetail> {
               child: Column(
                 children: [
                   Calendar(
-                      dateCreation: widget.vice.dateCreation,
-                      datesobriety: widget.vice.datesobriety),
+                      dateCreation: vice.dateCreation,
+                      datesobriety: vice.datesobriety),
                   SizedBox(
                     height: 16,
                   ),
                   ElevatedButton(
                     onPressed: () {
-                    setState(() {
-                      widget.vice = widget.vice.copyWith(datesobriety: DateTime.now());
-                    });
+                      final updatedVice =
+                          vice.copyWith(datesobriety: DateTime.now().toUtc());
+                      viceProvider
+                          .updateVice(
+                              updatedVice,
+                              Provider.of<ActiveUser>(context, listen: false)
+                                  .currentUser!)
+                          .then((value) {
+                        Navigator.of(context).pop();
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),

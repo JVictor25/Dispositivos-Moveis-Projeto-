@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 import 'package:breakpoint_app/model/Medal.dart';
@@ -25,12 +27,15 @@ class MedalList extends StatelessWidget {
       return const Color(0xFFC0C0C0);
     }
     if (months >= 3) {
-      return const Color(0xFFCD7F32);
+      return const Color.fromARGB(255, 155, 86, 17);
     }
     return const Color(0xFFF08080);
   }
 
   String _formatSobrietyTime(int months) {
+    if (months == 0){
+      return "Parabéns pela iniciativa!!";
+    }
     if (months >= 12) {
       int years = months ~/ 12;
       int remainingMonths = months % 12;
@@ -73,8 +78,8 @@ class MedalList extends StatelessWidget {
         final months = _timeBetween(vicesList[index].datesobriety, now);
         final medalColor = _getMedalColor(months);
 
-        return Card.filled(
-          color: const Color(0x7580C4E9),
+        return Card(
+          color: Color(0xffE6E6FA),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -89,13 +94,21 @@ class MedalList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        vicesList[index].typeofvice,
-                        style: Theme.of(context).textTheme.labelLarge,
+                        vicesList[index].viceType,
+                        style: TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '${_formatSobrietyTime(months)}',
-                        style: Theme.of(context).textTheme.titleSmall,
+                        style: TextStyle(
+                            fontFamily: 'PoppinsRegular',
+                            fontSize: 14,
+                            color: Color(0xff133E87),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

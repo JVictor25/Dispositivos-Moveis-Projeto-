@@ -35,16 +35,10 @@ class _LoginscreenState extends State<Loginscreen> {
       return;
     }
     _formKey.currentState?.save();
-    
-    print(_formData['email'] );
-    print(_formData['password']);
-    final loginResult = await Provider.of<UserService>(context, listen: false).loginUser(_formData);
+
+    final loginResult = await Provider.of<UserService>(context, listen: false).loginUser(_formData['email'] as String, _formData['password'] as String);
       if (loginResult != null) {
-        print("object");
-        final idToken = loginResult['idToken'];
-        final uid = loginResult['uid'];
-        final activeUser = Provider.of<UserService>(context, listen: false).fetchUser(idToken!);
-        Provider.of<ActiveUser>(context, listen: false).setCurrentUser(activeUser);
+        Provider.of<ActiveUser>(context, listen: false).setCurrentUser(loginResult as String);
         Navigator.of(context).pushNamed(AppRoutes.HOMESCREEN);
       }
   }
@@ -179,7 +173,7 @@ class _LoginscreenState extends State<Loginscreen> {
                           }
 
                           final namePart = email.split('@')[0];
-                          if (namePart.length < 5) {
+                          if (namePart.length < 4) {
                             return 'Pelo menos 5 caracteres antes do @';
                           }
 

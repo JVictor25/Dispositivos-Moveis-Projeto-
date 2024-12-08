@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:breakpoint_app/model/DiaryEntry.dart';
+import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:breakpoint_app/providers/diary_service.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,7 @@ final List<DiaryEntry> mockData = [
 
 class DiaryProvider with ChangeNotifier {
   DiaryService _diaryService = DiaryService();
+  ActiveUser _activeUser = ActiveUser();
   final List<DiaryEntry> _diaryEntries = [];
   bool _isLoading = false;
 
@@ -41,9 +43,10 @@ class DiaryProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> fetchEntries() async {
+    final bearerToken = _activeUser.currentUser;
     _isLoading = true;
     try {
-      final entries = await _diaryService.fetchDiaryEntries();
+      final entries = await _diaryService.fetchDiaryEntries(bearerToken!);
       _diaryEntries.clear();
       // (NOTE): Lembrar de remover o mockData depois
       _diaryEntries.addAll(entries + mockData);
@@ -57,10 +60,11 @@ class DiaryProvider with ChangeNotifier {
   }
 
   Future<void> addEntry(DiaryEntry diaryEntry) async {
+    final bearerToken = _activeUser.currentUser;
     _isLoading = true;
     notifyListeners();
     try {
-      await _diaryService.addDiaryEntry(diaryEntry);
+      await _diaryService.addDiaryEntry(diaryEntry, bearerToken!);
       _diaryEntries.add(diaryEntry);
 
       _isLoading = false;
@@ -73,10 +77,11 @@ class DiaryProvider with ChangeNotifier {
   }
 
   Future<void> removeEntry(DiaryEntry diaryEntry) async {
+    final bearerToken = _activeUser.currentUser;
     _isLoading = true;
     notifyListeners();
     try {
-      await _diaryService.removeDiaryEntry(diaryEntry);
+      await _diaryService.removeDiaryEntry(diaryEntry, bearerToken!);
       _diaryEntries.remove(diaryEntry);
       
       _isLoading = false;

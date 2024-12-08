@@ -88,9 +88,8 @@ class _DiaryListState extends State<DiaryList> {
   }
 
   Widget _buildEntryCard(DiaryEntry entry) {
-    // final entry = entries[index];
-    final color = emotionColors[entry.emotion] ?? Colors.white;
-    final emoji = emotionEmojis[entry.emotion] ?? "❓";
+    final color = emotionColors[entry.emotion] ?? const Color.fromARGB(153, 199, 199, 199);
+    final emoji = emotionEmojis[entry.emotion] ?? "👤";
     return Card.filled(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(9),
@@ -147,7 +146,7 @@ class _DiaryListState extends State<DiaryList> {
     return Column(
       children: [
         SizedBox(
-          height: 50,
+          height: 80,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: months.length,
@@ -165,11 +164,14 @@ class _DiaryListState extends State<DiaryList> {
                   selected: isSelected,
                   onSelected: (selected) {
                     setState(() {
-                      selectedMonth = index + 1; // Atualiza o mês selecionado
+                      selectedMonth = index + 1;
                     });
                   },
                   selectedColor: Color(0xFF134B70),
-                  backgroundColor: Color.fromARGB(96, 19, 75, 112)                ),
+                  backgroundColor: Color.fromARGB(96, 19, 75, 112),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16)),
+                  ),
               );
             },
           ),

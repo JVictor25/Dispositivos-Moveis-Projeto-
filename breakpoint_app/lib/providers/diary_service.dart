@@ -5,18 +5,15 @@ import 'package:http/http.dart' as http;
 
 class DiaryService {
   final String _baseUrl = "https://breakpoint.onrender.com";
-  final String _bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCcmVha3BvaW50IiwiZXhwIjoxNzMzNTMwMTMyLCJzdWIiOiI2OTUxMjBiMi0yZWVmLTRmYjUtODVjZi0zNmRjYTE2MjI3MWMifQ.f0WJKa6Ak8od0KGUtsA5chslzdqskQwy8fCUs9jQuWc";
 
-  Map<String, String> get _headers => {
-    "Content-Type": "application/json",
-    "Authorization": 'Bearer $_bearerToken',
-  };
-
-  Future<List<DiaryEntry>> fetchDiaryEntries() async {
+  Future<List<DiaryEntry>> fetchDiaryEntries(String token) async {
     try {
       final response = await http.get(
         Uri.parse("$_baseUrl/user/diary/"),
-        headers: _headers,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token',
+        },
       );
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -29,11 +26,14 @@ class DiaryService {
     }
   }
 
-  Future<void> addDiaryEntry(DiaryEntry diaryEntry) async {
+  Future<void> addDiaryEntry(DiaryEntry diaryEntry, String token) async {
     try {
       final response = await http.post(
         Uri.parse("$_baseUrl/user/diary/"),
-        headers: _headers,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token',
+        },
         body: json.encode(diaryEntry.toJson()),
       );
       if (response.statusCode != 200) {
@@ -44,11 +44,14 @@ class DiaryService {
     }
   }
 
-  Future<void> removeDiaryEntry(DiaryEntry diaryEntry) async {
+  Future<void> removeDiaryEntry(DiaryEntry diaryEntry, String token) async {
     try {
       final response = await http.delete(
         Uri.parse("$_baseUrl/user/diary/${diaryEntry.id}"),
-        headers: _headers,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token',
+        },
       );
       if (response.statusCode != 200) {
         throw Exception("Failed to remove diary entry");

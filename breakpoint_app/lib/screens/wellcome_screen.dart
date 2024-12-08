@@ -1,25 +1,19 @@
-// ignore_for_file: prefer_const_constructors
 
-import 'package:breakpoint_app/providers/active_user.dart';
-import 'package:breakpoint_app/providers/user_service.dart';
 import 'package:breakpoint_app/routes/app_routes.dart';
-import 'package:breakpoint_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:breakpoint_app/model/User.dart';
-import 'package:provider/provider.dart';
+import 'package:breakpoint_app/widgets/register_user.dart';
 
 class Wellcome extends StatelessWidget {
   const Wellcome({super.key});
 
+  void _showRegisterUser(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => Registeruser()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    User _visitor = User(
-      id: '1',
-      username: "Visitante",
-      email: "Visitante@breakpoin.com",
-      password: "000",
-    );
-
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -29,15 +23,16 @@ class Wellcome extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
-                decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                  BoxShadow(
-                    color: Color(0xff424242).withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    offset: Offset(3, 3),
-                  )
-                ]),
-                child: Image.asset('assets/images/target.png', width: 200)),
+              decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                BoxShadow(
+                  color: Color(0xff424242).withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                  offset: Offset(3, 3),
+                )
+              ]),
+              child: Image.asset('assets/images/target.png', width: 200),
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -45,10 +40,11 @@ class Wellcome extends StatelessWidget {
               "Bem-Vindo(a) ao Breakpoint!",
               textDirection: TextDirection.ltr,
               style: TextStyle(
-                  fontFamily: 'PoppinsRegular',
-                  fontSize: 18,
-                  color: Color(0xff424242),
-                  fontWeight: FontWeight.bold),
+                fontFamily: 'PoppinsRegular',
+                fontSize: 18,
+                color: Color(0xff424242),
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Text(
               "Estamos aqui para ajudá-lo a focar em seu objetivo e alcançar suas metas. \n Vamos começar?",
@@ -75,41 +71,51 @@ class Wellcome extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('home', arguments: _visitor);
+                            _showRegisterUser(context); // Passando o context aqui
                           },
                           style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 50),
-                              backgroundColor: Color(0xffA8DADC)),
+                            minimumSize: const Size(double.infinity, 50),
+                            backgroundColor: Color(0xffA8DADC),
+                          ),
                           child: Text(
-                            "Visitante",
+                            "Comece sua jornada",
                             style: TextStyle(
-                                fontFamily: "PoppinsLight",
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87),
+                              fontFamily: "PoppinsLight",
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
-                        Text("Já tem uma conta?",
-                            style: TextStyle(
-                                fontSize: 14, color: Color(0xffA8DADC))),
+                        Text(
+                          "Já tem uma conta?",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xffA8DADC),
+                          ),
+                        ),
                         OutlinedButton(
                           onPressed: () {
-                            Navigator.of(context).pushNamed(AppRoutes.LOGINSCREEN);
+                            Navigator.of(context)
+                                .pushNamed(AppRoutes.LOGINSCREEN);
                           },
                           style: OutlinedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 50),
-                              backgroundColor: Colors.transparent,
-                              side: BorderSide(
-                                  color: Color(0xffA8DADC), width: 1)),
+                            minimumSize: const Size(double.infinity, 50),
+                            backgroundColor: Colors.transparent,
+                            side: BorderSide(
+                              color: Color(0xffA8DADC),
+                              width: 1,
+                            ),
+                          ),
                           child: Text(
                             "Entrar",
                             style: TextStyle(
-                                fontFamily: "PoppinsLight",
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffA8DADC)),
+                              fontFamily: "PoppinsLight",
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xffA8DADC),
+                            ),
                           ),
                         ),
                       ],

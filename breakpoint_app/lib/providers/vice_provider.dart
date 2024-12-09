@@ -10,13 +10,11 @@ class ViceProvider with ChangeNotifier {
   List<Vice> get vices => List.unmodifiable(_vicesList);
   bool get isLoading => _isLoading;
 
-  // Busca os Vices do serviço
   Future<List<Vice>> fetchVices(String _bearerToken) async {
     _isLoading = true;
     try {
       final fetchedVices = await _viceService.fetchVices(_bearerToken);
       _vicesList.clear();
-      // (NOTE): Adiciona mockData apenas para testes
       _vicesList.addAll(fetchedVices);
       _isLoading = false;
       notifyListeners();
@@ -29,7 +27,6 @@ class ViceProvider with ChangeNotifier {
     }
   }
 
-  // Adiciona um novo Vice
   Future<void> addVice(Vice vice, String _bearerToken) async {
     _isLoading = true;
     try {
@@ -44,7 +41,7 @@ class ViceProvider with ChangeNotifier {
     }
   }
 
-  // Atualiza um Vice existente
+
   Future<void> updateVice(Vice updatedVice, String _bearerToken) async {
     _isLoading = true;
     try {
@@ -62,7 +59,7 @@ class ViceProvider with ChangeNotifier {
     }
   }
 
-  // Remove um Vice
+
   Future<void> removeVice(Vice vice, String _bearerToken) async {
     _isLoading = true;
     try {

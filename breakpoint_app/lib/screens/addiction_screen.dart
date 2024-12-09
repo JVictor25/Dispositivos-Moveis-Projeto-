@@ -9,23 +9,26 @@ class Addiction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viceProvider = Provider.of<ViceProvider>(context);
+    final activeUser = Provider.of<ActiveUser>(context);
 
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ViceList(
-          onDelete: (vice) => viceProvider.removeVice(vice, Provider.of<ActiveUser>(context, listen: false).currentUser!),
+          onDelete: (vice) => viceProvider.removeVice(vice, activeUser.currentUser!),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xffA8DADC),
-        foregroundColor: const Color(0xFF134B70),
+        backgroundColor: Color(0xFF134B70),
+        foregroundColor: Colors.white,
         onPressed: () => Navigator.pushNamed(
                 context, 
                 AppRoutes.VICEFORM, 
                 arguments: null,
-              ),
+              ).then((_) {
+        viceProvider.fetchVices(activeUser.currentUser!);
+      }),
         child: const Icon(Icons.add),
       ),
     );

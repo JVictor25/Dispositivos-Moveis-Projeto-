@@ -5,7 +5,6 @@ import 'package:breakpoint_app/model/Vice.dart';
 class ViceService {
   final String _baseUrl = "https://breakpoint.onrender.com";
 
-  // Função para buscar a lista de Vices
   Future<List<Vice>> fetchVices(String _bearerToken) async {
     try {
       final response = await http.get(
@@ -26,7 +25,6 @@ class ViceService {
     }
   }
 
-  // Função para adicionar um Vice
   Future<void> addVice(Vice vice, String _bearerToken) async {
     try {
       final response = await http.post(
@@ -45,7 +43,6 @@ class ViceService {
     }
   }
 
-  // Função para remover um Vice
   Future<void> removeVice(Vice vice, String _bearerToken) async {
     try {
       final response = await http.delete(
@@ -65,7 +62,6 @@ class ViceService {
 
   Future<void> updateVice(Vice vice, String _bearerToken) async {
     try {
-      // Deletar o vice existente
       final deleteResponse = await http.delete(
         Uri.parse("$_baseUrl/user/vice/${vice.id}"),
         headers: {
@@ -78,7 +74,6 @@ class ViceService {
         throw Exception("Failed to update vice");
       }
 
-      // Postar o vice atualizado
       final createResponse = await http.post(
         Uri.parse("$_baseUrl/user/vice/"),
         headers: {

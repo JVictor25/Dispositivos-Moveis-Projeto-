@@ -47,39 +47,44 @@ class _ViceItemState extends State<ViceItem> {
     return result;
   }
 
-  void _editVice() {
-  Navigator.pushNamed(
-    context,
-    AppRoutes.VICEFORM,
-    arguments: widget.vice
-  );
-}
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ViceProvider>(context);
+    final activeUser = Provider.of<ActiveUser>(context);
+
     return GestureDetector(
       onTap: () => Navigator.of(context)
-          .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice),
+          .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice)
+          .then((_) {
+        // Recarregar a lista quando a tela de detalhe retornar
+        provider.fetchVices(activeUser.currentUser!);
+      }),
       child: Dismissible(
         key: Key(widget.vice.viceType),
-        direction: DismissDirection.horizontal, // Permitir deslizar para ambos os lados
+        direction: DismissDirection
+            .horizontal, // Permitir deslizar para ambos os lados
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.endToStart) {
             // Caso o uuário deslize para a esquerda, confirma a exclusão
             return alertDelete();
           }
           if (direction == DismissDirection.startToEnd) {
-           _editVice();
+            Navigator.pushNamed(context, AppRoutes.VICEFORM,
+                    arguments: widget.vice)
+                .then((_) {
+              provider.fetchVices(activeUser.currentUser!);
+            });
             return false;
           }
           return true; // Previne que a exclusão aconteça ao deslizar para a direita
         },
         onDismissed: (direction) {
           if (direction == DismissDirection.startToEnd) {
-             //_editVice();
+            //_editVice();
           } else if (direction == DismissDirection.endToStart) {
             // Deslizando para a esquerda: exclui o vício
-            Provider.of<ViceProvider>(context, listen: false).removeVice(widget.vice, Provider.of<ActiveUser>(context, listen: false).currentUser!);
+            provider.removeVice(widget.vice, activeUser.currentUser!);
           }
         },
         background: Card(
@@ -98,7 +103,7 @@ class _ViceItemState extends State<ViceItem> {
               alignment: Alignment.centerRight,
               child: Icon(Icons.delete, color: Colors.white)),
         ),
-        
+
         child: Card(
           shadowColor: Colors.black87.withOpacity(0.3),
           color: Color(0xffE6E6FA),

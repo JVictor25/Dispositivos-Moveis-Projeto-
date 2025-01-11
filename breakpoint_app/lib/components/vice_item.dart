@@ -47,26 +47,24 @@ class _ViceItemState extends State<ViceItem> {
     return result;
   }
 
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ViceProvider>(context);
     final activeUser = Provider.of<ActiveUser>(context);
-
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice)
-          .then((_) {
-        // Recarregar a lista quando a tela de detalhe retornar
-        provider.fetchVices(activeUser.currentUser!);
-      }),
+      onTap: () {
+          Navigator.of(context)
+              .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice)
+              .then((_) {
+            provider.fetchVices(activeUser.currentUser!);
+          });
+      },
       child: Dismissible(
         key: Key(widget.vice.viceType),
         direction: DismissDirection
-            .horizontal, // Permitir deslizar para ambos os lados
+            .horizontal, 
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.endToStart) {
-            // Caso o uuário deslize para a esquerda, confirma a exclusão
             return alertDelete();
           }
           if (direction == DismissDirection.startToEnd) {
@@ -77,13 +75,12 @@ class _ViceItemState extends State<ViceItem> {
             });
             return false;
           }
-          return true; // Previne que a exclusão aconteça ao deslizar para a direita
+          return true; 
         },
         onDismissed: (direction) {
           if (direction == DismissDirection.startToEnd) {
             //_editVice();
           } else if (direction == DismissDirection.endToStart) {
-            // Deslizando para a esquerda: exclui o vício
             provider.removeVice(widget.vice, activeUser.currentUser!);
           }
         },

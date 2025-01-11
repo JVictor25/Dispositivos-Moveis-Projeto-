@@ -6,35 +6,65 @@ class ViceService {
   final String _baseUrl = "https://breakpoint.onrender.com";
 
   Future<List<Vice>> fetchVices(String _bearerToken) async {
-    try {
-      final response = await http.get(
-        Uri.parse("$_baseUrl/user/vice/"),
+  try {
+    final response = await http.get(
+      Uri.parse("$_baseUrl/user/vice/"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer $_bearerToken',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to load vices");
+    }
+
+
+    final List<dynamic> data = json.decode(response.body);
+    final basicVices = data.map((entry) => Vice.fromJson(entry)).toList();
+
+    // Passo 2: Buscar os detalhes para cada vice
+    final List<Vice> completeVices = [];
+    for (final vice in basicVices) {
+      final detailResponse = await http.get(
+        Uri.parse("$_baseUrl/user/vice/${vice.id}"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $_bearerToken',
         },
       );
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        return data.map((entry) => Vice.fromJson(entry)).toList();
+
+      if (detailResponse.statusCode == 200) {
+        final detailData = json.decode(detailResponse.body);
+        completeVices.add(Vice.fromJson(detailData));
       } else {
-        throw Exception("Failed to load vices");
+        throw Exception("Failed to load details for vice with ID: ${vice.id}");
       }
-    } catch (e) {
-      rethrow;
     }
+
+    return completeVices;
+  } catch (e) {
+    print("Erro ao buscar vices completos: $e");
+    rethrow;
   }
+}
 
   Future<void> addVice(Vice vice, String _bearerToken) async {
     try {
+      print(json.encode(vice.toJson()));
+
       final response = await http.post(
         Uri.parse("$_baseUrl/user/vice/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $_bearerToken',
         },
-        body: json.encode(vice.toJson()),
+        body: json.encode(vice.toJsonAdd()),
       );
+
+      print(response.statusCode);
+      print(response.body);
+
       if (response.statusCode != 200) {
         throw Exception("Failed to add vice");
       }
@@ -62,20 +92,8 @@ class ViceService {
 
   Future<void> updateVice(Vice vice, String _bearerToken) async {
     try {
-      final deleteResponse = await http.delete(
+      final response = await http.put(
         Uri.parse("$_baseUrl/user/vice/${vice.id}"),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer $_bearerToken',
-        },
-      );
-
-      if (deleteResponse.statusCode != 200) {
-        throw Exception("Failed to update vice");
-      }
-
-      final createResponse = await http.post(
-        Uri.parse("$_baseUrl/user/vice/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $_bearerToken',
@@ -83,12 +101,12 @@ class ViceService {
         body: json.encode(vice.toJson()),
       );
 
-      if (createResponse.statusCode != 200) {
+      if (response.statusCode != 200) {
         throw Exception("Failed to updated vice");
       }
     } catch (e) {
-      print("Error updating vice by delete and create: $e");
       rethrow;
     }
   }
+
 }

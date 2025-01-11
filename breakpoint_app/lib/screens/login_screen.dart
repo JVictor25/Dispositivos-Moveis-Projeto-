@@ -36,11 +36,22 @@ class _LoginscreenState extends State<Loginscreen> {
     }
     _formKey.currentState?.save();
 
-    final loginResult = await Provider.of<UserService>(context, listen: false).loginUser(_formData['email'] as String, _formData['password'] as String);
-      if (loginResult != null) {
-        Provider.of<ActiveUser>(context, listen: false).setCurrentUser(loginResult as String);
-        Navigator.of(context).pushNamed(AppRoutes.HOMESCREEN);
-      }
+    final loginResult = await Provider.of<UserService>(context, listen: false)
+        .loginUser(
+            _formData['email'] as String, _formData['password'] as String);
+    if (loginResult != null) {
+      Provider.of<ActiveUser>(context, listen: false)
+          .setCurrentUser(loginResult as String);
+      Navigator.of(context).pushNamed(AppRoutes.HOMESCREEN);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao efetuar login!'),
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -219,20 +230,21 @@ class _LoginscreenState extends State<Loginscreen> {
                                 });
                               },
                             )),
-                            onSaved: (password) => _formData['password'] = password ?? '',
-                          validator: (_password){
-                            final password = _password ?? '';
+                        onSaved: (password) =>
+                            _formData['password'] = password ?? '',
+                        validator: (_password) {
+                          final password = _password ?? '';
 
-                            if (password.trim().isEmpty) {
-                              return 'Senha é obrigatório';
-                            }
+                          if (password.trim().isEmpty) {
+                            return 'Senha é obrigatório';
+                          }
 
-                            if (password.trim().length < 5) {
-                              return 'Precisa no mínimo de 5 letras.';
-                            }
+                          if (password.trim().length < 5) {
+                            return 'Precisa no mínimo de 5 letras.';
+                          }
 
-                            return null;
-                          },
+                          return null;
+                        },
                       ),
                     ),
                     Padding(

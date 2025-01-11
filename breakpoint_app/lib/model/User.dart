@@ -6,6 +6,9 @@ class User with ChangeNotifier {
   String _username;
   String _email;
   String _password;
+  final DateTime _createdAt;
+  DateTime _updatedAt;
+  
 
   String get id => _id;
 
@@ -32,24 +35,34 @@ class User with ChangeNotifier {
     required String username,
     required String email,
     required String password,
-  })   : _id = id,
+    required DateTime createdAt,
+    DateTime? updatedAt,
+  })  : _id = id,
         _username = username,
         _email = email,
-        _password = password;
+        _password = password, // Define valor padrão para password se for null
+        _createdAt = createdAt,
+        _updatedAt = updatedAt ?? DateTime.now(); // Define valor padrão para updatedAt
 
   User.fromUser(User _user)
       : _id = _user._id,
         _username = _user._username,
         _email = _user._email,
-        _password = _user._password;
+        _password = _user._password,
+        _createdAt = _user._createdAt,
+        _updatedAt = _user._updatedAt;
 
-  factory User.fromJson(String id, Map<String, dynamic> json) {
-    return User(
-        id: id,
-        username: json['name'],
-        email: json['email'],
-        password: json['password']);
-  }
+  factory User.fromJson(Map<String, dynamic> json) {
+  return User(
+    id: json['id'],
+    username: json['name'],
+    email: json['email'],
+    createdAt: DateTime.parse(json['createdAt']),
+    updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+    password: json['password'],
+  );
+}
+
 
   Map<String, dynamic> toJson(){
     final Map<String, dynamic> data = {

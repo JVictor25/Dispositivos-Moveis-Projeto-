@@ -1,5 +1,4 @@
 import 'package:breakpoint_app/model/DiaryEntry.dart';
-import 'package:breakpoint_app/model/User.dart';
 import 'package:breakpoint_app/model/Vice.dart';
 import 'package:flutter/material.dart';
 
@@ -29,47 +28,42 @@ const Map<String, IconData> iconMap = {
   'doce': Icons.cake,
 };
 
-const List<String> viceType = [
-  'Geral',
-  'Alcool',
-  'Fumo',
-  'Jogos de Azar',
-  'Comida',
-  'Drogas',
-  'Tecnologia',
-  'Trabalho',
-  'Relacionamentos',
-  'Redes Sociais',
-  'Compras',
-  'Séries e Filmes',
-  'Exercício Excessivo',
-  'Cafeína',
-  'Apostas Esportivas',
-  'Celular',
-  'Internet',
-  'Sono',
-  'Estimulantes',
-  'Jogos Online',
-  'Apostas Financeiras',
-  'Automedicação',
-  'Moda e Aparência',
-  'Doce',
-];
+final Map<String, String> imageMap = {
+  'Guerreiro recruta': 'assets/images/villager.png',
+  'Guerreiro de Bronze': 'assets/images/bronze.png',
+  'Cavaleiro de Prata': 'assets/images/prata.png',
+  'Guardião do Olimpo': 'assets/images/guardião.png',
+  'Titã do Foco': 'assets/images/titan.png',
+  'Deus(a) da Disciplina': 'assets/images/Deus.png',
+  'Imortal da Superação': 'assets/images/imortal.png'
+};
 
-List<User> userList = [
-    User(
-      id: '0',
-      username: "Admin",
-      email: "Admin@breakpoint.com",
-      password: "123",
-    ),
-    User(
-      id: '0',
-      username: "Visitante",
-      email: "Visitante@breakpoin.com",
-      password: "000",
-      )
-  ];
+const List<String> viceType = [
+  'geral',
+  'alcool',
+  'fumo',
+  'jogos de azar',
+  'comida',
+  'drogas',
+  'tecnologia',
+  'trabalho',
+  'relacionamentos',
+  'redes sociais',
+  'compras',
+  'series e filmes',
+  'exercicio excessivo',
+  'cafeina',
+  'apostas esportivas',
+  'celular',
+  'internet',
+  'sono',
+  'estimulantes',
+  'jogos online',
+  'apostas financeiras',
+  'automedicacao',
+  'moda e aparencia',
+  'doce',
+];
 
 List<String> emotions = ["Feliz", "Triste", "Raiva", "Ansioso", "Cansado"];
 
@@ -81,45 +75,46 @@ final Map<String, String> emotionEmojis = {
   "Cansado": "😩",
 };
 
+// (NOTE): Lembrar de remover o mockData depois
 List<Vice> exampleVices = [
   Vice(
-    datesobriety: DateTime.now(), 
-    dateCreation: DateTime.now(),
-    viceType: 'Fumo',
-    /*impactType: 'money', // Exemplo de tipo de impacto
-    impactValue: 50.0, // Exemplo de valor de impacto (R$)*/
-  ),
+      datesobriety: DateTime.now(),
+      dateCreation: DateTime.now(),
+      viceType: 'Fumo',
+      impactType: 'money',
+      impactValue: "50.0",
+      description: ""),
   Vice(
-    datesobriety: DateTime(2024, 9, 20),
-    dateCreation: DateTime(2024, 10, 20),
-    viceType: 'Alcool',
-    /*impactType: 'money', // Tipo de impacto: tempo
-    impactValue: 200,  // Exemplo de valor de impacto (R$)*/
-  ),
+      datesobriety: DateTime(2024, 9, 20),
+      dateCreation: DateTime(2024, 10, 20),
+      viceType: 'Alcool',
+      impactType: 'money',
+      impactValue: "200",
+      description: ""),
   Vice(
-    datesobriety: DateTime(2024, 1, 10),
-    dateCreation: DateTime(2024, 4, 10),
-    viceType: 'Jogos de Azar',
-    /*impactType: 'money',
-    impactValue: 100.0, // Exemplo de valor de impacto (R$)*/
-  ),
+      datesobriety: DateTime(2024, 1, 10),
+      dateCreation: DateTime(2024, 4, 10),
+      viceType: 'Jogos de Azar',
+      impactType: 'money',
+      impactValue: "100.0",
+      description: ""),
   Vice(
-    datesobriety: DateTime(2023, 8, 5),
-    dateCreation: DateTime(2023, 10, 5),
-    viceType: 'Comida',
-    /*impactType: 'none',
-    impactValue: null, // Exemplo de valor de impacto (horas perdidas por dia)*/
-  ),
+      datesobriety: DateTime(2023, 8, 5),
+      dateCreation: DateTime(2023, 10, 5),
+      viceType: 'Comida',
+      impactType: 'none',
+      impactValue: null,
+      description: ""),
   Vice(
-    datesobriety: DateTime(2022, 7, 1),
-    dateCreation: DateTime(2022, 10, 1),
-    viceType: 'Tecnologia',
-    /*impactType: 'time', // Nenhum impacto calculável
-    impactValue: 4, // Nenhum valor de impacto*/
-  ),
+      datesobriety: DateTime(2022, 7, 1),
+      dateCreation: DateTime(2022, 10, 1),
+      viceType: 'Tecnologia',
+      impactType: 'time',
+      impactValue: "4",
+      description: ""),
 ];
 
-// (NOTE): Lembrar de remover o mockData depois 
+// (NOTE): Lembrar de remover o mockData depois
 final List<DiaryEntry> mockData = [
   DiaryEntry(
     title: "Diário de Bordo",

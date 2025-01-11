@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ActiveUser with ChangeNotifier{
   static final ActiveUser _instance = ActiveUser._internal();
-
+  
   String? _currentUser;
 
   String? get currentUser => _currentUser;

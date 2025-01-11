@@ -32,36 +32,49 @@ class UserService with ChangeNotifier {
     }
   }
 
-  Future<void> updateUser(User updatedUser) async {
+  Future<void> updateUser(Map<String, dynamic> user, String tokenJWT) async {
     try {
       final response = await http.put(
-        Uri.parse('$_baseUrl/user/${updatedUser.id}'),
-        headers: _headers,
-        body: jsonEncode(updatedUser.toJson()),
+        Uri.parse('$_baseUrl/user/'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $tokenJWT',
+        },
+        body: jsonEncode(user),
       );
 
       if (response.statusCode != 200) {
         throw Exception('Error updating user: ${response.body}');
       }
     } catch (e) {
-      debugPrint('Error in updateUser: $e');
       rethrow;
     }
   }
 
-  /*Future<User> fetchUser(String tokenJWT) async {
+  Future<Map<String, dynamic>> fetchUser(String tokenJWT) async {
     try {
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(tokenJWT);
-      String? userId = decodedToken['sub'];
-
       final response = await http.get(
-        Uri.parse('$_baseUrl/user/$userId'),
-        headers: _headers
+        Uri.parse('$_baseUrl/user/'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $tokenJWT',
+        },
       );
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return User.fromJson(data['id'], data);
+        if (response.body.isNotEmpty) {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+
+          if (data.containsKey('name') &&
+              data.containsKey('email') &&
+              data.containsKey('createdAt')) {
+            return data;
+          } else {
+            throw Exception('Missing required fields in response');
+          }
+        } else {
+          throw Exception('Response body is empty');
+        }
       } else {
         throw Exception('Error fetching user: ${response.body}');
       }
@@ -70,8 +83,7 @@ class UserService with ChangeNotifier {
       rethrow;
     }
   }
-  */
-  
+
   Future<void> deleteUser(String userId) async {
     try {
       final response = await http.delete(
@@ -90,19 +102,16 @@ class UserService with ChangeNotifier {
 
   // Save or update user data
   Future<void> saveUserData(Map<String, dynamic> data) async {
-    bool hasId = data['id'] != null;
     final user = User(
       id: data['id'] ?? Uuid().v4(),
       username: data['username'] as String,
       email: data['email'] as String,
       password: data['password'] as String,
+      createdAt: data['createdAt'] as DateTime,
+      updatedAt: data['updatedAt'] as DateTime,
     );
 
-    if (hasId) {
-      await updateUser(user);
-    } else {
-      await addUser(user);
-    }
+    await addUser(user);
   }
 
   // User login
@@ -116,8 +125,9 @@ class UserService with ChangeNotifier {
           'password': password,
         }),
       );
-
+      print(response.statusCode);
       if (response.statusCode == 200) {
+        print(response.body);
         return response.body;
       } else {
         final error = jsonDecode(response.body);

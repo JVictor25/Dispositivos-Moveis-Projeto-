@@ -11,7 +11,9 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ViceProvider(),),
+        ChangeNotifierProvider(
+          create: (context) => ViceProvider(),
+        ),
         ChangeNotifierProvider(create: (context) => ActiveUser()),
         ChangeNotifierProvider(create: (context) => UserService()),
         ChangeNotifierProvider(create: (context) => DiaryProvider())
@@ -26,6 +28,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
         navigationBarTheme: NavigationBarThemeData(
           labelTextStyle: WidgetStateProperty.all(
             TextStyle(fontSize: 14),
@@ -43,8 +51,8 @@ class MyApp extends StatelessWidget {
               color: Color(0xff133E87),
               fontWeight: FontWeight.bold),
           labelMedium: TextStyle(
-            fontFamily: 'PoppinsLight',
-            fontSize: 13,
+            fontFamily: 'PoppinsRegular',
+            fontSize: 14,
             color: Color(0xffF3F3E0),
           ),
           titleSmall: TextStyle(

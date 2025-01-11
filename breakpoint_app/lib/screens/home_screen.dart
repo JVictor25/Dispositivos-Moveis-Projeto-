@@ -34,7 +34,7 @@ class _HomescreenState extends State<Homescreen> {
             ),
           ),
         ),
-        //drawer: myDrawer(),
+        drawer: myDrawer(),
         bottomNavigationBar: NavigationBar(
           selectedIndex: _currentPageIndex,
           onDestinationSelected: (int index) {
@@ -65,9 +65,9 @@ class _HomescreenState extends State<Homescreen> {
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         ),
         body: _currentPageIndex == 0
-            ? Addiction() // Nenhuma alteração necessária aqui
+            ? Addiction()
             : _currentPageIndex == 1
-                ? Achievements() // Remova a passagem de `viceList`
+                ? Achievements()
                 : DiaryScreen(),
       ),
     );

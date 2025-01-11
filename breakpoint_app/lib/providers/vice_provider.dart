@@ -14,7 +14,9 @@ class ViceProvider with ChangeNotifier {
     _isLoading = true;
     try {
       final fetchedVices = await _viceService.fetchVices(_bearerToken);
-      _vicesList.clear();
+      if (_vicesList.isEmpty == false) {
+        _vicesList.clear();
+      }
       _vicesList.addAll(fetchedVices);
       _isLoading = false;
       notifyListeners();
@@ -23,7 +25,7 @@ class ViceProvider with ChangeNotifier {
       print("Error fetching vices: $e");
       _isLoading = false;
       notifyListeners();
-      rethrow;
+      return _vicesList;
     }
   }
 
@@ -40,7 +42,6 @@ class ViceProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   Future<void> updateVice(Vice updatedVice, String _bearerToken) async {
     _isLoading = true;
@@ -59,7 +60,6 @@ class ViceProvider with ChangeNotifier {
     }
   }
 
-
   Future<void> removeVice(Vice vice, String _bearerToken) async {
     _isLoading = true;
     try {
@@ -71,6 +71,43 @@ class ViceProvider with ChangeNotifier {
       print("Error removing vice: $e");
       _isLoading = false;
       notifyListeners();
+    }
+  }
+  String getAvatar() {
+    if (_vicesList.isEmpty) return "Sem título";
+
+    final now = DateTime.now();
+
+    Vice viceWithMostSobriety = _vicesList[0];
+    int maxSobrietyDays =
+        now.difference(viceWithMostSobriety.datesobriety).inDays;
+
+    for (final vice in _vicesList) {
+      final sobrietyDays = now.difference(vice.datesobriety).inDays;
+
+      if (sobrietyDays > maxSobrietyDays) {
+        viceWithMostSobriety = vice;
+        maxSobrietyDays = sobrietyDays;
+      }
+    }
+
+    int sobrietyMonths = maxSobrietyDays ~/ 30;
+    int sobrietyYears = maxSobrietyDays ~/ 365;
+
+    if (sobrietyYears == 2) {
+      return "Deus(a) da Disciplina";
+    } else if (sobrietyYears == 1) {
+      return "Titã do Foco";
+    } else if (sobrietyMonths >= 9) {
+      return "Guardião do Olimpo";
+    } else if (sobrietyMonths >= 6) {
+      return "Cavaleiro de Prata";
+    } else if (sobrietyMonths >= 3) {
+      return "Guerreiro de Bronze";
+    } else if (sobrietyMonths >= 0) {
+      return "Guerreiro recruta";
+    } else {
+      return "Imortal da Superação";
     }
   }
 }

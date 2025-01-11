@@ -70,7 +70,7 @@ class _ViceDetailState extends State<ViceDetail> {
                           fontWeight: FontWeight.bold),
                     ),
                     Clock(date: vice.datesobriety),
-                    /*vice.impactType == 'time'
+                    vice.impactType == 'tempo'
                         ? Column(
                             children: [
                               Text(
@@ -82,7 +82,7 @@ class _ViceDetailState extends State<ViceDetail> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                '${(vice.impactValue * vice.dateCreation.difference(vice.datesobriety).inDays) < 0 ? 0 : (vice.impactValue * vice.dateCreation.difference(vice.datesobriety).inDays).toString()} horas',
+                                '${((double.tryParse(vice.impactValue ?? '0') ?? 0) * (vice.dateCreation.difference(vice.datesobriety).inDays < 0 ? 0 : vice.dateCreation.difference(vice.datesobriety).inDays)).toStringAsFixed(2)} horas',
                                 style: TextStyle(
                                   fontFamily: 'PoppinsRegular',
                                   fontSize: 14,
@@ -92,7 +92,7 @@ class _ViceDetailState extends State<ViceDetail> {
                               ),
                             ],
                           )
-                        : vice.impactType == 'money'
+                        : vice.impactType == 'dinheiro'
                             ? Column(
                                 children: [
                                   Text(
@@ -109,15 +109,21 @@ class _ViceDetailState extends State<ViceDetail> {
                                           locale: 'pt_BR',
                                           symbol: '',
                                           decimalDigits: 2,
-                                        ).format(vice.impactValue *
-                                            vice.dateCreation
-                                                .difference(
-                                                    vice.datesobriety)
-                                                .inDays < 0 ? 0 : vice.impactValue *
-                                            vice.dateCreation
-                                                .difference(
-                                                    vice.datesobriety)
-                                                .inDays),
+                                        ).format(
+                                          ((double.tryParse(
+                                                      vice.impactValue!) ??
+                                                  0) *
+                                              ((vice.dateCreation
+                                                          .difference(
+                                                              vice.datesobriety)
+                                                          .inDays <
+                                                      0)
+                                                  ? 0
+                                                  : vice.dateCreation
+                                                      .difference(
+                                                          vice.datesobriety)
+                                                      .inDays)),
+                                        ),
                                     style: TextStyle(
                                         fontFamily: 'PoppinsRegular',
                                         fontSize: 14,
@@ -126,63 +132,89 @@ class _ViceDetailState extends State<ViceDetail> {
                                   ),
                                 ],
                               )
-                            : */
-                    Row(
-                      children: [
-                        Text(
-                          "Imensurável...",
-                          style: TextStyle(
-                              fontFamily: 'PoppinsRegular',
-                              fontSize: 14,
-                              color: Color(0xff133E87),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        )
-                      ],
-                    )
+                            : Row(
+                                children: [
+                                  Text(
+                                    "Imensurável...",
+                                    style: TextStyle(
+                                        fontFamily: 'PoppinsRegular',
+                                        fontSize: 14,
+                                        color: Color(0xff133E87),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  )
+                                ],
+                              )
                   ],
                 ),
               ],
             ),
+            SizedBox(height: 20),
+            Text("Minhas motivações", textAlign: TextAlign.center,style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
+                  fontSize: 14,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w600
+                ),),
             Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Calendar(
-                      dateCreation: vice.dateCreation,
-                      datesobriety: vice.datesobriety),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      final updatedVice =
-                          vice.copyWith(datesobriety: DateTime.now().toUtc());
-                      viceProvider
-                          .updateVice(
-                              updatedVice,
-                              Provider.of<ActiveUser>(context, listen: false)
-                                  .currentUser!)
-                          .then((value) {
-                        Navigator.of(context).pop();
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: Color(0xff133E87)),
-                    child: Text(
-                      "Reiniciar Cronômetro",
-                      style: TextStyle(
-                          fontFamily: "PoppinsRegular",
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
+              width: double
+                  .infinity, 
+              height: 60,
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
                   ),
                 ],
+              ),
+              child: Text("\"" +
+                vice.description + "\"",
+                style: TextStyle(
+                  fontFamily: 'PoppinsRegular',
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Calendar(
+              dateCreation: vice.dateCreation,
+              datesobriety: vice.datesobriety,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final updatedVice =
+                    vice.copyWith(datesobriety: DateTime.now().toUtc());
+                viceProvider
+                    .updateVice(
+                        updatedVice,
+                        Provider.of<ActiveUser>(context, listen: false)
+                            .currentUser!)
+                    .then((value) {
+                  Navigator.of(context).pop();
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  backgroundColor: Color(0xff133E87)),
+              child: Text(
+                "Reiniciar Cronômetro",
+                style: TextStyle(
+                    fontFamily: "PoppinsRegular",
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
           ],

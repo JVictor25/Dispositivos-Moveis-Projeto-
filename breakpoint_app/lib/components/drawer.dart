@@ -40,11 +40,8 @@ class _myDrawerState extends State<myDrawer> {
     try {
       final token =
           Provider.of<ActiveUser>(context, listen: false).currentUser as String;
-      print('Token: $token');
       final response = await Provider.of<UserService>(context, listen: false)
           .fetchUser(token);
-
-      print('User Data: $response');
 
       setState(() {
         _username = response['name'];
@@ -148,9 +145,27 @@ class _myDrawerState extends State<myDrawer> {
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => EditProfileScreen(username: _username,email: _email, token: Provider.of<ActiveUser>(context, listen: false).currentUser as String,),
-                  ));
+                  Navigator.of(context)
+                      .push<String>(
+                    MaterialPageRoute(
+                      builder: (context) => EditProfileScreen(
+                        username: _username,
+                        email: _email,
+                        token: Provider.of<ActiveUser>(context, listen: false)
+                            .currentUser as String,
+                      ),
+                    ),
+                  )
+                      .then((value) {
+                    if (value != null) {
+                      Navigator.of(context).pop();
+                      Provider.of<UserService>(context, listen: false)
+                          .fetchUser(
+                        Provider.of<ActiveUser>(context, listen: false)
+                            .currentUser as String,
+                      );
+                    }
+                  });
                 },
               ),
               /*ListTile(

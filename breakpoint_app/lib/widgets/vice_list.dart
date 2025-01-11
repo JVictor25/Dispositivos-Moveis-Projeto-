@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters, prefer_const_constructors
+
 import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,13 +23,13 @@ class _ViceListState extends State<ViceList> {
   @override
   void initState() {
     super.initState();
-    _fetchVices(); // Inicializa o carregamento no initState
+    _fetchVices();
   }
 
   Future<void> _fetchVices() async {
     final activeUser = Provider.of<ActiveUser>(context, listen: false);
     final provider = Provider.of<ViceProvider>(context, listen: false);
-    await provider.fetchVices(activeUser.currentUser!); // Atualiza os dados no provider
+    await provider.fetchVices(activeUser.currentUser!);
   }
 
   @override

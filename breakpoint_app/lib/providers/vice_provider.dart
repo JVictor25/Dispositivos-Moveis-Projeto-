@@ -43,14 +43,23 @@ class ViceProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateVice(Vice updatedVice, String _bearerToken) async {
+  Future<void> updateVice(Map<String, dynamic> vice, String _bearerToken) async {
     _isLoading = true;
     try {
-      await _viceService.updateVice(updatedVice, _bearerToken);
-      int index = _vicesList.indexWhere((vice) => vice.id == updatedVice.id);
-      if (index != -1) {
-        _vicesList[index] = updatedVice;
-      }
+      await _viceService.updateVice(vice, _bearerToken);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print("Error updating vice: $e");
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> resetVice(String id, String _bearerToken) async {
+    _isLoading = true;
+    try {
+      await _viceService.resetViceTime(id, _bearerToken);
       _isLoading = false;
       notifyListeners();
     } catch (e) {

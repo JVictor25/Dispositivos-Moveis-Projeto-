@@ -24,21 +24,20 @@ class _ViceFormState extends State<ViceForm> {
   bool _isLoading = false;
   final DateTime _selectedDate = DateTime.now();
   final List<String> _impactTypes = ['dinheiro', 'tempo', 'nao informar'];
-  List<TimeOfDay>? selectedTimes = [];
+  List<TimeOfDay>? selectedTimes = null;
 
   @override
   void initState() {
     super.initState();
-    _formData['datesobriety'] = DateTime.now();
     if (widget.existingVice != null) {
       _formData['id'] = widget.existingVice!.id;
-      _formData['datesobriety'] = widget.existingVice!.datesobriety;
-      _formData['dateCreation'] = widget.existingVice!.dateCreation;
-      _formData['viceType'] = widget.existingVice!.viceType;
+      /*_formData['viceType'] = widget.existingVice!.viceType;
       _formData['impactType'] = widget.existingVice!.impactType;
       _formData['impactValue'] = widget.existingVice!.impactValue;
-      _formData['description'] = widget.existingVice!.description;
-      selectedTimes = widget.existingVice!.dangerousTimes!;
+      _formData['description'] = widget.existingVice!.description;*/
+      if(selectedTimes == null){
+        selectedTimes = widget.existingVice!.dangerousTimes!;
+      }
     }
   }
 
@@ -52,23 +51,37 @@ class _ViceFormState extends State<ViceForm> {
       _isLoading = true;
     });
 
-    final vice = Vice(
-        id: _formData['id'] ?? Uuid().v4(),
-        datesobriety: _formData['datesobriety'],
-        dateCreation: DateTime.now(),
-        viceType: _formData['viceType'],
-        impactType: _formData['impactType'],
-        impactValue: _formData['impactValue'] ?? '',
-        dangerousTimes: selectedTimes,
-        description: _formData['description']);
-
     final provider = Provider.of<ViceProvider>(context, listen: false);
     final activeUser = Provider.of<ActiveUser>(context, listen: false);
-
+    
     try {
       if (widget.existingVice != null) {
-        await provider.updateVice(vice, activeUser.currentUser!);
+        Map<String, dynamic> form = {
+          'id': widget.existingVice!.id,
+          'description': _formData['description'] != widget.existingVice!.description ? _formData['description'] : null,
+          'addictionImpact':
+              _formData['impactType'] != widget.existingVice!.impactType
+                  ? _formData['impactType']
+                  : null,
+          'impactCost': _formData['impactValue'] != widget.existingVice!.impactValue ? _formData['impactValue'] : null,
+          'criticalHours': widget.existingVice!.dangerousTimes!.length !=
+                  selectedTimes!.length
+              ? selectedTimes!.map((time) {
+                  return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+                }).toList()
+              : null,
+        };
+        await provider.updateVice(form, activeUser.currentUser!);
       } else {
+        final vice = Vice(
+            id: _formData['id'] ?? Uuid().v4(),
+            datesobriety: DateTime.now(),
+            dateCreation: DateTime.now(),
+            viceType: _formData['viceType'],
+            impactType: _formData['impactType'],
+            impactValue: _formData['impactValue'] ?? '',
+            dangerousTimes: selectedTimes,
+            description: _formData['description']);
         await provider.addVice(vice, activeUser.currentUser!);
       }
       Navigator.of(context).pop();
@@ -81,6 +94,51 @@ class _ViceFormState extends State<ViceForm> {
         _isLoading = false;
       });
     }
+  }
+
+  Widget _showViceType(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Color(0xffA8DADC),
+        labelText: 'Tipo de Vício',
+        labelStyle: TextStyle(
+            fontFamily: "PoppinsLight",
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: Color(0xFF134B70),
+            width: 2.0,
+          ),
+        ),
+      ),
+      style: TextStyle(
+        fontFamily: 'PoppinsRegular',
+        fontSize: 14,
+        color: Colors.black87,
+      ),
+      value: _formData['viceType'],
+      items: viceType.map((String type) {
+        return DropdownMenuItem<String>(
+          value: type.toLowerCase(),
+          child: Text(type),
+        );
+      }).toList(),
+      onChanged: (value) {
+        setState(() {
+          _formData['viceType'] = value!;
+        });
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Por Favor selecione um tipo de hábito.";
+        }
+        return null;
+      },
+    );
   }
 
   Widget _showImpactValue(BuildContext context) {
@@ -130,7 +188,6 @@ class _ViceFormState extends State<ViceForm> {
         selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
-            //_selectedDate = selectedDay;
             _formData['datesobriety'] = _selectedDate;
           });
         },
@@ -165,7 +222,9 @@ class _ViceFormState extends State<ViceForm> {
             onPressed: () async {
               selectedTimes = await Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => SearchTimeScreen(selectedTimes: selectedTimes!,),
+                  builder: (context) => SearchTimeScreen(
+                    selectedTimes: selectedTimes!,
+                  ),
                 ),
               );
             },
@@ -180,48 +239,9 @@ class _ViceFormState extends State<ViceForm> {
                 key: _formKey,
                 child: ListView(
                   children: [
-                    DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xffA8DADC),
-                        labelText: 'Tipo de Vício',
-                        labelStyle: TextStyle(
-                            fontFamily: "PoppinsLight",
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide(
-                            color: Color(0xFF134B70),
-                            width: 2.0,
-                          ),
-                        ),
-                      ),
-                      style: TextStyle(
-                        fontFamily: 'PoppinsRegular',
-                        fontSize: 14,
-                        color: Colors.black87,
-                      ),
-                      value: _formData['viceType'],
-                      items: viceType.map((String type) {
-                        return DropdownMenuItem<String>(
-                          value: type.toLowerCase(),
-                          child: Text(type),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _formData['viceType'] = value!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Por Favor selecione um tipo de hábito.";
-                        }
-                        return null;
-                      },
-                    ),
+                    widget.existingVice == null
+                        ? _showViceType(context)
+                        : SizedBox(),
                     SizedBox(
                       height: 20,
                     ),
@@ -261,7 +281,10 @@ class _ViceFormState extends State<ViceForm> {
                         });
                       },
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (widget.existingVice != null &&
+                            (value == null || value.isEmpty)) {
+                          return null;
+                        } else if (value == null || value.isEmpty) {
                           return "Selecione um tipo de impacto!";
                         }
                         return null;
@@ -299,7 +322,10 @@ class _ViceFormState extends State<ViceForm> {
                       ),
                       maxLines: 4,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (widget.existingVice != null &&
+                            (value == null || value.isEmpty)) {
+                          return null;
+                        } else if (value == null || value.isEmpty) {
                           return "Por favor, insira uma descrição!";
                         }
                         return null;
@@ -343,13 +369,12 @@ class SearchTimeScreen extends StatefulWidget {
   List<TimeOfDay> selectedTimes = [];
 
   SearchTimeScreen({super.key, required this.selectedTimes});
-  
+
   @override
   _SearchTimeScreenState createState() => _SearchTimeScreenState();
 }
 
 class _SearchTimeScreenState extends State<SearchTimeScreen> {
-
   void _addTime() async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -376,9 +401,16 @@ class _SearchTimeScreenState extends State<SearchTimeScreen> {
         title: Text("Escolher Horários"),
         backgroundColor: Color(0xff133E87),
         foregroundColor: Colors.white,
-        leading: IconButton(onPressed: (){
-          Navigator.of(context).pop(widget.selectedTimes);
-        }, icon: Icon(Icons.arrow_back, color: Colors.white,)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop(widget.selectedTimes.isEmpty
+                  ? widget.selectedTimes = []
+                  : widget.selectedTimes);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

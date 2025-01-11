@@ -153,15 +153,17 @@ class _ViceDetailState extends State<ViceDetail> {
               ],
             ),
             SizedBox(height: 20),
-            Text("Minhas motivações", textAlign: TextAlign.center,style: TextStyle(
+            Text(
+              "Minhas motivações",
+              textAlign: TextAlign.center,
+              style: TextStyle(
                   fontFamily: 'PoppinsRegular',
                   fontSize: 14,
                   color: Colors.black87,
-                  fontWeight: FontWeight.w600
-                ),),
+                  fontWeight: FontWeight.w600),
+            ),
             Container(
-              width: double
-                  .infinity, 
+              width: double.infinity,
               height: 60,
               padding: const EdgeInsets.all(12.0),
               decoration: BoxDecoration(
@@ -175,8 +177,8 @@ class _ViceDetailState extends State<ViceDetail> {
                   ),
                 ],
               ),
-              child: Text("\"" +
-                vice.description + "\"",
+              child: Text(
+                "\"" + vice.description + "\"",
                 style: TextStyle(
                   fontFamily: 'PoppinsRegular',
                   fontSize: 14,
@@ -194,15 +196,15 @@ class _ViceDetailState extends State<ViceDetail> {
             ),
             ElevatedButton(
               onPressed: () {
-                final updatedVice =
-                    vice.copyWith(datesobriety: DateTime.now().toUtc());
                 viceProvider
-                    .updateVice(
-                        updatedVice,
+                    .resetVice(
+                        widget.vice.id,
                         Provider.of<ActiveUser>(context, listen: false)
                             .currentUser!)
                     .then((value) {
                   Navigator.of(context).pop();
+                  viceProvider.fetchVices(Provider.of<ActiveUser>(context, listen: false)
+                            .currentUser!);
                 });
               },
               style: ElevatedButton.styleFrom(

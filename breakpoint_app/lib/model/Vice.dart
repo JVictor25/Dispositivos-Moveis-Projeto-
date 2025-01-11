@@ -9,7 +9,7 @@ class Vice {
   final String impactType;
   final String? impactValue;
   List<TimeOfDay>? dangerousTimes;
-  final String description;// Novo atributo de descrição
+  final String description;
 
 
   Vice({
@@ -56,17 +56,16 @@ class Vice {
 
   Map<String, dynamic> toJson() {
   return {
-    'title': viceType,
     'description': description,
     'addictionImpact': impactType,
     'impactCost': impactValue,
     'criticalHours': dangerousTimes?.map((time) {
       return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
     }).toList(),
-    'createdAt': dateCreation.toIso8601String(),
-    'updated_at': datesobriety.toIso8601String(),
   };
 }
+
+
 
 Map<String, dynamic> toJsonAdd() {
   return {

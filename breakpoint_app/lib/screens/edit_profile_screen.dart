@@ -28,22 +28,51 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _formData = Map<String, Object>();
 
-  void _submitEdit() async {
-    final isValid = _formKey.currentState?.validate() ??
-        true;
+  void _confirmAndSubmitEdit() async {
+    final isValid = _formKey.currentState?.validate() ?? true;
 
     if (!isValid) {
       return;
     }
-    _formKey.currentState?.save();
 
-    await Provider.of<UserService>(context, listen: false)
-        .updateUser(_formData, widget.token!)
-        .then((onValue) {
-      Navigator.pop(context);
-    }).catchError((error) {
-      print('Erro ao atualizar usuário: $error');
-    });
+    // Exibe o diálogo de confirmação
+    final confirmation = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Confirmar Alterações"),
+        content: Text("Você realmente deseja salvar as alterações?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false); // Cancela
+            },
+            child: Text("Cancelar"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true); // Confirma
+            },
+            child: Text(
+              "Confirmar",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // Se o usuário confirmou, executa o envio
+    if (confirmation == true) {
+      _formKey.currentState?.save();
+
+      await Provider.of<UserService>(context, listen: false)
+          .updateUser(_formData, widget.token!)
+          .then((onValue) {
+        Navigator.pop(context);
+      }).catchError((error) {
+        print('Erro ao atualizar usuário: $error');
+      });
+    }
   }
 
   @override
@@ -88,7 +117,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     radius: 50,
                     backgroundColor: Colors.white,
                     backgroundImage: AssetImage(
-                      imageMap[Provider.of<ViceProvider>(context).getAvatar()] ??
+                      imageMap[
+                              Provider.of<ViceProvider>(context).getAvatar()] ??
                           'assets/images/default.png',
                     ),
                   ),
@@ -133,8 +163,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
-                      initialValue:
-                          _formData['name']?.toString() ?? '', // Valor padrão
+                      initialValue: _formData['name']?.toString() ?? '',
                       style: TextStyle(color: Colors.black87),
                       decoration: InputDecoration(
                         filled: true,
@@ -148,9 +177,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       onSaved: (name) {
-                        _formData['name'] = (name?.trim().isEmpty ?? true)
-                            ? ''
-                            : name ?? ''; // Valor padrão
+                        _formData['name'] =
+                            (name?.trim().isEmpty ?? true) ? '' : name ?? '';
                       },
                     ),
                     SizedBox(height: 20),
@@ -164,8 +192,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
-                      initialValue:
-                          _formData['email']?.toString() ?? '', // Valor padrão
+                      initialValue: _formData['email']?.toString() ?? '',
                       style: TextStyle(color: Colors.black87),
                       decoration: InputDecoration(
                         filled: true,
@@ -179,9 +206,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       onSaved: (email) {
-                        _formData['email'] = (email?.trim().isEmpty ?? true)
-                            ? ''
-                            : email ?? ''; // Valor padrão
+                        _formData['email'] =
+                            (email?.trim().isEmpty ?? true) ? '' : email ?? '';
                       },
                     ),
                     SizedBox(height: 20),
@@ -225,7 +251,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         _formData['password'] =
                             (password?.trim().isEmpty ?? true)
                                 ? ''
-                                : password ?? ''; // Valor padrão
+                                : password ?? '';
                       },
                     ),
                     SizedBox(height: 30),
@@ -233,7 +259,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
                           backgroundColor: Color(0xffA8DADC)),
-                      onPressed: _submitEdit,
+                      onPressed: _confirmAndSubmitEdit,
                       child: Text(
                         "Salvar alterações",
                         style: TextStyle(

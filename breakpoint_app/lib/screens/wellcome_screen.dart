@@ -1,4 +1,6 @@
 
+// ignore_for_file: prefer_const_constructors
+
 import 'package:breakpoint_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:breakpoint_app/widgets/register_user.dart';

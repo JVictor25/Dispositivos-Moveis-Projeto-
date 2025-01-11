@@ -125,9 +125,7 @@ class UserService with ChangeNotifier {
           'password': password,
         }),
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
-        print(response.body);
         return response.body;
       } else {
         final error = jsonDecode(response.body);

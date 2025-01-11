@@ -23,7 +23,6 @@ class ViceService {
     final List<dynamic> data = json.decode(response.body);
     final basicVices = data.map((entry) => Vice.fromJson(entry)).toList();
 
-    // Passo 2: Buscar os detalhes para cada vice
     final List<Vice> completeVices = [];
     for (final vice in basicVices) {
       final detailResponse = await http.get(
@@ -90,17 +89,18 @@ class ViceService {
     }
   }
 
-  Future<void> updateVice(Vice vice, String _bearerToken) async {
+  Future<void> updateVice(Map<String, dynamic> vice, String _bearerToken) async {
     try {
       final response = await http.put(
-        Uri.parse("$_baseUrl/user/vice/${vice.id}"),
+        Uri.parse("$_baseUrl/user/vice/${vice['id']}/update"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $_bearerToken',
         },
-        body: json.encode(vice.toJson()),
+        body: json.encode(vice),
       );
-
+      print(response.body);
+      print(response.statusCode);
       if (response.statusCode != 200) {
         throw Exception("Failed to updated vice");
       }
@@ -109,4 +109,21 @@ class ViceService {
     }
   }
 
+  Future<void> resetViceTime(String id, String _bearerToken)async {
+    try {
+      final response = await http.put(
+        Uri.parse("$_baseUrl/user/vice/${id}/reset"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $_bearerToken',
+        },
+      );
+      print(response.statusCode);
+      if (response.statusCode != 200) {
+        throw Exception("Failed to updated vice");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

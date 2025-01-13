@@ -2,15 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 
 class User with ChangeNotifier {
-  final String _id;
+  final String? _id;
   String _username;
   String _email;
   String _password;
-  final DateTime _createdAt;
-  DateTime _updatedAt;
+  final DateTime? _createdAt;
+  DateTime? _updatedAt;
   
-
-  String get id => _id;
 
   String get username => _username;
 
@@ -31,18 +29,18 @@ class User with ChangeNotifier {
   }
 
   User({
-    required String id,
+    String? id,
     required String username,
     required String email,
     required String password,
-    required DateTime createdAt,
+    DateTime? createdAt,
     DateTime? updatedAt,
   })  : _id = id,
         _username = username,
         _email = email,
         _password = password, // Define valor padrão para password se for null
         _createdAt = createdAt,
-        _updatedAt = updatedAt ?? DateTime.now(); // Define valor padrão para updatedAt
+        _updatedAt = updatedAt; // Define valor padrão para updatedAt
 
   User.fromUser(User _user)
       : _id = _user._id,

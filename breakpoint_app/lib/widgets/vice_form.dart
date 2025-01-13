@@ -81,7 +81,8 @@ class _ViceFormState extends State<ViceForm> {
             impactType: _formData['impactType'],
             impactValue: _formData['impactValue'] ?? '',
             dangerousTimes: selectedTimes,
-            description: _formData['description']);
+            description: _formData['description'],
+            reseted: false);
         await provider.addVice(vice, activeUser.currentUser!);
       }
       Navigator.of(context).pop();
@@ -220,6 +221,9 @@ class _ViceFormState extends State<ViceForm> {
           IconButton(
             icon: Icon(Icons.access_time, color: Colors.white),
             onPressed: () async {
+              if(selectedTimes == null){
+                selectedTimes = [];
+              }
               selectedTimes = await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => SearchTimeScreen(

@@ -51,9 +51,11 @@ class _myDrawerState extends State<myDrawer> {
       });
     } catch (error) {
       debugPrint('Error fetching user: $error');
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

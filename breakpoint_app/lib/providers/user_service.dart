@@ -4,11 +4,15 @@ import 'package:http/http.dart' as http;
 import 'package:breakpoint_app/model/User.dart';
 import 'package:uuid/uuid.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:local_auth/local_auth.dart';
 
 class UserService with ChangeNotifier {
   final String _baseUrl = "https://breakpoint.onrender.com";
   final String _bearerToken =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCcmVha3BvaW50IiwiZXhwIjoxNzMzNTMwMTMyLCJzdWIiOiI2OTUxMjBiMi0yZWVmLTRmYjUtODVjZi0zNmRjYTE2MjI3MWMifQ.f0WJKa6Ak8od0KGUtsA5chslzdqskQwy8fCUs9jQuWc";
+  final _auth = LocalAuthentication();
+  final _secureStorage = FlutterSecureStorage();
 
   Map<String, String> get _headers => {
         "Content-Type": "application/json",
@@ -103,12 +107,9 @@ class UserService with ChangeNotifier {
   // Save or update user data
   Future<void> saveUserData(Map<String, dynamic> data) async {
     final user = User(
-      id: data['id'] ?? Uuid().v4(),
       username: data['username'] as String,
       email: data['email'] as String,
       password: data['password'] as String,
-      createdAt: data['createdAt'] as DateTime,
-      updatedAt: data['updatedAt'] as DateTime,
     );
 
     await addUser(user);
@@ -126,6 +127,8 @@ class UserService with ChangeNotifier {
         }),
       );
       if (response.statusCode == 200) {
+        await _secureStorage.write(key: 'email', value: email);
+        await _secureStorage.write(key: 'password', value: password);
         return response.body;
       } else {
         final error = jsonDecode(response.body);
@@ -135,5 +138,39 @@ class UserService with ChangeNotifier {
       debugPrint('Error in loginUser: $e');
       return null;
     }
+  }
+
+  Future<String?> loginWithBiometrics() async {
+    try {
+      final isAvailable = await _auth.canCheckBiometrics;
+      if (!isAvailable) throw Exception('Biometria não está disponível.');
+
+      final authenticated = await _auth.authenticate(
+        localizedReason: 'Use sua biometria para fazer login',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          useErrorDialogs: true,
+        ),
+      );
+
+      if (authenticated) {
+        final email = await _secureStorage.read(key: 'email');
+        final password = await _secureStorage.read(key: 'password');
+
+        if (email != null && password != null) {
+          final token = await loginUser(email, password);
+          if (token != null) {
+            return token;
+          } else {
+            throw Exception('Falha ao autenticar com biometria.');
+          }
+        } else {
+          throw Exception('Credenciais não encontradas.');
+        }
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
   }
 }

@@ -75,6 +75,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  void _confirmAndDeleteProfile() async {
+    final confirmation = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Excluir Perfil"),
+        content: Text(
+          "Tem certeza de que deseja excluir permanentemente seu perfil? Esta ação não pode ser desfeita.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false); // Cancela
+            },
+            child: Text("Cancelar"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true); // Confirma
+            },
+            child: Text(
+              "Excluir",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmation == true) {
+      try {
+        await Provider.of<UserService>(context, listen: false)
+            .deleteUser(widget.token!);
+
+        // Redirecionar ou exibir mensagem de sucesso
+        Navigator.of(context).pushReplacementNamed('/login'); // Exemplo
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao excluir perfil: $error'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -258,7 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Color(0xffA8DADC)),
+                          backgroundColor: Color(0xff133E87)),
                       onPressed: _confirmAndSubmitEdit,
                       child: Text(
                         "Salvar alterações",
@@ -266,7 +312,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             fontFamily: "PoppinsLight",
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87),
+                            color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                      onPressed: _confirmAndDeleteProfile,
+                      child: Text(
+                        "Excluir Perfil",
+                        style: TextStyle(
+                          fontFamily: "PoppinsLight",
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

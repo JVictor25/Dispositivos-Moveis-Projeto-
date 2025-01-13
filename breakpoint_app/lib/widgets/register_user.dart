@@ -127,7 +127,7 @@ class _RegisteruserState extends State<Registeruser> {
                     ),
                     Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 16),
+                            vertical: 16, horizontal: 16),
                         child: TextFormField(
                           initialValue: _formData['username']?.toString(),
                           style: TextStyle(color: Colors.white),
@@ -165,7 +165,7 @@ class _RegisteruserState extends State<Registeruser> {
                         )),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
+                          vertical: 16, horizontal: 16),
                       child: TextFormField(
                         initialValue: _formData['email']?.toString(),
                         style: TextStyle(color: Colors.white),
@@ -210,7 +210,7 @@ class _RegisteruserState extends State<Registeruser> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                       child: TextFormField(
                         initialValue: _formData['password']?.toString(),
                         obscureText: _obscureText,
@@ -263,7 +263,7 @@ class _RegisteruserState extends State<Registeruser> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
                       child: ElevatedButton(
                         onPressed: () {
                           _submitUser();

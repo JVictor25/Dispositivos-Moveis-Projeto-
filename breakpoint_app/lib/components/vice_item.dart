@@ -19,6 +19,7 @@ class ViceItem extends StatefulWidget {
 }
 
 class _ViceItemState extends State<ViceItem> {
+  
   Future<bool?> alertDelete() async {
     final result = await showDialog<bool>(
       context: context,
@@ -143,10 +144,10 @@ class _ViceItemState extends State<ViceItem> {
                             color: Colors.black,
                           ),
                         ),
-                        Clock(date: widget.vice.datesobriety),
+                        Clock(date: widget.vice.reseted ? widget.vice.datesobriety : widget.vice.dateCreation!),
                       ],
                     ),
-                    Progress(date: widget.vice.datesobriety),
+                    Progress(date: widget.vice.reseted ? widget.vice.datesobriety : widget.vice.dateCreation!),
                   ],
                 ),
               ],

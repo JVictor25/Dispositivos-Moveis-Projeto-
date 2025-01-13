@@ -3,24 +3,26 @@ import 'package:uuid/uuid.dart';
 
 class Vice {
   final String id;
-  final DateTime datesobriety;
-  final DateTime dateCreation;
+  DateTime datesobriety;
+  final DateTime? dateCreation;
   final String viceType;
   final String impactType;
   final String? impactValue;
   List<TimeOfDay>? dangerousTimes;
   final String description;
+  bool reseted;
 
 
   Vice({
     String? id,
     required this.datesobriety,
-    required this.dateCreation,
+    this.dateCreation,
     required this.viceType,
     required this.impactType,
     this.impactValue,
     this.dangerousTimes,
-    required this.description,  // Atributo descrição adicionado no construtor
+    required this.description,
+    required this.reseted
   }) : id = id ?? Uuid().v4();
 
 
@@ -32,7 +34,8 @@ class Vice {
         impactType = vice.impactType,
         impactValue = vice.impactValue,
         dangerousTimes = vice.dangerousTimes,
-        description = vice.description;  // Copiando o valor de descricao
+        description = vice.description,
+        reseted = vice.reseted;
 
   factory Vice.fromJson(Map<String, dynamic> json) {
     return Vice(
@@ -51,6 +54,7 @@ class Vice {
               minute: int.parse(parts[1]),
             );
           }).toList() ?? [],
+          reseted: json['reseted'],
     );
   }
 
@@ -87,7 +91,8 @@ Map<String, dynamic> toJsonAdd() {
     String? impactType,
     String? impactValue,
     List<TimeOfDay>? dangerousTime,
-    String? descricao,  // Adicionando a opção de atualizar a descrição
+    String? descricao,
+    bool? reseted,
   }) {
     return Vice(
       id: id ?? this.id,
@@ -97,7 +102,8 @@ Map<String, dynamic> toJsonAdd() {
       impactType: impactType ?? this.impactType,
       impactValue: impactValue ?? this.impactValue,
       dangerousTimes: dangerousTime ?? this.dangerousTimes,
-      description: descricao ?? this.description,  // Atualizando ou mantendo a descrição
+      description: descricao ?? this.description,
+      reseted: reseted ?? this.reseted 
     );
   }
 }

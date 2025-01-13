@@ -76,7 +76,7 @@ final Map<String, String> emotionEmojis = {
 };
 
 // (NOTE): Lembrar de remover o mockData depois
-List<Vice> exampleVices = [
+/*List<Vice> exampleVices = [
   Vice(
       datesobriety: DateTime.now(),
       dateCreation: DateTime.now(),
@@ -112,7 +112,7 @@ List<Vice> exampleVices = [
       impactType: 'time',
       impactValue: "4",
       description: ""),
-];
+];*/
 
 // (NOTE): Lembrar de remover o mockData depois
 final List<DiaryEntry> mockData = [

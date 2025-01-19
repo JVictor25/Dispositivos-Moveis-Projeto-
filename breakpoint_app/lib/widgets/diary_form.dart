@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:breakpoint_app/components/image_input.dart';
 import 'package:breakpoint_app/data/data.dart';
 import 'package:breakpoint_app/model/DiaryEntry.dart';
 import 'package:breakpoint_app/providers/diary_provider.dart';
@@ -17,6 +20,12 @@ class _DiaryFormState extends State<DiaryForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _bodyController = TextEditingController();
   String? _selectedEmotion;
+
+  File? _image;
+
+  void _selectImage(File image) {
+    _image = image;
+  }
 
   void _nextPage() {
     _pageController.nextPage(
@@ -42,7 +51,7 @@ class _DiaryFormState extends State<DiaryForm> {
   Widget build(BuildContext context) {
 
     return SizedBox(
-      height: 400,
+      height: 450,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: PageView(
@@ -118,7 +127,7 @@ class _DiaryFormState extends State<DiaryForm> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Como você se sente hoje?", style: Theme.of(context).textTheme.labelLarge),
-            SizedBox(height: 20),
+            // SizedBox(height: 20),
             TextFormField(
               controller: _bodyController,
               maxLines: 7,
@@ -148,7 +157,7 @@ class _DiaryFormState extends State<DiaryForm> {
                   color: Colors.black87,
                 ),
             ),
-            SizedBox(height: 20),
+            ImageInput(onSelectImage: this._selectImage),
             IconButton.filled(
               icon: const Icon(Icons.check),
               color: Colors.white,
@@ -159,7 +168,8 @@ class _DiaryFormState extends State<DiaryForm> {
               onPressed: () {
                 _saveEntry();
               },
-            )
+            ),
+
           ],
         ),
     );

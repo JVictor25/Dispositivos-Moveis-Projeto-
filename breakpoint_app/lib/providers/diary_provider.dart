@@ -9,25 +9,27 @@ import 'package:flutter/material.dart';
 final List<DiaryEntry> mockData = [
   DiaryEntry(
     title: "Diário de Bordo",
-    createdAt: DateTime(2021, 11, 1),
+    createdAt: DateTime(2025, 1, 1),
     emotion: "Feliz",
     text: "Hoje foi um dia muito bom!",
+    image: "https://i.pinimg.com/236x/80/16/7f/80167f524231208fe63cfaabc2579852.jpg"
   ),
   DiaryEntry(
     title: "Diário de Bordo",
-    createdAt: DateTime(2024, 5, 2),
+    createdAt: DateTime(2025, 1, 1),
     emotion: "Triste",
     text: "Hoje foi um dia muito ruim!",
+    image: "https://maladeaventuras.com/wp-content/uploads/2018/12/DSC7078.jpg"
   ),
   DiaryEntry(
     title: "Diário de Bordo",
-    createdAt: DateTime(2024, 11, 3),
+    createdAt: DateTime(2024, 12, 1),
     emotion: "Raiva",
     text: "Hoje foi um dia muito irritante!",
   ),
   DiaryEntry(
     title: "Diário de Bordo",
-    createdAt: DateTime(2024, 11, 4),
+    createdAt: DateTime(2021, 1, 1),
     emotion: "Ansioso",
     text: "Hoje foi um dia muito estressante!",
   ),
@@ -47,6 +49,7 @@ class DiaryProvider with ChangeNotifier {
     _isLoading = true;
     try {
       final entries = await _diaryService.fetchDiaryEntries(bearerToken!);
+      print(entries);
       _diaryEntries.clear();
       // (NOTE): Lembrar de remover o mockData depois
       _diaryEntries.addAll(entries + mockData);

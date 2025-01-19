@@ -84,7 +84,22 @@ class _ViceDetailState extends State<ViceDetail> {
                                   ),
                                 ),
                                 Text(
-                                  '${((double.tryParse(vice.impactValue ?? '0') ?? 0) * (baseDate.difference(vice.datesobriety).inDays < 0 ? 0 : baseDate.difference(vice.datesobriety).inDays)).toStringAsFixed(2)} horas',
+                                  () {
+                                    // Definindo a baseDate e calculando a diferença de dias
+                                    final today = DateTime.now();
+                                    final daysDifference =
+                                        today.isBefore(baseDate)
+                                            ? 0
+                                            : today.difference(baseDate).inDays;
+
+                                    // Calculando o tempo economizado
+                                    final hoursSaved = (double.tryParse(
+                                                vice.impactValue ?? '0') ??
+                                            0) *
+                                        daysDifference;
+
+                                    return '${hoursSaved.toStringAsFixed(2)} horas';
+                                  }(),
                                   style: TextStyle(
                                     fontFamily: 'PoppinsRegular',
                                     fontSize: 14,
@@ -107,26 +122,24 @@ class _ViceDetailState extends State<ViceDetail> {
                                       ),
                                     ),
                                     Text(
-                                      'R\$ ' +
-                                          NumberFormat.currency(
-                                            locale: 'pt_BR',
-                                            symbol: '',
-                                            decimalDigits: 2,
-                                          ).format(
-                                            ((double.tryParse(
-                                                        vice.impactValue!) ??
-                                                    0) *
-                                                ((baseDate
-                                                            .difference(
-                                                                vice.datesobriety)
-                                                            .inDays <
-                                                        0)
-                                                    ? 0
-                                                    : baseDate
-                                                        .difference(
-                                                            vice.datesobriety)
-                                                        .inDays)),
-                                          ),
+                                      () {
+                                        final today = DateTime.now();
+                                        final daysDifference = today
+                                                .isBefore(baseDate)
+                                            ? 0
+                                            : today.difference(baseDate).inDays;
+
+                                        final moneySaved = (double.tryParse(
+                                                    vice.impactValue ?? '0') ??
+                                                0) *
+                                            daysDifference;
+
+                                        return 'R\$ ${NumberFormat.currency(
+                                          locale: 'pt_BR',
+                                          symbol: '',
+                                          decimalDigits: 2,
+                                        ).format(moneySaved)}';
+                                      }(),
                                       style: TextStyle(
                                         fontFamily: 'PoppinsRegular',
                                         fontSize: 14,
@@ -193,7 +206,71 @@ class _ViceDetailState extends State<ViceDetail> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 20),
+              if (vice.dangerousTimes != null &&
+                  vice.dangerousTimes!.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        "Horários perigosos",
+                        style: TextStyle(
+                          fontFamily: 'PoppinsRegular',
+                          fontSize: 16,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, // Número de colunas na grade
+                        crossAxisSpacing: 10, // Espaçamento horizontal
+                        mainAxisSpacing: 10, // Espaçamento vertical
+                        childAspectRatio:
+                            2.5, // Proporção largura/altura dos itens
+                      ),
+                      itemCount: vice.dangerousTimes!.length,
+                      itemBuilder: (context, index) {
+                        // Converte TimeOfDay para String no formato HH:mm
+                        final time = vice.dangerousTimes![index];
+                        final formattedTime = time.format(context);
+
+                        return Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            formattedTime,
+                            style: TextStyle(
+                              fontFamily: 'PoppinsRegular',
+                              fontSize: 14,
+                              color: Color(0xff133E87),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              SizedBox(
+                height: 20,
+              ),
               Calendar(
                 dateCreation: vice.dateCreation!,
                 datesobriety: vice.datesobriety,

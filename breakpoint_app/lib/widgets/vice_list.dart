@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../components/vice_item.dart';
 import '../model/Vice.dart';
 import '../providers/vice_provider.dart';
+import 'package:breakpoint_app/components/notification.dart';
 
 class ViceList extends StatefulWidget {
   final Function(Vice) onDelete;
@@ -20,6 +21,8 @@ class ViceList extends StatefulWidget {
 }
 
 class _ViceListState extends State<ViceList> {
+  final NotificationService _notificationService = NotificationService();
+  
   @override
   void initState() {
     super.initState();
@@ -27,9 +30,19 @@ class _ViceListState extends State<ViceList> {
   }
 
   Future<void> _fetchVices() async {
-    final activeUser = Provider.of<ActiveUser>(context, listen: false);
-    final provider = Provider.of<ViceProvider>(context, listen: false);
-    await provider.fetchVices(activeUser.currentUser!);
+    try {
+      final activeUser = Provider.of<ActiveUser>(context, listen: false);
+      final provider = Provider.of<ViceProvider>(context, listen: false);
+      await provider.fetchVices(activeUser.currentUser!);
+
+      // Chame o método de agendamento usando o NotificationService
+      await _notificationService.scheduleNotifications(
+        provider.getDangerousTimes(),
+      );
+    } catch (error) {
+      // Log ou tratativa de erro
+      debugPrint('Erro ao buscar vícios: $error');
+    }
   }
 
   @override

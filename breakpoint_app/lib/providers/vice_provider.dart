@@ -1,6 +1,7 @@
 import 'package:breakpoint_app/providers/vice_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:breakpoint_app/model/Vice.dart';
+import 'package:flutter/material.dart';
 
 class ViceProvider with ChangeNotifier {
   final ViceService _viceService = ViceService();
@@ -43,7 +44,8 @@ class ViceProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateVice(Map<String, dynamic> vice, String _bearerToken) async {
+  Future<void> updateVice(
+      Map<String, dynamic> vice, String _bearerToken) async {
     _isLoading = true;
     try {
       await _viceService.updateVice(vice, _bearerToken);
@@ -82,6 +84,7 @@ class ViceProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
   String getAvatar() {
     if (_vicesList.isEmpty) return "Sem título";
 
@@ -118,5 +121,17 @@ class ViceProvider with ChangeNotifier {
     } else {
       return "Imortal da Superação";
     }
+  }
+
+  List<TimeOfDay> getDangerousTimes() {
+    List<TimeOfDay> allDangerousTimes = [];
+
+    for (Vice vice in _vicesList) {
+      if (vice.dangerousTimes != null) {
+        allDangerousTimes.addAll(vice.dangerousTimes!);
+      }
+    }
+
+    return allDangerousTimes;
   }
 }

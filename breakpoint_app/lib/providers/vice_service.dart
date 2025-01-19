@@ -50,8 +50,6 @@ class ViceService {
 
   Future<void> addVice(Vice vice, String _bearerToken) async {
     try {
-      print(json.encode(vice.toJson()));
-
       final response = await http.post(
         Uri.parse("$_baseUrl/user/vice/"),
         headers: {
@@ -60,9 +58,6 @@ class ViceService {
         },
         body: json.encode(vice.toJsonAdd()),
       );
-
-      print(response.statusCode);
-      print(response.body);
 
       if (response.statusCode != 200) {
         throw Exception("Failed to add vice");
@@ -99,8 +94,6 @@ class ViceService {
         },
         body: json.encode(vice),
       );
-      print(response.body);
-      print(response.statusCode);
       if (response.statusCode != 200) {
         throw Exception("Failed to updated vice");
       }
@@ -118,7 +111,6 @@ class ViceService {
           "Authorization": 'Bearer $_bearerToken',
         },
       );
-      print(response.statusCode);
       if (response.statusCode != 200) {
         throw Exception("Failed to updated vice");
       }

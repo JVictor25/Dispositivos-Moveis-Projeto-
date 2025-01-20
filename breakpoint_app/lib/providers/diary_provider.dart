@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:breakpoint_app/model/DiaryEntry.dart';
 import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:breakpoint_app/providers/diary_service.dart';
+import 'package:breakpoint_app/database/database_helper.dart';
 import 'package:flutter/material.dart';
 
 // (NOTE): Lembrar de remover o mockData depois 
@@ -38,6 +39,7 @@ final List<DiaryEntry> mockData = [
 class DiaryProvider with ChangeNotifier {
   DiaryService _diaryService = DiaryService();
   ActiveUser _activeUser = ActiveUser();
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
   final List<DiaryEntry> _diaryEntries = [];
   bool _isLoading = false;
 
@@ -54,6 +56,44 @@ class DiaryProvider with ChangeNotifier {
       // (NOTE): Lembrar de remover o mockData depois
       _diaryEntries.addAll(entries + mockData);
 
+      await _databaseHelper.clearDiaryTable();
+
+      for (var diaryEntry in entries + mockData) {
+        try {
+          await _databaseHelper.insertDiaryEntry(diaryEntry); // Insere cada diário no banco local
+          print("Inserted DiaryEntry: ${diaryEntry.toJson()}");
+        } catch (e) {
+          print("Error inserting DiaryEntry into local database: $e");
+        }
+      }
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+
+      try {
+        final localDiaryes = await _databaseHelper.getAllDiarys();
+        _diaryEntries.clear();
+        _diaryEntries.addAll(localDiaryes);
+      } catch (e) {
+        print("Error fetching all vices from local database: $e");
+      }
+      print(e);
+      _isLoading = false;
+      notifyListeners(); //
+    }
+  }
+  
+/* Future<void> fetchEntries() async {
+    final bearerToken = _activeUser.currentUser;
+    _isLoading = true;
+    try {
+      final entries = await _diaryService.fetchDiaryEntries(bearerToken!);
+      print(entries);
+      _diaryEntries.clear();
+      // (NOTE): Lembrar de remover o mockData depois
+      _diaryEntries.addAll(entries + mockData);
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -61,7 +101,7 @@ class DiaryProvider with ChangeNotifier {
       _isLoading = false;
     }
   }
-
+ */
   Future<void> addEntry(DiaryEntry diaryEntry) async {
     final bearerToken = _activeUser.currentUser;
     _isLoading = true;

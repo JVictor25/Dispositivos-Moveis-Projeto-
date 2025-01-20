@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:uuid/uuid.dart';
 
 class User with ChangeNotifier {
   final String? _id;
@@ -8,25 +7,16 @@ class User with ChangeNotifier {
   String _password;
   final DateTime? _createdAt;
   DateTime? _updatedAt;
-  
 
+  String get id => _id ?? ''; // Garantir que o id nunca seja nulo.
   String get username => _username;
-
-  set username(String value) {
-    _username = value;
-  }
+  set username(String value) => _username = value;
 
   String get email => _email;
-
-  set email(String value) {
-    _email = value;
-  }
+  set email(String value) => _email = value;
 
   String get password => _password;
-
-  set password(String value) {
-    _password = value;
-  }
+  set password(String value) => _password = value;
 
   User({
     String? id,
@@ -38,9 +28,9 @@ class User with ChangeNotifier {
   })  : _id = id,
         _username = username,
         _email = email,
-        _password = password, // Define valor padrão para password se for null
+        _password = password,
         _createdAt = createdAt,
-        _updatedAt = updatedAt; // Define valor padrão para updatedAt
+        _updatedAt = updatedAt;
 
   User.fromUser(User _user)
       : _id = _user._id,
@@ -51,24 +41,26 @@ class User with ChangeNotifier {
         _updatedAt = _user._updatedAt;
 
   factory User.fromJson(Map<String, dynamic> json) {
-  return User(
-    id: json['id'],
-    username: json['name'],
-    email: json['email'],
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
-    password: json['password'],
-  );
-}
+    return User(
+      id: json['id'],
+      username: json['username'],
+      email: json['email'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt:
+          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
+      password: json['password'],
+    );
+  }
 
-
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
-      'name': _username,
-      'email' : _email,
-      'password' : _password,
+      'id': _id,
+      'username': _username,
+      'email': _email,
+      'password': _password,
+      'createdAt': _createdAt?.toIso8601String(),
+      'updatedAt': _updatedAt?.toIso8601String(),
     };
-    
     return data;
   }
 }

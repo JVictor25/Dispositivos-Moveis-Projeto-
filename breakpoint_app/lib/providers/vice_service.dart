@@ -6,50 +6,52 @@ class ViceService {
   final String _baseUrl = "https://breakpoint.onrender.com";
 
   Future<List<Vice>> fetchVices(String _bearerToken) async {
-  try {
-    final response = await http.get(
-      Uri.parse("$_baseUrl/user/vice/"),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": 'Bearer $_bearerToken',
-      },
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception("Failed to load vices");
-    }
-
-
-    final List<dynamic> data = json.decode(response.body);
-    final basicVices = data.map((entry) => Vice.fromJson(entry)).toList();
-
-    final List<Vice> completeVices = [];
-    for (final vice in basicVices) {
-      final detailResponse = await http.get(
-        Uri.parse("$_baseUrl/user/vice/${vice.id}"),
+    try {
+      final response = await http.get(
+        Uri.parse("$_baseUrl/user/vice/"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $_bearerToken',
         },
       );
 
-      if (detailResponse.statusCode == 200) {
-        final detailData = json.decode(detailResponse.body);
-        completeVices.add(Vice.fromJson(detailData));
-      } else {
-        throw Exception("Failed to load details for vice with ID: ${vice.id}");
+      if (response.statusCode != 200) {
+        throw Exception("Failed to load vices");
       }
-    }
 
-    return completeVices;
-  } catch (e) {
-    print("Erro ao buscar vices completos: $e");
-    rethrow;
+      final List<dynamic> data = json.decode(response.body);
+      final basicVices = data.map((entry) => Vice.fromJson(entry)).toList();
+
+      final List<Vice> completeVices = [];
+      for (final vice in basicVices) {
+        final detailResponse = await http.get(
+          Uri.parse("$_baseUrl/user/vice/${vice.id}"),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer $_bearerToken',
+          },
+        );
+
+        if (detailResponse.statusCode == 200) {
+          final detailData = json.decode(detailResponse.body);
+          completeVices.add(Vice.fromJson(detailData));
+        } else {
+          throw Exception(
+              "Failed to load details for vice with ID: ${vice.id}");
+        }
+      }
+
+      return completeVices;
+    } catch (e) {
+      print("Erro ao buscar vices completos: $e");
+      rethrow;
+    }
   }
-}
 
   Future<void> addVice(Vice vice, String _bearerToken) async {
     try {
+      print(json.encode(vice.toJson()));
+
       final response = await http.post(
         Uri.parse("$_baseUrl/user/vice/"),
         headers: {
@@ -84,7 +86,8 @@ class ViceService {
     }
   }
 
-  Future<void> updateVice(Map<String, dynamic> vice, String _bearerToken) async {
+  Future<void> updateVice(
+      Map<String, dynamic> vice, String _bearerToken) async {
     try {
       final response = await http.put(
         Uri.parse("$_baseUrl/user/vice/${vice['id']}/update"),
@@ -102,7 +105,7 @@ class ViceService {
     }
   }
 
-  Future<void> resetViceTime(String id, String _bearerToken)async {
+   Future<void> resetViceTime(String id, String _bearerToken)async {
     try {
       final response = await http.put(
         Uri.parse("$_baseUrl/user/vice/${id}/reset"),

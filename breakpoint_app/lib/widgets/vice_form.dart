@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:breakpoint_app/components/notification.dart';
 import 'package:breakpoint_app/data/data.dart';
 import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,7 @@ class _ViceFormState extends State<ViceForm> {
       _formData['impactType'] = widget.existingVice!.impactType;
       _formData['impactValue'] = widget.existingVice!.impactValue;
       _formData['description'] = widget.existingVice!.description;*/
-      if (selectedTimes == null) {
+      if(selectedTimes == null){
         selectedTimes = widget.existingVice!.dangerousTimes!;
       }
     }
@@ -54,33 +53,24 @@ class _ViceFormState extends State<ViceForm> {
 
     final provider = Provider.of<ViceProvider>(context, listen: false);
     final activeUser = Provider.of<ActiveUser>(context, listen: false);
+    
     try {
       if (widget.existingVice != null) {
         Map<String, dynamic> form = {
           'id': widget.existingVice!.id,
-          'description':
-              _formData['description'] != widget.existingVice!.description
-                  ? _formData['description']
-                  : null,
+          'description': _formData['description'] != widget.existingVice!.description ? _formData['description'] : null,
           'addictionImpact':
               _formData['impactType'] != widget.existingVice!.impactType
                   ? _formData['impactType']
                   : null,
-          'impactCost':
-              _formData['impactValue'] != widget.existingVice!.impactValue
-                  ? _formData['impactValue']
-                  : null,
-          'criticalHours': widget.existingVice!.dangerousTimes != selectedTimes
+          'impactCost': _formData['impactValue'] != widget.existingVice!.impactValue ? _formData['impactValue'] : null,
+          'criticalHours': widget.existingVice!.dangerousTimes!.length !=
+                  selectedTimes!.length
               ? selectedTimes!.map((time) {
                   return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
                 }).toList()
-              : widget.existingVice!.dangerousTimes!.map((time) {
-                  return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-                }).toList(),
+              : null,
         };
-        final NotificationService _notificationService = NotificationService();
-        await _notificationService
-            .scheduleNotifications(provider.getDangerousTimes());
         await provider.updateVice(form, activeUser.currentUser!);
       } else {
         final vice = Vice(
@@ -231,7 +221,7 @@ class _ViceFormState extends State<ViceForm> {
           IconButton(
             icon: Icon(Icons.access_time, color: Colors.white),
             onPressed: () async {
-              if (selectedTimes == null) {
+              if(selectedTimes == null){
                 selectedTimes = [];
               }
               selectedTimes = await Navigator.of(context).push(

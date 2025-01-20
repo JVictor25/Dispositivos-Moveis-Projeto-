@@ -120,11 +120,19 @@ class _DiaryListState extends State<DiaryList> {
     );
   }
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     Provider.of<DiaryProvider>(context, listen: false).fetchEntries();
-  }
+  }*/
+  @override
+void initState() {
+  super.initState();
+  // Use addPostFrameCallback para evitar chamadas durante a fase de construção
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    Provider.of<DiaryProvider>(context, listen: false).fetchEntries();
+  });
+}
 
   Widget _buildEntryCard(DiaryEntry entry) {
     // final entry = entries[index];

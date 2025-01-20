@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Importa o pacote Provider
 import 'package:breakpoint_app/routes/app_routes.dart';
 import 'package:breakpoint_app/providers/vice_provider.dart'; // O provider para gerenciar os vícios
+import 'package:breakpoint_app/database/database_helper.dart'; // O helper para gerenciar o banco de dados local
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -285,7 +285,7 @@ class _ViceDetailState extends State<ViceDetail> {
                               .currentUser!)
                       .then((value) {
                     Navigator.of(context).pop();
-                    viceProvider.fetchVices(
+                    viceProvider.fetchVicesAndSync(
                         Provider.of<ActiveUser>(context, listen: false)
                             .currentUser!);
                   });

@@ -19,7 +19,6 @@ class ViceItem extends StatefulWidget {
 }
 
 class _ViceItemState extends State<ViceItem> {
-  
   Future<bool?> alertDelete() async {
     final result = await showDialog<bool>(
       context: context,
@@ -54,16 +53,15 @@ class _ViceItemState extends State<ViceItem> {
     final activeUser = Provider.of<ActiveUser>(context);
     return GestureDetector(
       onTap: () {
-          Navigator.of(context)
-              .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice)
-              .then((_) {
-            provider.fetchVices(activeUser.currentUser!);
-          });
+        Navigator.of(context)
+            .pushNamed(AppRoutes.VICEDETAIL, arguments: widget.vice)
+            .then((_) {
+          provider.fetchVicesAndSync(activeUser.currentUser!);
+        });
       },
       child: Dismissible(
         key: Key(widget.vice.viceType),
-        direction: DismissDirection
-            .horizontal, 
+        direction: DismissDirection.horizontal,
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.endToStart) {
             return alertDelete();
@@ -72,11 +70,11 @@ class _ViceItemState extends State<ViceItem> {
             Navigator.pushNamed(context, AppRoutes.VICEFORM,
                     arguments: widget.vice)
                 .then((_) {
-              provider.fetchVices(activeUser.currentUser!);
+              provider.fetchVicesAndSync(activeUser.currentUser!);
             });
             return false;
           }
-          return true; 
+          return true;
         },
         onDismissed: (direction) {
           if (direction == DismissDirection.startToEnd) {
@@ -101,7 +99,6 @@ class _ViceItemState extends State<ViceItem> {
               alignment: Alignment.centerRight,
               child: Icon(Icons.delete, color: Colors.white)),
         ),
-
         child: Card(
           shadowColor: Colors.black87.withOpacity(0.3),
           color: Color(0xffE6E6FA),
@@ -144,10 +141,16 @@ class _ViceItemState extends State<ViceItem> {
                             color: Colors.black,
                           ),
                         ),
-                        Clock(date: widget.vice.reseted ? widget.vice.datesobriety : widget.vice.dateCreation!),
+                        Clock(
+                            date: widget.vice.reseted
+                                ? widget.vice.datesobriety
+                                : widget.vice.dateCreation!),
                       ],
                     ),
-                    Progress(date: widget.vice.reseted ? widget.vice.datesobriety : widget.vice.dateCreation!),
+                    Progress(
+                        date: widget.vice.reseted
+                            ? widget.vice.datesobriety
+                            : widget.vice.dateCreation!),
                   ],
                 ),
               ],

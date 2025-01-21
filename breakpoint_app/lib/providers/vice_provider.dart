@@ -28,7 +28,7 @@ class ViceProvider with ChangeNotifier {
       for (var vice in fetchedVices) {
         try {
           await _databaseHelper.insertVice(vice); // Insere cada vice no banco local
-          print("Inserted vice: ${vice.toJson()}");
+          //print("Inserted vice: ${vice.toJson()}");
         } catch (e) {
           print("Error inserting vice into local database: $e");
         }
@@ -88,8 +88,6 @@ class ViceProvider with ChangeNotifier {
     _isLoading = true;
     try {
       await _viceService.updateVice(vice, _bearerToken);
-      final updatedVice = Vice.fromJson(vice);
-      await _databaseHelper.updateVice(updatedVice);
       _isLoading = false;
       notifyListeners();
     } catch (e) {

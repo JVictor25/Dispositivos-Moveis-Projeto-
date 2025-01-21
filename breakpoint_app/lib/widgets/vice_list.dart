@@ -1,5 +1,6 @@
 // ignore_for_file: use_super_parameters, prefer_const_constructors
 
+import 'package:breakpoint_app/components/notification.dart';
 import 'package:breakpoint_app/providers/active_user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,19 @@ class _ViceListState extends State<ViceList> {
   Future<void> _fetchVices(String _bearerToken) async {
     final provider = Provider.of<ViceProvider>(context, listen: false);
     await provider.fetchVicesAndSync(_bearerToken);
+    FirebaseApi _notificationService = FirebaseApi();
+    _notificationService.requestExactAlarmPermissionWithDialog(context);
+    _notificationService
+        .scheduleNotifications(provider.getDangerousTimes())
+        .then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Notificações agendadas com sucesso!')),
+      );
+    }).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao agendar notificações: $e')),
+      );
+    });
   }
 
   @override

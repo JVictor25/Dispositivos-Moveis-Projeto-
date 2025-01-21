@@ -169,14 +169,13 @@ Future<void> clearLoggedUser() async {
       vice.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print(
-        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Inserted vice: ${vice.toJson()}"); // Verifique os dados salvos
+    //print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Inserted vice: ${vice.toJson()}"); // Verifique os dados salvos
   }
 
   Future<List<Vice>> getAllVices() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('vices');
-    print("All vices in database: $maps"); // Verifique o conteúdo retornado
+    //print("All vices in database: $maps"); // Verifique o conteúdo retornado
     return List.generate(maps.length, (i) {
       return Vice.fromJson(maps[i]);
     });

@@ -66,7 +66,7 @@ class DatabaseHelper {
         title TEXT NOT NULL,
         text TEXT NOT NULL,
         emotion TEXT NOT NULL,
-        createdAt TEXT NOT NULL,
+        createdAt TEXT NOT NULL
       )
     ''');
   }

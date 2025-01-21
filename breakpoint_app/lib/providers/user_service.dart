@@ -143,7 +143,10 @@ class UserService with ChangeNotifier {
   Future<String?> loginWithBiometrics() async {
     try {
       final isAvailable = await _auth.canCheckBiometrics;
-      if (!isAvailable) throw Exception('Biometria não está disponível.');
+      if (!isAvailable) {
+        print('Biometria não está disponível.');
+        throw Exception('Biometria não está disponível.');
+      }
 
       final authenticated = await _auth.authenticate(
         localizedReason: 'Use sua biometria para fazer login',
@@ -152,24 +155,25 @@ class UserService with ChangeNotifier {
           useErrorDialogs: true,
         ),
       );
+      print('Authenticated: $authenticated');
 
       if (authenticated) {
         final email = await _secureStorage.read(key: 'email');
         final password = await _secureStorage.read(key: 'password');
-
-        if (email != null && password != null) {
-          final token = await loginUser(email, password);
-          if (token != null) {
-            return token;
-          } else {
-            throw Exception('Falha ao autenticar com biometria.');
-          }
-        } else {
+        if (email == null || password == null) {
           throw Exception('Credenciais não encontradas.');
+        }
+
+        final token = await loginUser(email, password);
+        if (token != null) {
+          print('Token obtido: $token');
+          return token;
+        } else {
+          throw Exception('Falha ao autenticar com biometria.');
         }
       }
     } catch (e) {
-      return null;
+      rethrow;
     }
     return null;
   }

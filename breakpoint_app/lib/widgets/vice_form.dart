@@ -79,7 +79,21 @@ class _ViceFormState extends State<ViceForm> {
                   return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
                 }).toList(),
         };
-        await provider.updateVice(form, activeUser.currentUser!);
+        await provider.updateVice(form, activeUser.currentUser!).then((value) {
+          FirebaseApi _notificationService = FirebaseApi();
+          _notificationService.cancelAllNotifications();
+          _notificationService
+              .scheduleNotifications(provider.getDangerousTimes())
+              .then((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Notificações agendadas com sucesso!')),
+            );
+          }).catchError((e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Erro ao agendar notificações: $e')),
+            );
+          });
+        });
       } else {
         final vice = Vice(
             id: _formData['id'] ?? Uuid().v4(),
@@ -91,21 +105,23 @@ class _ViceFormState extends State<ViceForm> {
             dangerousTimes: selectedTimes,
             description: _formData['description'],
             reseted: false);
-        await provider.addVice(vice, activeUser.currentUser!);
+        await provider.addVice(vice, activeUser.currentUser!).then((value) {
+          FirebaseApi _notificationService = FirebaseApi();
+          _notificationService.cancelAllNotifications();
+          _notificationService
+              .scheduleNotifications(provider.getDangerousTimes())
+              .then((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Notificações agendadas com sucesso!')),
+            );
+          }).catchError((e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Erro ao agendar notificações: $e')),
+            );
+          });
+        });
       }
       Navigator.of(context).pop();
-      FirebaseApi _notificationService = FirebaseApi();
-      _notificationService
-          .scheduleNotifications(provider.getDangerousTimes())
-          .then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Notificações agendadas com sucesso!')),
-        );
-      }).catchError((e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao agendar notificações: $e')),
-        );
-      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error saving vice: $e")),

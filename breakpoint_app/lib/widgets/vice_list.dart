@@ -34,7 +34,6 @@ class _ViceListState extends State<ViceList> {
     final provider = Provider.of<ViceProvider>(context, listen: false);
     await provider.fetchVicesAndSync(_bearerToken);
     FirebaseApi _notificationService = FirebaseApi();
-    _notificationService.requestExactAlarmPermissionWithDialog(context);
     _notificationService
         .scheduleNotifications(provider.getDangerousTimes())
         .then((_) {
@@ -46,6 +45,12 @@ class _ViceListState extends State<ViceList> {
         SnackBar(content: Text('Erro ao agendar notificações: $e')),
       );
     });
+    final pendingNotifications =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    for (var notification in pendingNotifications) {
+      print(
+          "ID: ${notification.id}, Título: ${notification.title}, Corpo: ${notification.body}, Payload: ${notification.payload}");
+    }
   }
 
   @override

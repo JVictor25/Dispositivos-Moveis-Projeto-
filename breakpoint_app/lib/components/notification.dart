@@ -18,7 +18,7 @@ class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
   bool isFlutterLocalNotificationsInitialized = false;
 
-  // Add initialization settings
+  // Adiciona inicialização padrão
   static const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -26,63 +26,57 @@ class FirebaseApi {
       InitializationSettings(android: initializationSettingsAndroid);
 
   Future<void> initNotification() async {
+    await checkPermissions(); // Verificar permissões
     tz.initializeTimeZones();
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (details) {
-        print('Notification tapped: ${details.payload}');
+        print('Notificação tocada: ${details.payload}');
       },
     );
 
     await setupFlutterNotifications();
     await _firebaseMessaging.requestPermission();
     final fcmToken = await _firebaseMessaging.getToken();
-    print('My token: $fcmToken');
+    print('Meu token: $fcmToken');
 
     FirebaseMessaging.onBackgroundMessage(handlerBackgroundMessage);
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
     FirebaseMessaging.onMessageOpenedApp.listen(showFlutterNotification);
   }
 
-  Future<void> requestExactAlarmPermissionWithDialog(BuildContext context) async {
-  if (Platform.isAndroid) {
-    if (await Permission.scheduleExactAlarm.isDenied) {
-      bool? shouldOpenSettings = await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Permissão Necessária'),
-          content: const Text(
-            'Para notificações precisas, permita alarmes exatos nas configurações do aplicativo.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('Ir para Configurações'),
-            ),
-          ],
-        ),
-      );
-
-      if (shouldOpenSettings ?? false) {
-        await openAppSettings();
+  Future<void> checkPermissions() async {
+    var notificationStatus = await Permission.notification.status;
+    if (notificationStatus.isDenied) {
+      print("Permissão de notificação negada.");
+      var result = await Permission.notification.request();
+      if (result.isGranted) {
+        print("Permissão de notificação concedida.");
+      } else {
+        print("Permissão de notificação ainda negada.");
       }
+    } else if (notificationStatus.isGranted) {
+      print("Permissão de notificação já concedida.");
+    }
+
+    var alarmStatus = await Permission.scheduleExactAlarm.status;
+    if (alarmStatus.isDenied) {
+      print("Permissão para alarmes exatos negada. Abrindo configurações.");
+      await openAppSettings();
+    } else if (alarmStatus.isGranted) {
+      print("Permissão para alarmes exatos já concedida.");
     }
   }
-}
 
   Future<void> setupFlutterNotifications() async {
     if (isFlutterLocalNotificationsInitialized) {
       return;
     }
+
     channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      description:
-          'This channel is used for important notifications.', // description
+      'high_importance_channel',
+      'High Importance Notifications',
+      description: 'This channel is used for important notifications.',
       importance: Importance.high,
     );
 
@@ -97,21 +91,20 @@ class FirebaseApi {
       badge: true,
       sound: true,
     );
+
     isFlutterLocalNotificationsInitialized = true;
   }
 
-  // Função para agendar notificações com base em um vetor de TimeOfDay
   Future<void> scheduleNotifications(List<TimeOfDay> times) async {
     for (TimeOfDay time in times) {
       await _scheduleNotification(time);
     }
   }
 
-  // Função para agendar uma única notificação em um horário específico
   Future<void> _scheduleNotification(TimeOfDay time) async {
     try {
       final now = DateTime.now();
-      final localTimeZone = tz.local;
+      final localTimeZone = tz.getLocation('America/Sao_Paulo');
       var scheduledDate = tz.TZDateTime(
         localTimeZone,
         now.year,
@@ -136,72 +129,63 @@ class FirebaseApi {
           android: AndroidNotificationDetails(
             channel.id,
             channel.name,
-            channelDescription: 'Descrição do canal',
             importance: Importance.high,
             priority: Priority.high,
             showWhen: false,
             icon: '@mipmap/ic_launcher',
-            // Add these additional settings
-            enableLights: true,
-            enableVibration: true,
-            playSound: true,
-            ticker: 'ticker',
           ),
         ),
-        payload: 'notification_${time.hour}_${time.minute}', // Add payload
+        payload: 'notification_${time.hour}_${time.minute}',
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.wallClockTime,
         matchDateTimeComponents: DateTimeComponents.time,
         androidScheduleMode: AndroidScheduleMode.exact,
       );
+      print('Notificação agendada para $scheduledDate');
     } catch (e) {
-      print('Error scheduling notification: $e');
+      print('Erro ao agendar notificação: $e');
     }
   }
 
-// Add method to cancel all notifications
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
-  // Add method to cancel specific notification
-  Future<void> cancelNotification(TimeOfDay time) async {
-    final uniqueId = time.hour * 60 + time.minute;
-    await flutterLocalNotificationsPlugin.cancel(uniqueId);
-  }
-
-  // Add method to check pending notifications
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {
     return await flutterLocalNotificationsPlugin.pendingNotificationRequests();
   }
 }
 
-// Função para mostrar a notificação
 void showFlutterNotification(RemoteMessage remoteMessage) {
-  print("...onMessage...");
-  print("${remoteMessage.notification?.title}");
-  print("${remoteMessage.notification?.body}");
-  RemoteNotification? notification = remoteMessage.notification;
-  AndroidNotification? android = remoteMessage.notification?.android;
-  if (notification != null && android != null) {
-    flutterLocalNotificationsPlugin.show(
-      notification.hashCode,
-      notification.title,
-      notification.body,
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          channelDescription: channel.description,
-          icon: 'launch_background',
+  try {
+    print("Recebendo mensagem...");
+    RemoteNotification? notification = remoteMessage.notification;
+    AndroidNotification? android = remoteMessage.notification?.android;
+
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channelDescription: channel.description,
+            icon: 'launch_background',
+          ),
         ),
-      ),
-    );
+      );
+    }
+  } catch (e) {
+    print("Erro ao exibir notificação em primeiro plano: $e");
   }
 }
 
-// Função de background message handler
 Future<void> handlerBackgroundMessage(RemoteMessage remoteMessage) async {
-  print("${remoteMessage.notification?.title}");
-  print("${remoteMessage.notification?.body}");
+  try {
+    print("Mensagem recebida em segundo plano: ${remoteMessage.notification?.title}");
+  } catch (e) {
+    print("Erro ao processar mensagem de segundo plano: $e");
+  }
 }

@@ -41,9 +41,10 @@ class DiaryProvider with ChangeNotifier {
   ActiveUser _activeUser = ActiveUser();
   final DatabaseHelper _databaseHelper = DatabaseHelper();
   final List<DiaryEntry> _diaryEntries = [];
+  final List<DiaryEntry> _localEntries = []; // Lista de entradas locais
   bool _isLoading = false;
 
-  List<DiaryEntry> get diaryEntries => _diaryEntries.reversed.toList();
+  List<DiaryEntry> get diaryEntries =>  (_localEntries.reversed.toList() + _diaryEntries).toList();
   bool get isLoading => _isLoading;
 
   Future<void> fetchEntries() async {
@@ -83,31 +84,13 @@ class DiaryProvider with ChangeNotifier {
       notifyListeners(); //
     }
   }
-  
-/* Future<void> fetchEntries() async {
-    final bearerToken = _activeUser.currentUser;
-    _isLoading = true;
-    try {
-      final entries = await _diaryService.fetchDiaryEntries(bearerToken!);
-      print(entries);
-      _diaryEntries.clear();
-      // (NOTE): Lembrar de remover o mockData depois
-      _diaryEntries.addAll(entries + mockData);
 
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      _isLoading = false;
-    }
-  }
- */
   Future<void> addEntry(DiaryEntry diaryEntry) async {
     final bearerToken = _activeUser.currentUser;
     _isLoading = true;
     notifyListeners();
     try {
-      await _diaryService.addDiaryEntry(diaryEntry, bearerToken!);
+      // await _diaryService.addDiaryEntry(diaryEntry, bearerToken!);
       _diaryEntries.add(diaryEntry);
 
       _isLoading = false;
@@ -118,6 +101,13 @@ class DiaryProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void addEntryWithImage(DiaryEntry diaryEntry) {
+    _localEntries.add(diaryEntry); // Adiciona entrada localmente
+    _isLoading = false;
+    notifyListeners();
+  }
+
 
   Future<void> removeEntry(DiaryEntry diaryEntry) async {
     final bearerToken = _activeUser.currentUser;

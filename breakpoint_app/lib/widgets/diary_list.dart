@@ -100,24 +100,23 @@ class _DiaryListState extends State<DiaryList> {
 
   Future<void> _openDatePickerDialog() {
     return showDialog(
-      context: context, 
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Escolha a data"),
-          content: MonthPicker(
-            onDateSelected: (month, year) {
-              setState(() {
-                selectedMonth = month;
-                selectedYear = year;
-              });
-            },
-            endYear: 2025, 
-            initialYear: 2025, 
-            startYear: 2015, 
-            month: 1,) 
-        );
-      }
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: const Text("Escolha a data"),
+              content: MonthPicker(
+                onDateSelected: (month, year) {
+                  setState(() {
+                    selectedMonth = month;
+                    selectedYear = year;
+                  });
+                },
+                endYear: 2025,
+                initialYear: 2025,
+                startYear: 2015,
+                month: 1,
+              ));
+        });
   }
 
   /*@override
@@ -126,13 +125,13 @@ class _DiaryListState extends State<DiaryList> {
     Provider.of<DiaryProvider>(context, listen: false).fetchEntries();
   }*/
   @override
-void initState() {
-  super.initState();
-  // Use addPostFrameCallback para evitar chamadas durante a fase de construção
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Provider.of<DiaryProvider>(context, listen: false).fetchEntries();
-  });
-}
+  void initState() {
+    super.initState();
+    // Use addPostFrameCallback para evitar chamadas durante a fase de construção
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<DiaryProvider>(context, listen: false).fetchEntries();
+    });
+  }
 
   Widget _buildEntryCard(DiaryEntry entry) {
     // final entry = entries[index];
@@ -189,10 +188,33 @@ void initState() {
                         ),
                       ),
                       SizedBox(height: 8),
-                      if (entry.image != null) // Remover
+                      if (entry.image != null)
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.network(entry.image!),
+                          child: Image.network(
+                            entry.image!,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child; // Retorna a imagem quando carregada
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          (loadingProgress.expectedTotalBytes ??
+                                              1)
+                                      : null,
+                                ),
+                              ); // Mostra o indicador enquanto carrega
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                child: Icon(Icons.error, color: Colors.red),
+                              ); // Mostra um ícone de erro se o carregamento falhar
+                            },
+                          ),
                         ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -245,23 +267,20 @@ void initState() {
         //     },
         //   ),
         // ),
-        
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '${monthsInYear[selectedMonth - 1]} ${selectedYear}', 
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22
-                ),
+                '${monthsInYear[selectedMonth - 1]} ${selectedYear}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
               ),
             ),
             IconButton(
-              onPressed: _openDatePickerDialog, 
-              icon: Icon(Icons.calendar_month, color: Colors.black87))
+                onPressed: _openDatePickerDialog,
+                icon: Icon(Icons.calendar_month, color: Colors.black87))
           ],
         ),
         Consumer<DiaryProvider>(builder: (context, diaryProvider, child) {
@@ -273,8 +292,8 @@ void initState() {
             );
           }
           // final selected = months.length - (selectedMonth - 1);
-          final entriesInSelectedMonth =
-              getEntriesInSelectedMonth(diaryProvider.diaryEntries, selectedMonth, selectedYear);
+          final entriesInSelectedMonth = getEntriesInSelectedMonth(
+              diaryProvider.diaryEntries, selectedMonth, selectedYear);
           final groupedEntries = groupEntriesByDate(entriesInSelectedMonth);
           final List<String> dates = groupedEntries.keys.toList();
           return (entriesInSelectedMonth.isEmpty

@@ -41,18 +41,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.env
 
-/andriod/*
-/android/app/debug
-/android/app/profile
-/android/app/release
-/android/*
-/ios/*
 /linux/*
 /macos/*
 /web/*
 /windows/*
 /test/*
-
-.metadata/
-.vscode/

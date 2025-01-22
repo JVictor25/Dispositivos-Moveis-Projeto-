@@ -43,7 +43,7 @@ class User with ChangeNotifier {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
-      username: json['username'],
+      username: json['name'],
       email: json['email'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt:
@@ -55,7 +55,7 @@ class User with ChangeNotifier {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
       'id': _id,
-      'username': _username,
+      'name': _username,
       'email': _email,
       'password': _password,
       'createdAt': _createdAt?.toIso8601String(),

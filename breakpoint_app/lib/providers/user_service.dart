@@ -26,7 +26,7 @@ class UserService with ChangeNotifier {
         headers: _headers,
         body: jsonEncode(user.toJson()),
       );
-
+      print(response.statusCode);
       if (response.statusCode != 200) {
         throw Exception('Error creating user: ${response.body}');
       }

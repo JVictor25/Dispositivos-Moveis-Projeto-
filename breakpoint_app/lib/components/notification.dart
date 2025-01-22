@@ -189,3 +189,4 @@ Future<void> handlerBackgroundMessage(RemoteMessage remoteMessage) async {
     print("Erro ao processar mensagem de segundo plano: $e");
   }
 }
+

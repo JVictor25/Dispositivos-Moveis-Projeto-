@@ -44,7 +44,7 @@ class DiaryProvider with ChangeNotifier {
   final List<DiaryEntry> _localEntries = []; // Lista de entradas locais
   bool _isLoading = false;
 
-  List<DiaryEntry> get diaryEntries =>  (_localEntries.reversed.toList() + _diaryEntries).toList();
+  List<DiaryEntry> get diaryEntries => (_diaryEntries + _localEntries.reversed.toList()).reversed.toList();
   bool get isLoading => _isLoading;
 
   Future<void> fetchEntries() async {
@@ -55,7 +55,7 @@ class DiaryProvider with ChangeNotifier {
       print(entries);
       _diaryEntries.clear();
       // (NOTE): Lembrar de remover o mockData depois
-      _diaryEntries.addAll(entries + mockData);
+      _diaryEntries.addAll(mockData + entries);
 
       await _databaseHelper.clearDiaryTable();
 
@@ -90,7 +90,7 @@ class DiaryProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      // await _diaryService.addDiaryEntry(diaryEntry, bearerToken!);
+      await _diaryService.addDiaryEntry(diaryEntry, bearerToken!);
       _diaryEntries.add(diaryEntry);
 
       _isLoading = false;

@@ -64,6 +64,7 @@ class _DiaryFormState extends State<DiaryForm> {
           },
         );
       } else {
+        print("Enviando sem imagem");
         diaryProvider.addEntry(DiaryEntry(
             title: "Nova entrada",
             text: _bodyController.text,

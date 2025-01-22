@@ -35,16 +35,8 @@ class _ViceListState extends State<ViceList> {
     await provider.fetchVicesAndSync(_bearerToken);
     FirebaseApi _notificationService = FirebaseApi();
     _notificationService
-        .scheduleNotifications(provider.getDangerousTimes())
-        .then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Notificações agendadas com sucesso!')),
-      );
-    }).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao agendar notificações: $e')),
-      );
-    });
+        .scheduleNotifications(provider.getDangerousTimes());
+    
     final pendingNotifications =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
     for (var notification in pendingNotifications) {

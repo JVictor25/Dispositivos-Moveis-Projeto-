@@ -83,16 +83,7 @@ class _ViceFormState extends State<ViceForm> {
           FirebaseApi _notificationService = FirebaseApi();
           _notificationService.cancelAllNotifications();
           _notificationService
-              .scheduleNotifications(provider.getDangerousTimes())
-              .then((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Notificações agendadas com sucesso!')),
-            );
-          }).catchError((e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Erro ao agendar notificações: $e')),
-            );
-          });
+              .scheduleNotifications(provider.getDangerousTimes());
         });
       } else {
         final vice = Vice(
